@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  mysql-stand:
+    image: 'mysql:8.0.26'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=booking_system
+    ports:
+      - 3307:3306
+
+  migration:
+    image: boxfuse/flyway:latest
+    container_name: flyway_migration
+    volumes:
+      - ./booking-system/src/main/resources/db/migration:/flyway/sql
+    command: -url=jdbc:mysql://mysql-stand:3306/booking_system?useUnicode=true&characterEncoding=utf8&useSSL=false -user=root -password=root
+    depends_on:
+      - mysql-stand
+
+  springboot-docker-container_bs:
+    image: springboot-docker-container_bs
+    ports:
+      - 8080:8080
+    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-stand:3306/booking-system?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-stand:3306/booking_system?autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql-stand
