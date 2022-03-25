@@ -1,0 +1,55 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: booking-system
+      MYSQL_USER: booking-system
+      MYSQL_PASSWORD: booking-system
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+  migration-flyway:
+      image: boxfuse/flyway:latest
+      container_name: migration-flyway
+      volumes:
+        - .:/flyway/sql
+      command: -url=jdbc:mysql://db:3307 -schemas=booking-system -user=booking-system -password=booking-system -connectRetries=60 migrate
+      depends_on:
+        - db
+
+
+
+  booking-system:
+
+    container_name: booking-system
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: booking-system:latest
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - db
+      - migration-flyway
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/booking-system?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    networks:
+      - backend
+
+
+volumes:
+  db-data:
+networks:
+  backend:
+
+
+
