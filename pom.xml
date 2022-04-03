@@ -21,6 +21,7 @@
         <junit.jupiter.api.version>5.7.0</junit.jupiter.api.version>
         <junit.jupiter.engine.version>5.7.0</junit.jupiter.engine.version>
         <mockito.version>3.7.7</mockito.version>
+        <swagger.version>1.6.5</swagger.version>
     </properties>
     <dependencies>
         <dependency>
@@ -62,6 +63,11 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${swagger.version}</version>
         </dependency>
     </dependencies>
 
