@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   profiles:
-    active: common
+    active: @spring.profiles.active@
   datasource:
     url: jdbc:mysql://localhost:3307/booking_system?currentSchema=booking_system
     username: root
