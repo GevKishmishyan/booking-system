@@ -17,7 +17,7 @@ public class User {
     private String profilePicture;
 
     private String password;
-    private String repeatPassword;  // todo: check this field;
+    private String confirmPassword;  // todo: check this field;
 
     private List<Review> reviews;
     private List<Booking> bookings;

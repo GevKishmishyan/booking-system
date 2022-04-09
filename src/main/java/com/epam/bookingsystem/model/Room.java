@@ -7,7 +7,7 @@ public class Room {
 
     private UUID id;
     private Integer roomNumber;
-    private HotelRoom hotelRoom; //todo: check this field;
+    private ResortNumber resortNumber; //todo: check this field;
 
     private List<Booking> bookings;
 

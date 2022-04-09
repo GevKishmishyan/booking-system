@@ -5,8 +5,7 @@ import com.epam.bookingsystem.model.enums.HotelType;
 import java.util.List;
 import java.util.UUID;
 
-public class Hotel {
-
+public class Resort {
     private UUID id;
     private String name;
     private Address address;
@@ -15,9 +14,9 @@ public class Hotel {
     private Integer star;
     private Rate rate;
     private String email;
-    private String phoneNumber; //todo: check this field
+    private String telephone; //todo: check this field
     private String description;
-//    private HotelDetails hotelDetails; //todo: check this field
+//    private ResortDetails resortDetails; //todo: check this field
 
     private List<Room> rooms;
     private List<Review> reviews;
