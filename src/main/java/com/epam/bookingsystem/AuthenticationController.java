@@ -1,12 +1,13 @@
 package com.epam.bookingsystem;
 
-
 import com.epam.bookingsystem.model.AuthenticationRequest;
 import com.epam.bookingsystem.model.AuthenticationResponse;
 import com.epam.bookingsystem.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class NameHasToBeDefinedController {
+public class AuthenticationController {
 
     final
     AuthenticationManager authenticationManager;
@@ -23,7 +24,7 @@ public class NameHasToBeDefinedController {
     final
     JwtUtil jwtUtil;
 
-    public NameHasToBeDefinedController(AuthenticationManager authenticationManager, UserDetailsServiceImplementation userDetailsService, JwtUtil jwtUtil) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UserDetailsServiceImplementation userDetailsService, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
@@ -35,15 +36,15 @@ public class NameHasToBeDefinedController {
     @GetMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         // todo to be removed;
-        System.out.println("/authenticate");
+        System.out.println("/authenticate " + authenticationRequest.getUsername() + " " + authenticationRequest.getPassword());
 
+        UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            authenticationRequest.getUsername()
-                            , authenticationRequest.getPassword()));
+            authenticationManager.authenticate(authenticate);
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException exception) {
-            throw new Exception("bad credentials " + authenticationRequest.getUsername() + " " + authenticationRequest.getPassword());
+            throw new Exception("Bad credentials " + authenticationRequest.getUsername() + " " + authenticationRequest.getPassword());
         }
 
         final UserDetails userDetails = userDetailsService.
@@ -51,6 +52,12 @@ public class NameHasToBeDefinedController {
         final String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
+
+
+    @GetMapping("/")
+    public String home() {
+        return ("<h1>Welcome Home</h1>");
     }
 
 

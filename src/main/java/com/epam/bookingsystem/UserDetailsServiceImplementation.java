@@ -19,11 +19,13 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        System.out.println("MyUserDetailsService " + "loadUserByUsername(String userName) " + userName);
-        Optional<User> myUser = repository.findByEmail(userName);
 
-        myUser.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
+        System.out.println("UserDetailsService " + "loadUserByUsername(String userName) " + userName);
+        Optional<User> user = repository.findByEmail(userName);
 
-        return new UserDetailsImplementation(myUser.get());
+        System.out.println("UserDetailsService " + "loadUserByUsername(String userName) " + "exists = " + user.isPresent());
+        user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
+        System.out.println("  user.isPresent() " + user.isPresent() + user.get().isActive());
+        return new UserDetailsImplementation(user.get());
     }
 }
