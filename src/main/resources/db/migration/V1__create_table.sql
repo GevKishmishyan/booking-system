@@ -148,33 +148,3 @@ ALTER TABLE `booking_system`.`resort`
     ADD CONSTRAINT `tin_id`
         FOREIGN KEY (`tin_id`) REFERENCES `booking_system`.`tin` (`id`)
             ON DELETE SET NULL ON UPDATE RESTRICT ;
-
-/*The  hotel connects (contains) with the room*/
-ALTER TABLE `booking_system`.`resort`
-    ADD CONSTRAINT `rooms_id`
-        FOREIGN KEY (`rooms_id`) REFERENCES `booking_system`.`room` (`id`)
-            ON DELETE SET NULL ON UPDATE RESTRICT ;
-
-/*The  hotel connects (contains) with the review*/
-ALTER TABLE `booking_system`.`resort`
-    ADD CONSTRAINT `reviews_id`
-        FOREIGN KEY (`reviews_id`) REFERENCES `booking_system`.`review` (`id`)
-            ON DELETE SET NULL ON UPDATE RESTRICT ;
-
-/*The  hotel connects (contains) with the rate*/
-ALTER TABLE `booking_system`.`resort`
-    ADD CONSTRAINT `rate_id`
-        FOREIGN KEY (`rate_id`) REFERENCES `booking_system`.`rate` (`id`)
-            ON DELETE SET NULL ON UPDATE RESTRICT ;
-
-/*The  user connects (contains) with the booking*/
-ALTER TABLE `booking_system`.`user`
-    ADD CONSTRAINT `booking_us_id`
-        FOREIGN KEY (`booking_us_id`) REFERENCES `booking_system`.`booking` (`id`)
-            ON DELETE CASCADE ON UPDATE RESTRICT ;
-
-/*The  user connects (contains) with the review*/
-ALTER TABLE `booking_system`.`user`
-    ADD CONSTRAINT `reviews_us_id`
-        FOREIGN KEY (`reviews_us_id`) REFERENCES `booking_system`.`review` (`id`)
-            ON DELETE CASCADE ON UPDATE RESTRICT ;
