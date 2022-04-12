@@ -4,7 +4,7 @@ CREATE TABLE if NOT EXISTS `booking_system`.`room_pictures`(
     `pic_url` VARCHAR(255)
     );
 
-/*created a table that represents the room*/
+/*created a table that represents the room//*/
 CREATE TABLE if NOT EXISTS `booking_system`.`resort_number`(
     `id` INT(16) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `room_type` VARCHAR(255),
