@@ -124,7 +124,7 @@ CREATE TABLE if NOT EXISTS `booking_system`.`resort_details` (
     `nonSmokingRooms`    BOOLEAN,
     `spaAndWellnes`      BOOLEAN,
     `fitnessCenter`      BOOLEAN,
-    `facilitiesForDisableGuests` BOOLEAN,
+    `facilitiesForDisableGuests`  BOOLEAN,
     `restaurant`         BOOLEAN,
     `privateParking`     BOOLEAN
 );
