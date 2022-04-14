@@ -115,18 +115,18 @@ CREATE TABLE if NOT EXISTS `booking_system`.`user` (
 
 /*created a table that represents the resort details*/
 CREATE TABLE if NOT EXISTS `booking_system`.`resort_details` (
-    `id` INT(16) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `airportShuttle` BOOLEAN,
-    `freeWiFi` BOOLEAN,
-    `bar` BOOLEAN,
-    `breakfast` BOOLEAN,
-    `teaCoffeeMaker` BOOLEAN,
-    `nonSmokingRooms` BOOLEAN,
-    `spaAndWellnes` BOOLEAN,
-    `fitnessCenter` BOOLEAN,
+    `id`                 INT(16) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `airportShuttle`     BOOLEAN,
+    `freeWiFi`           BOOLEAN,
+    `bar`                BOOLEAN,
+    `breakfast`          BOOLEAN,
+    `teaCoffeeMaker`     BOOLEAN,
+    `nonSmokingRooms`    BOOLEAN,
+    `spaAndWellnes`      BOOLEAN,
+    `fitnessCenter`      BOOLEAN,
     `facilitiesForDisableGuests` BOOLEAN,
-    `restaurant` BOOLEAN,
-    `privateParking` BOOLEAN
+    `restaurant`         BOOLEAN,
+    `privateParking`     BOOLEAN
 );
 
 /*The pic_URL of the room connects with the room*/
