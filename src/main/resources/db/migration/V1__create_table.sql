@@ -1,14 +1,14 @@
 /*create table that store pictures url of room*/
 CREATE TABLE if NOT EXISTS `booking_system`.`room_pictures`(
     `id`                 INT(16) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `pic_url`            VARCHAR(255)
+    `pic_url`            VARCHAR(255),
+    `resort_num_id`      INT(16)
 );
 
 /*created a table that represents the room*/
 CREATE TABLE if NOT EXISTS `booking_system`.`resort_number`(
     `id`                 INT(16) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `room_type`          VARCHAR(255),
-    `room_pic`           INT(16),
     `room_details_id`    INT(16) UNIQUE,
     `available_count`    INTEGER,
     `perNightPrice`      DECIMAL
@@ -130,9 +130,13 @@ CREATE TABLE if NOT EXISTS `booking_system`.`resort_details` (
 );
 
 /*The pic_URL of the room connects with the room*/
+ALTER TABLE `booking_system`.`room_pictures`
+    ADD CONSTRAINT `resort_num_id`
+        FOREIGN KEY (`resort_num_id`) REFERENCES `booking_system`.`resort_number` (`id`)
+            ON DELETE CASCADE ON UPDATE RESTRICT ;
+
+/*The pic_URL of the room connects with the room*/
 ALTER TABLE `booking_system`.`resort_number`
-    ADD CONSTRAINT `room_pic`
-        FOREIGN KEY (`room_pic`) REFERENCES `booking_system`.`room_pictures` (`id`),
     ADD CONSTRAINT `room_details_id`
         FOREIGN KEY (`room_details_id`) REFERENCES `booking_system`.`room_details` (`id`)
             ON DELETE CASCADE ON UPDATE RESTRICT ;
