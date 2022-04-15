@@ -2,7 +2,7 @@
 CREATE TABLE if NOT EXISTS `booking_system`.`room_pictures`(
     `id`                 INT(16) PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `pic_url`            VARCHAR(255),
-    `resort_num_id`   INT(16)
+    `resort_num_id`      INT(16)
 );
 
 /*created a table that represents the room*/
