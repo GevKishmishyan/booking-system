@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "resort")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

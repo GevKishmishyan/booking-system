@@ -18,7 +18,7 @@ public class ResortNumber {
     private UUID id;
     @Enumerated(EnumType.STRING)
     private RoomType type;
-    private List<String> pictures;
+    //    private List<String> pictures;
     @OneToOne
     private RoomDetails roomDetails;
     @NotNull
@@ -27,13 +27,11 @@ public class ResortNumber {
     private BigDecimal perNightPrice;
 
     public ResortNumber(UUID id, RoomType type,
-                        List<String> pictures,
                         RoomDetails roomDetails,
                         @NotNull Integer availableCount,
                         @NotNull BigDecimal perNightPrice) {
         this.id = id;
         this.type = type;
-        this.pictures = pictures;
         this.roomDetails = roomDetails;
         this.availableCount = availableCount;
         this.perNightPrice = perNightPrice;
@@ -56,14 +54,6 @@ public class ResortNumber {
 
     public void setType(RoomType type) {
         this.type = type;
-    }
-
-    public List<String> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
     }
 
     public RoomDetails getRoomDetails() {
@@ -95,12 +85,12 @@ public class ResortNumber {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortNumber that = (ResortNumber) o;
-        return Objects.equals(id, that.id) && type == that.type && Objects.equals(pictures, that.pictures) && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice);
+        return Objects.equals(id, that.id) && type == that.type && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, pictures, roomDetails, availableCount, perNightPrice);
+        return Objects.hash(id, type, roomDetails, availableCount, perNightPrice);
     }
 
     @Override
@@ -108,7 +98,6 @@ public class ResortNumber {
         return "ResortNumber{" +
                 "id=" + id +
                 ", type=" + type +
-                ", pictures=" + pictures +
                 ", roomDetails=" + roomDetails +
                 ", availableCount=" + availableCount +
                 ", perNightPrice=" + perNightPrice +
