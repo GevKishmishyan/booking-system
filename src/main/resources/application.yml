@@ -13,6 +13,7 @@ spring:
     schemas: booking_system
 
 jwt:
-  jwtSecret: codeusingjavaSecret
-  jwtExpirationMs: 90000
-  jwtRefreshExpirationMs: 150000
+  secret : bookingSystem
+  # For test
+  accessExpirationMs : 120000
+  refreshExpirationMs : 240000
