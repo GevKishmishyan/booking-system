@@ -2,28 +2,31 @@ package com.epam.bookingsystem.model;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "room_details")
 public class RoomDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
+    @Column(name = "air_conditioner")
     private boolean airConditioner;
     private boolean television;
     private boolean sofa;
+    @Column(name = "tea_table")
     private boolean teaTable;
     private boolean shower;
     private boolean bathtub;
+    @Column(name = "bath_accessories")
     private boolean bathAccessories;
     private boolean hairdryer;
     private boolean minibar;
     private boolean fridge;
     private boolean dishes;
+    @Column(name = "electric_kettle")
     private boolean electricKettle;
 
-    public RoomDetails(UUID id, boolean airConditioner, boolean television,
+    public RoomDetails(long id, boolean airConditioner, boolean television,
                        boolean sofa, boolean teaTable, boolean shower,
                        boolean bathtub, boolean bathAccessories,
                        boolean hairdryer, boolean minibar,
@@ -47,11 +50,11 @@ public class RoomDetails {
     public RoomDetails() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

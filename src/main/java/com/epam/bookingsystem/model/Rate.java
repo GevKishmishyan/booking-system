@@ -2,19 +2,18 @@ package com.epam.bookingsystem.model;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "rate")
 public class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
     private Double rating;
     private Double totalRate;
     private Integer ratesCount;
 
-    public Rate(UUID id, Double rating, Double totalRate, Integer ratesCount) {
+    public Rate(long id, Double rating, Double totalRate, Integer ratesCount) {
         this.id = id;
         this.rating = rating;
         this.totalRate = totalRate;
@@ -24,11 +23,11 @@ public class Rate {
     public Rate() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,7 +60,7 @@ public class Rate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rate rate = (Rate) o;
-        return Objects.equals(id, rate.id) && Objects.equals(rating, rate.rating) && Objects.equals(totalRate, rate.totalRate) && Objects.equals(ratesCount, rate.ratesCount);
+        return id == rate.id && Objects.equals(rating, rate.rating) && Objects.equals(totalRate, rate.totalRate) && Objects.equals(ratesCount, rate.ratesCount);
     }
 
     @Override

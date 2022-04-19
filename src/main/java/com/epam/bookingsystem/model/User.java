@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.model;
 
 
+import com.epam.bookingsystem.model.enums.Gender;
 import com.epam.bookingsystem.model.enums.Role;
 
 import javax.persistence.*;
@@ -10,21 +11,26 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
     @NotNull
+    @Column(name = "first_name")
     private String firstName;
     @NotNull
+    @Column(name = "last_name")
     private String lastName;
+    private LocalDateTime birthday;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     @NotNull
     @Email
     private String email;
+    @Enumerated(EnumType.STRING)
     private Role role;
     private boolean isActive;
     private String profilePicture;
@@ -38,7 +44,7 @@ public class User {
     private List<Booking> bookings;
     private LocalDateTime createdAt;
 
-    public User(UUID id, @NotNull String firstName,
+    public User(long id, @NotNull String firstName,
                 @NotNull String lastName,
                 @NotNull @Email String email,
                 Role role, boolean isActive,
@@ -64,11 +70,11 @@ public class User {
     public User() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

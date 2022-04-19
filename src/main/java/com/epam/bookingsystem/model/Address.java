@@ -3,24 +3,28 @@ package com.epam.bookingsystem.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
-import java.util.UUID;
+
 
 @Entity
 @Table(name = "address")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
     @NotBlank
     private String country;
     @NotBlank
     private String region;
     @NotBlank
+    @Column(name = "city_village")
     private String section;
     @NotBlank
     private String address;
 
-    public Address(UUID id, String country, String region, String section, String address) {
+    public Address(long id, @NotBlank String country,
+                   @NotBlank String region,
+                   @NotBlank String section,
+                   @NotBlank String address) {
         this.id = id;
         this.country = country;
         this.region = region;
@@ -31,11 +35,11 @@ public class Address {
     public Address() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -76,7 +80,7 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address1 = (Address) o;
-        return Objects.equals(id, address1.id) && Objects.equals(country, address1.country) && Objects.equals(region, address1.region) && Objects.equals(section, address1.section) && Objects.equals(address, address1.address);
+        return id == address1.id && Objects.equals(country, address1.country) && Objects.equals(region, address1.region) && Objects.equals(section, address1.section) && Objects.equals(address, address1.address);
     }
 
     @Override

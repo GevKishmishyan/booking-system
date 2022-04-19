@@ -5,14 +5,13 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "room")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
     @NotNull
     private Integer roomNumber;
     @OneToOne
@@ -20,7 +19,7 @@ public class Room {
     @OneToMany
     private List<Booking> bookings;
 
-    public Room(UUID id, Integer roomNumber, ResortNumber resortNumber, List<Booking> bookings) {
+    public Room(long id, Integer roomNumber, ResortNumber resortNumber, List<Booking> bookings) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.resortNumber = resortNumber;
@@ -30,11 +29,11 @@ public class Room {
     public Room() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "resort")
@@ -15,16 +14,17 @@ public class Resort {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
     @NotBlank
     private String name;
     @OneToOne
     private Address address;
     @Enumerated(EnumType.STRING)
+    @Column(name = "resort_type")
     private HotelType type;
     @OneToOne
     private Tin tin;
-    @Min(0)
+    @Min(1)
     @Max(5)
     private Integer star;
     @OneToOne
@@ -34,21 +34,26 @@ public class Resort {
     private String email;
     @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephone;
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     @OneToOne
     private ResortDetails resortDetails;
-    @ManyToMany   //todo check relation
-    private List<Room> rooms;
-    @ManyToMany   //todo check relation
-    private List<Review> reviews;
+    @OneToMany
+    @JoinColumn(name = "room_id")
+    private List<Room> room;
+    @OneToMany
+    @JoinColumn(name = "review_id")
+    private List<Review> review;
 
-    public Resort(UUID id,
-                  String name, Address address,
-                  HotelType type, Tin tin,
-                  Integer star, Rate rate, String email,
-                  String telephone, String description,
-                  ResortDetails resortDetails, List<Room> rooms,
-                  List<Review> reviews) {
+    public Resort() {
+    }
+
+    public Resort(long id, @NotBlank String name, Address address,
+                  HotelType type, Tin tin, @Min(1) @Max(5) Integer star,
+                  Rate rate, @NotNull @Email String email,
+                  @Pattern(regexp = "(^$|[0-9]{10})") String telephone,
+                  String description, ResortDetails resortDetails,
+                  List<Room> rooms, List<Review> reviews) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -60,18 +65,15 @@ public class Resort {
         this.telephone = telephone;
         this.description = description;
         this.resortDetails = resortDetails;
-        this.rooms = rooms;
-        this.reviews = reviews;
+        this.room = rooms;
+        this.review = reviews;
     }
 
-    public Resort() {
-    }
-
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -155,20 +157,20 @@ public class Resort {
         this.resortDetails = resortDetails;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
+    public List<Room> getRoom() {
+        return room;
     }
 
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
+    public void setRoom(List<Room> rooms) {
+        this.room = rooms;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
+    public List<Review> getReview() {
+        return review;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    public void setReview(List<Review> reviews) {
+        this.review = reviews;
     }
 
     @Override
@@ -176,12 +178,12 @@ public class Resort {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resort resort = (Resort) o;
-        return Objects.equals(id, resort.id) && Objects.equals(name, resort.name) && Objects.equals(address, resort.address) && type == resort.type && Objects.equals(tin, resort.tin) && Objects.equals(star, resort.star) && Objects.equals(rate, resort.rate) && Objects.equals(email, resort.email) && Objects.equals(telephone, resort.telephone) && Objects.equals(description, resort.description) && Objects.equals(resortDetails, resort.resortDetails) && Objects.equals(rooms, resort.rooms) && Objects.equals(reviews, resort.reviews);
+        return id == resort.id && Objects.equals(name, resort.name) && Objects.equals(address, resort.address) && type == resort.type && Objects.equals(tin, resort.tin) && Objects.equals(star, resort.star) && Objects.equals(rate, resort.rate) && Objects.equals(email, resort.email) && Objects.equals(telephone, resort.telephone) && Objects.equals(description, resort.description) && Objects.equals(resortDetails, resort.resortDetails) && Objects.equals(room, resort.room) && Objects.equals(review, resort.review);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, type, tin, star, rate, email, telephone, description, resortDetails, rooms, reviews);
+        return Objects.hash(id, name, address, type, tin, star, rate, email, telephone, description, resortDetails, room, review);
     }
 
     @Override
@@ -198,8 +200,8 @@ public class Resort {
                 ", telephone='" + telephone + '\'' +
                 ", description='" + description + '\'' +
                 ", resortDetails=" + resortDetails +
-                ", rooms=" + rooms +
-                ", reviews=" + reviews +
+                ", rooms=" + room +
+                ", reviews=" + review +
                 '}';
     }
 }

@@ -4,20 +4,19 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tin")
 public class Tin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
     @Size(min = 8)
     private String serialNumber;
     @NotBlank
     private String document;
 
-    public Tin(UUID id, @Size(min = 8) String serialNumber, @NotBlank String document) {
+    public Tin(long id, @Size(min = 8) String serialNumber, @NotBlank String document) {
         this.id = id;
         this.serialNumber = serialNumber;
         this.document = document;
@@ -26,11 +25,11 @@ public class Tin {
     public Tin() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -55,7 +54,7 @@ public class Tin {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tin tin = (Tin) o;
-        return Objects.equals(id, tin.id) && Objects.equals(serialNumber, tin.serialNumber) && Objects.equals(document, tin.document);
+        return id == tin.id && Objects.equals(serialNumber, tin.serialNumber) && Objects.equals(document, tin.document);
     }
 
     @Override

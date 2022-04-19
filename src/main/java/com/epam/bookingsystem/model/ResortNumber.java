@@ -3,30 +3,29 @@ package com.epam.bookingsystem.model;
 import com.epam.bookingsystem.model.enums.RoomType;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "resort_number")
 public class ResortNumber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
     @Enumerated(EnumType.STRING)
+    @Column(name = "room_type")
     private RoomType type;
-    //    private List<String> pictures;
     @OneToOne
     private RoomDetails roomDetails;
     @NotNull
+    @Column(name = "available_count")
     private Integer availableCount;
     @NotNull
+    @Column(name = "per_night_price")
     private BigDecimal perNightPrice;
 
-    public ResortNumber(UUID id, RoomType type,
+    public ResortNumber(long id, RoomType type,
                         RoomDetails roomDetails,
                         @NotNull Integer availableCount,
                         @NotNull BigDecimal perNightPrice) {
@@ -40,11 +39,11 @@ public class ResortNumber {
     public ResortNumber() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

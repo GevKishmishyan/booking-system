@@ -2,27 +2,34 @@ package com.epam.bookingsystem.model;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "resort_details")
 public class ResortDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private long id;
+    @Column(name = "airport_shuttle")
     private boolean airportShuttle;
+    @Column(name = "free_Wi_Fi")
     private boolean freeWiFi;
     private boolean bar;
     private boolean breakfast;
+    @Column(name = "tea_coffee_maker")
     private boolean teaCoffeeMaker;
+    @Column(name = "non_smoking_rooms")
     private boolean nonSmokingRooms;
+    @Column(name = "spa_and_wellness")
     private boolean spaAndWellness;
+    @Column(name = "fitness_center")
     private boolean fitnessCenter;
+    @Column(name = "facilities_for_disable_guests")
     private boolean facilitiesForDisabledGuests;
     private boolean restaurant;
+    @Column(name = "private_parking")
     private boolean privateParking;
 
-    public ResortDetails(UUID id, boolean airportShuttle, boolean freeWiFi,
+    public ResortDetails(long id, boolean airportShuttle, boolean freeWiFi,
                          boolean bar, boolean breakfast, boolean teaCoffeeMaker,
                          boolean nonSmokingRooms, boolean spaAndWellness,
                          boolean fitnessCenter, boolean facilitiesForDisabledGuests,
@@ -44,11 +51,11 @@ public class ResortDetails {
     public ResortDetails() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -145,7 +152,7 @@ public class ResortDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortDetails that = (ResortDetails) o;
-        return airportShuttle == that.airportShuttle && freeWiFi == that.freeWiFi && bar == that.bar && breakfast == that.breakfast && teaCoffeeMaker == that.teaCoffeeMaker && nonSmokingRooms == that.nonSmokingRooms && spaAndWellness == that.spaAndWellness && fitnessCenter == that.fitnessCenter && facilitiesForDisabledGuests == that.facilitiesForDisabledGuests && restaurant == that.restaurant && privateParking == that.privateParking && Objects.equals(id, that.id);
+        return id == that.id && airportShuttle == that.airportShuttle && freeWiFi == that.freeWiFi && bar == that.bar && breakfast == that.breakfast && teaCoffeeMaker == that.teaCoffeeMaker && nonSmokingRooms == that.nonSmokingRooms && spaAndWellness == that.spaAndWellness && fitnessCenter == that.fitnessCenter && facilitiesForDisabledGuests == that.facilitiesForDisabledGuests && restaurant == that.restaurant && privateParking == that.privateParking;
     }
 
     @Override

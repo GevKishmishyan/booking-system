@@ -3,21 +3,21 @@ package com.epam.bookingsystem.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "review")
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
-    private UUID bookingId;
+    private long id;
+    @NotNull
+    private long booking;
     private Double rate;
     private String comment;
 
-    public Review(UUID id, UUID bookingId, Double rate, String comment) {
+    public Review(long id, long bookingId, Double rate, String comment) {
         this.id = id;
-        this.bookingId = bookingId;
+        this.booking = bookingId;
         this.rate = rate;
         this.comment = comment;
     }
@@ -25,20 +25,20 @@ public class Review {
     public Review() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public UUID getBookingId() {
-        return bookingId;
+    public long getBooking() {
+        return booking;
     }
 
-    public void setBookingId(UUID bookingId) {
-        this.bookingId = bookingId;
+    public void setBooking(long bookingId) {
+        this.booking = bookingId;
     }
 
     public Double getRate() {
@@ -62,19 +62,19 @@ public class Review {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return Objects.equals(id, review.id) && Objects.equals(bookingId, review.bookingId) && Objects.equals(rate, review.rate) && Objects.equals(comment, review.comment);
+        return Objects.equals(id, review.id) && Objects.equals(booking, review.booking) && Objects.equals(rate, review.rate) && Objects.equals(comment, review.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookingId, rate, comment);
+        return Objects.hash(id, booking, rate, comment);
     }
 
     @Override
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", bookingId=" + bookingId +
+                ", bookingId=" + booking +
                 ", rate=" + rate +
                 ", comment='" + comment + '\'' +
                 '}';

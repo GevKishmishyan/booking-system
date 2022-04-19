@@ -1,24 +1,25 @@
+
 package com.epam.bookingsystem.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
-    private LocalDate bookedFrom;
-    private LocalDate bookedTo;
+    private long id;
+    private LocalDateTime bookedFrom;
+    private LocalDateTime bookedTo;
     @NotNull
+    @Column(name = "all_price")
     private BigDecimal price;
 
-    public Booking(UUID id, LocalDate bookedFrom, LocalDate bookedTo, BigDecimal price) {
+    public Booking(long id, LocalDateTime bookedFrom, LocalDateTime bookedTo, @NotNull BigDecimal price) {
         this.id = id;
         this.bookedFrom = bookedFrom;
         this.bookedTo = bookedTo;
@@ -28,27 +29,27 @@ public class Booking {
     public Booking() {
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public LocalDate getBookedFrom() {
+    public LocalDateTime getBookedFrom() {
         return bookedFrom;
     }
 
-    public void setBookedFrom(LocalDate bookedFrom) {
+    public void setBookedFrom(LocalDateTime bookedFrom) {
         this.bookedFrom = bookedFrom;
     }
 
-    public LocalDate getBookedTo() {
+    public LocalDateTime getBookedTo() {
         return bookedTo;
     }
 
-    public void setBookedTo(LocalDate bookedTo) {
+    public void setBookedTo(LocalDateTime bookedTo) {
         this.bookedTo = bookedTo;
     }
 
@@ -65,7 +66,7 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(id, booking.id) && Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(price, booking.price);
+        return id == booking.id && Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(price, booking.price);
     }
 
     @Override
