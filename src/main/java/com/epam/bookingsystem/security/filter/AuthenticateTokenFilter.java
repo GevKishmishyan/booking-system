@@ -1,5 +1,6 @@
 package com.epam.bookingsystem.security.filter;
 
+import com.epam.bookingsystem.repository.BlockedJWTDataRepository;
 import com.epam.bookingsystem.security.util.JwtUtils;
 import com.epam.bookingsystem.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,17 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private BlockedJWTDataRepository blockedJWTDataRepository;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+            System.out.println("doFilterInternal " + "jwt is in blacklist = " + blockedJWTDataRepository.existsByJWT(jwt));
+            if (jwt != null && jwtUtils.validateJwtToken(jwt) && !blockedJWTDataRepository.existsByJWT(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);

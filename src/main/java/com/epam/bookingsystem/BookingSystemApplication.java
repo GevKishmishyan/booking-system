@@ -30,8 +30,10 @@ public class BookingSystemApplication implements CommandLineRunner {
         user.setEmail("admin@gmail.com");
         user.setPassword(passwordEncoder.encode("12345"));
         user.setRole(Role.ADMIN);
+        if (!userRepository.existsByEmail(user.getEmail())) {
+            userRepository.save(user);
+        }
 
-        userRepository.save(user);
     }
 
 }

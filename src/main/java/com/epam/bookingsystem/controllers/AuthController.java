@@ -3,17 +3,25 @@ package com.epam.bookingsystem.controllers;
 import com.epam.bookingsystem.dto.UserDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
+import com.epam.bookingsystem.dto.response.MessageResponse;
+import com.epam.bookingsystem.entitys.BlockedJWTData;
 import com.epam.bookingsystem.entitys.User;
+import com.epam.bookingsystem.repository.BlockedJWTDataRepository;
 import com.epam.bookingsystem.repository.UserRepository;
 import com.epam.bookingsystem.security.CurrentUser;
 import com.epam.bookingsystem.security.util.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 
@@ -21,6 +29,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Autowired
+    BlockedJWTDataRepository blockedJWTDataRepository;
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
@@ -58,9 +69,9 @@ public class AuthController {
         String jwtAccess = jwtUtils.generateJwtToken(userDetails, false);
         String jwtRefresh = jwtUtils.generateJwtToken(userDetails, true);
         User user = userDetails.getUser();
-        UserDTO userDTO =new UserDTO(
-                user.getId(),user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getRole(),user.isEnabled(),user.getProfilePicture(),user.getCreatedAt()
+        UserDTO userDTO = new UserDTO(
+                user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
+                user.getRole(), user.isEnabled(), user.getProfilePicture(), user.getCreatedAt()
         );
 
         return ResponseEntity.ok(new LoginResponseDTO(jwtAccess, jwtRefresh, userDTO));
@@ -121,7 +132,7 @@ public class AuthController {
 //    }
 
 
-//    @PostMapping("/refreshtoken")
+    //    @PostMapping("/refreshtoken")
 //    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
 ////        System.out.println("AuthController " + "refreshtoken");
 ////        String requestRefreshToken = request.getRefreshToken();
@@ -138,11 +149,57 @@ public class AuthController {
 //        return null;
 //    }
 //
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequest logOutRequest) {
-//        System.out.println("AuthController " + "/logout ");
-//
-//        return ResponseEntity.ok(new MessageResponse("Log out successful!"));
-//    }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequestDTO logOutRequestDTO, HttpServletRequest request) {
+        System.out.println("AuthController " + "/logout ");
+
+        String jwtAccess = parseJwt(request);
+
+        String jwtRefresh = logOutRequestDTO.getJwtRefresh();
+
+        boolean jwtRefreshIsValid = jwtUtils.validateJwtToken(jwtRefresh);
+
+        boolean belongsToSameUser = jwtUtils.getUserNameFromJwtToken(jwtAccess).equals(jwtUtils.getUserNameFromJwtToken(jwtRefresh));
+
+        boolean expirationDateDefferenceIsCorrect = false;
+
+        System.out.println(jwtUtils.extractExpiration(jwtAccess).getTime());
+        System.out.println(jwtUtils.extractExpiration(jwtRefresh).getTime());
+
+        if (jwtUtils.extractExpiration(jwtRefresh).getTime()
+                == jwtUtils.extractExpiration(jwtAccess).getTime() + 120000) {
+
+            expirationDateDefferenceIsCorrect = true;
+        }
+
+        System.out.println(jwtRefreshIsValid);
+        System.out.println(belongsToSameUser);
+        System.out.println(expirationDateDefferenceIsCorrect);
+
+
+
+        if (jwtRefreshIsValid && belongsToSameUser && expirationDateDefferenceIsCorrect) {
+
+
+            BlockedJWTData blockedAccessJWTData = new BlockedJWTData(jwtAccess);
+            BlockedJWTData blockedRefreshJWTData = new BlockedJWTData(jwtRefresh);
+
+            blockedJWTDataRepository.save(blockedAccessJWTData);
+            blockedJWTDataRepository.save(blockedRefreshJWTData);
+
+            return ResponseEntity.ok(new MessageResponse("Log out successful!"));
+        }
+        return ResponseEntity.ok(new MessageResponse("xxxxx"));
+    }
+
+    private String parseJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7, headerAuth.length());
+        }
+
+        return null;
+    }
 
 }

@@ -1,9 +1,15 @@
 package com.epam.bookingsystem.dto.request;
 
 public class LogOutRequestDTO {
-  private Long userId;
 
-  public Long getUserId() {
-    return this.userId;
-  }
+    private String jwtRefresh;
+
+    public String getJwtRefresh() {
+        return jwtRefresh;
+    }
+
+    public void setJwtRefresh(String jwtRefresh) {
+        this.jwtRefresh = jwtRefresh;
+    }
+
 }
