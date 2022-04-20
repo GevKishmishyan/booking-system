@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS booking_system.booking
     id          BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     booked_from DATETIME,
     booked_to   DATETIME,
-    all_price   DECIMAL
+    all_price   DECIMAL,
+    review_id   BIGINT
 );
 
 /*created a table that represents the room*/
@@ -82,10 +83,9 @@ CREATE TABLE IF NOT EXISTS booking_system.rate
 /*created a table that represents the review*/
 CREATE TABLE IF NOT EXISTS booking_system.review
 (
-    id         BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    booking_id BIGINT             NOT NULL,
-    rate       DOUBLE,
-    comment    VARCHAR(255)
+    id      BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    rate    DOUBLE,
+    comment VARCHAR(255)
 );
 
 /*created a table that represents the hotel*/
@@ -183,4 +183,10 @@ ALTER TABLE booking_system.user
         FOREIGN KEY (booking_id) REFERENCES booking_system.booking (id),
     ADD CONSTRAINT user_reviews_fk2
         FOREIGN KEY (reviews_id) REFERENCES booking_system.review (id)
+            ON DELETE CASCADE ON UPDATE RESTRICT;
+
+/*The booking connects (contains) with the review*/
+ALTER TABLE booking_system.booking
+    ADD CONSTRAINT booking_review_fk1
+        FOREIGN KEY (review_id) REFERENCES booking_system.review (id)
             ON DELETE CASCADE ON UPDATE RESTRICT;
