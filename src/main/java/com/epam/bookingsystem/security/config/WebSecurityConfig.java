@@ -1,6 +1,5 @@
 package com.epam.bookingsystem.security.config;
 
-
 import com.epam.bookingsystem.security.AuthEntryPointJwt;
 import com.epam.bookingsystem.security.filter.AuthenticateTokenFilter;
 import com.epam.bookingsystem.services.UserDetailsServiceImpl;
@@ -24,8 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	private final UserDetailsServiceImpl userDetailsService;
 
+	private final UserDetailsServiceImpl userDetailsService;
 	private final AuthEntryPointJwt unauthorizedHandler;
 
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
@@ -43,16 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -61,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/logout").authenticated()
+                .antMatchers("/api/auth/refreshtoken").authenticated()
                 .antMatchers("/api/auth/**").permitAll()
                 //
                 .antMatchers("/api/test/user").hasAnyRole("USER","MODERATOR","ADMIN")
@@ -73,4 +63,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         http.logout();
     }
+
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 }

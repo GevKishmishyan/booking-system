@@ -11,5 +11,5 @@ public interface BlockedJWTDataRepository extends JpaRepository<BlockedJWTData,L
     //@Override
    // boolean existsByJWT(String jwt);
 
-    boolean existsByJWT(String jwt);
+    boolean existsByJwt(String jwt);
 }

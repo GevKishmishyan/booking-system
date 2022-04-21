@@ -10,17 +10,8 @@ import java.util.Date;
 @Entity(name = "jwtblacklist")
 public class BlockedJWTData {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String jWT;
-
-    private Date createdAt;
-
-    public BlockedJWTData(String jWT) {
-        this.jWT = jWT;
-        createdAt = new Date();
+    public BlockedJWTData(String jwt) {
+        this.jwt = jwt;
     }
 
     public BlockedJWTData() {
@@ -34,12 +25,12 @@ public class BlockedJWTData {
         this.id = id;
     }
 
-    public String getjWT() {
-        return jWT;
+    public String getJwt() {
+        return jwt;
     }
 
-    public void setjWT(String jWT) {
-        this.jWT = jWT;
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
     public Date getCreatedAt() {
@@ -49,4 +40,14 @@ public class BlockedJWTData {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    private String jwt;
+
+    private Date createdAt;
+
 }

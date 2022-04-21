@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/booking_system?createDatabaseIfNotExist=true&currentSchema=booking_system
-    username: root
-    password: root
+    username: user
+    password: 12345
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -15,7 +15,7 @@ spring:
 jwt:
   secret : bookingSystem
   # For test
-  accessExpirationMs : 120000
-  refreshExpirationMs : 240000
+  accessExpirationMs : 180000
+  refreshExpirationMs : 300000
 server:
-  port: 8090
+  port: 8080

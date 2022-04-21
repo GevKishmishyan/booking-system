@@ -33,8 +33,8 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            System.out.println("doFilterInternal " + "jwt is in blacklist = " + blockedJWTDataRepository.existsByJWT(jwt));
-            if (jwt != null && jwtUtils.validateJwtToken(jwt) && !blockedJWTDataRepository.existsByJWT(jwt)) {
+            System.out.println("doFilterInternal " + "jwt is in blacklist = " + blockedJWTDataRepository.existsByJwt(jwt));
+            if (jwt != null && jwtUtils.validateJwtToken(jwt) && !blockedJWTDataRepository.existsByJwt(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
