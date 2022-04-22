@@ -3,30 +3,28 @@ package com.epam.bookingsystem.model;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+
 
 @Entity
 @Table(name = "room")
-public class Room {
+public class Room extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
     private Integer roomNumber;
-    @OneToOne
-    private ResortNumber resortNumber;
-    @OneToMany
-    private List<Booking> bookings;
-
-    public Room(long id, Integer roomNumber, ResortNumber resortNumber, List<Booking> bookings) {
-        this.id = id;
-        this.roomNumber = roomNumber;
-        this.resortNumber = resortNumber;
-        this.bookings = bookings;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "resort_id")
+    private Resort resort;
 
     public Room() {
+    }
+
+    public Room(long id, Integer roomNumber, Resort resort) {
+        this.id = id;
+        this.roomNumber = roomNumber;
+        this.resort = resort;
     }
 
     public long getId() {
@@ -45,20 +43,12 @@ public class Room {
         this.roomNumber = roomNumber;
     }
 
-    public ResortNumber getResortNumber() {
-        return resortNumber;
+    public Resort getResort() {
+        return resort;
     }
 
-    public void setResortNumber(ResortNumber resortNumber) {
-        this.resortNumber = resortNumber;
-    }
-
-    public List<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
+    public void setResort(Resort resort) {
+        this.resort = resort;
     }
 
     @Override
@@ -66,12 +56,12 @@ public class Room {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equals(id, room.id) && Objects.equals(roomNumber, room.roomNumber) && Objects.equals(resortNumber, room.resortNumber) && Objects.equals(bookings, room.bookings);
+        return id == room.id && Objects.equals(roomNumber, room.roomNumber) && Objects.equals(resort, room.resort);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, roomNumber, resortNumber, bookings);
+        return Objects.hash(id, roomNumber, resort);
     }
 
     @Override
@@ -79,8 +69,7 @@ public class Room {
         return "Room{" +
                 "id=" + id +
                 ", roomNumber=" + roomNumber +
-                ", resortNumber=" + resortNumber +
-                ", bookings=" + bookings +
+                ", resort=" + resort +
                 '}';
     }
 }

@@ -5,33 +5,37 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "room_details")
-public class RoomDetails {
+public class RoomDetails extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "air_conditioner")
     private boolean airConditioner;
+    @Column(name = "tv")
     private boolean television;
     private boolean sofa;
-    @Column(name = "tea_table")
     private boolean teaTable;
     private boolean shower;
     private boolean bathtub;
-    @Column(name = "bath_accessories")
     private boolean bathAccessories;
     private boolean hairdryer;
     private boolean minibar;
     private boolean fridge;
     private boolean dishes;
-    @Column(name = "electric_kettle")
     private boolean electricKettle;
+    @OneToOne
+    @JoinColumn(name = "resort_number_id")
+    private ResortNumber resortNumber;
 
-    public RoomDetails(long id, boolean airConditioner, boolean television,
-                       boolean sofa, boolean teaTable, boolean shower,
+    public RoomDetails() {
+    }
+
+    public RoomDetails(long id, boolean airConditioner,
+                       boolean television, boolean sofa,
+                       boolean teaTable, boolean shower,
                        boolean bathtub, boolean bathAccessories,
                        boolean hairdryer, boolean minibar,
                        boolean fridge, boolean dishes,
-                       boolean electricKettle) {
+                       boolean electricKettle, ResortNumber resortNumber) {
         this.id = id;
         this.airConditioner = airConditioner;
         this.television = television;
@@ -45,9 +49,7 @@ public class RoomDetails {
         this.fridge = fridge;
         this.dishes = dishes;
         this.electricKettle = electricKettle;
-    }
-
-    public RoomDetails() {
+        this.resortNumber = resortNumber;
     }
 
     public long getId() {
@@ -154,17 +156,25 @@ public class RoomDetails {
         this.electricKettle = electricKettle;
     }
 
+    public ResortNumber getResortNumber() {
+        return resortNumber;
+    }
+
+    public void setResortNumber(ResortNumber resortNumber) {
+        this.resortNumber = resortNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoomDetails that = (RoomDetails) o;
-        return airConditioner == that.airConditioner && television == that.television && sofa == that.sofa && teaTable == that.teaTable && shower == that.shower && bathtub == that.bathtub && bathAccessories == that.bathAccessories && hairdryer == that.hairdryer && minibar == that.minibar && fridge == that.fridge && dishes == that.dishes && electricKettle == that.electricKettle && Objects.equals(id, that.id);
+        return id == that.id && airConditioner == that.airConditioner && television == that.television && sofa == that.sofa && teaTable == that.teaTable && shower == that.shower && bathtub == that.bathtub && bathAccessories == that.bathAccessories && hairdryer == that.hairdryer && minibar == that.minibar && fridge == that.fridge && dishes == that.dishes && electricKettle == that.electricKettle && Objects.equals(resortNumber, that.resortNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, airConditioner, television, sofa, teaTable, shower, bathtub, bathAccessories, hairdryer, minibar, fridge, dishes, electricKettle);
+        return Objects.hash(id, airConditioner, television, sofa, teaTable, shower, bathtub, bathAccessories, hairdryer, minibar, fridge, dishes, electricKettle, resortNumber);
     }
 
     @Override
@@ -183,6 +193,7 @@ public class RoomDetails {
                 ", fridge=" + fridge +
                 ", dishes=" + dishes +
                 ", electricKettle=" + electricKettle +
+                ", resortNumber=" + resortNumber +
                 '}';
     }
 }

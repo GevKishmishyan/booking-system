@@ -9,20 +9,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "users")
+public class Users extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
-    @Column(name = "first_name")
     private String firstName;
     @NotNull
-    @Column(name = "last_name")
     private String lastName;
     private LocalDateTime birthday;
     @Enumerated(EnumType.STRING)
@@ -36,38 +33,27 @@ public class User {
     private String profilePicture;
     @Size(min = 6)
     private String password;
-    @Size(min = 6)
-    private String confirmPassword;
-    @ManyToMany
-    private List<Review> reviews;
-    @ManyToMany
-    private List<Booking> bookings;
     private LocalDateTime createdAt;
 
-    public User(long id, @NotNull String firstName,
-                @NotNull String lastName,
-                @NotNull @Email String email,
-                Role role, boolean isActive,
-                String profilePicture,
-                @Size(min = 6) String password,
-                @Size(min = 6) String confirmPassword,
-                List<Review> reviews, List<Booking> bookings,
-                LocalDateTime createdAt) {
+    public Users() {
+    }
+
+    public Users(long id, String firstName, String lastName,
+                 LocalDateTime birthday, Gender gender,
+                 String email, Role role, boolean isActive,
+                 String profilePicture, String password,
+                 LocalDateTime createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.birthday = birthday;
+        this.gender = gender;
         this.email = email;
         this.role = role;
         this.isActive = isActive;
         this.profilePicture = profilePicture;
         this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.reviews = reviews;
-        this.bookings = bookings;
         this.createdAt = createdAt;
-    }
-
-    public User() {
     }
 
     public long getId() {
@@ -92,6 +78,22 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public LocalDateTime getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDateTime birthday) {
+        this.birthday = birthday;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -134,30 +136,6 @@ public class User {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public List<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -170,29 +148,28 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return isActive == user.isActive && Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && role == user.role && Objects.equals(profilePicture, user.profilePicture) && Objects.equals(password, user.password) && Objects.equals(confirmPassword, user.confirmPassword) && Objects.equals(reviews, user.reviews) && Objects.equals(bookings, user.bookings) && Objects.equals(createdAt, user.createdAt);
+        Users users = (Users) o;
+        return id == users.id && isActive == users.isActive && Objects.equals(firstName, users.firstName) && Objects.equals(lastName, users.lastName) && Objects.equals(birthday, users.birthday) && gender == users.gender && Objects.equals(email, users.email) && role == users.role && Objects.equals(profilePicture, users.profilePicture) && Objects.equals(password, users.password) && Objects.equals(createdAt, users.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, role, isActive, profilePicture, password, confirmPassword, reviews, bookings, createdAt);
+        return Objects.hash(id, firstName, lastName, birthday, gender, email, role, isActive, profilePicture, password, createdAt);
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Users{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", birthday=" + birthday +
+                ", gender=" + gender +
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 ", isActive=" + isActive +
                 ", profilePicture='" + profilePicture + '\'' +
                 ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                ", reviews=" + reviews +
-                ", bookings=" + bookings +
                 ", createdAt=" + createdAt +
                 '}';
     }

@@ -9,34 +9,32 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "resort_number")
-public class ResortNumber {
+public class ResortNumber extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Enumerated(EnumType.STRING)
-    @Column(name = "room_type")
-    private RoomType type;
-    @OneToOne
-    private RoomDetails roomDetails;
+    private RoomType roomType;
     @NotNull
-    @Column(name = "available_count")
     private Integer availableCount;
     @NotNull
-    @Column(name = "per_night_price")
     private BigDecimal perNightPrice;
-
-    public ResortNumber(long id, RoomType type,
-                        RoomDetails roomDetails,
-                        @NotNull Integer availableCount,
-                        @NotNull BigDecimal perNightPrice) {
-        this.id = id;
-        this.type = type;
-        this.roomDetails = roomDetails;
-        this.availableCount = availableCount;
-        this.perNightPrice = perNightPrice;
-    }
+    @OneToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     public ResortNumber() {
+    }
+
+    public ResortNumber(long id, RoomType roomType,
+                        Integer availableCount,
+                        BigDecimal perNightPrice,
+                        Room room) {
+        this.id = id;
+        this.roomType = roomType;
+        this.availableCount = availableCount;
+        this.perNightPrice = perNightPrice;
+        this.room = room;
     }
 
     public long getId() {
@@ -47,20 +45,12 @@ public class ResortNumber {
         this.id = id;
     }
 
-    public RoomType getType() {
-        return type;
+    public RoomType getRoomType() {
+        return roomType;
     }
 
-    public void setType(RoomType type) {
-        this.type = type;
-    }
-
-    public RoomDetails getRoomDetails() {
-        return roomDetails;
-    }
-
-    public void setRoomDetails(RoomDetails roomDetails) {
-        this.roomDetails = roomDetails;
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
     }
 
     public Integer getAvailableCount() {
@@ -79,27 +69,35 @@ public class ResortNumber {
         this.perNightPrice = perNightPrice;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortNumber that = (ResortNumber) o;
-        return Objects.equals(id, that.id) && type == that.type && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice);
+        return id == that.id && roomType == that.roomType && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(room, that.room);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, roomDetails, availableCount, perNightPrice);
+        return Objects.hash(id, roomType, availableCount, perNightPrice, room);
     }
 
     @Override
     public String toString() {
         return "ResortNumber{" +
                 "id=" + id +
-                ", type=" + type +
-                ", roomDetails=" + roomDetails +
+                ", roomType=" + roomType +
                 ", availableCount=" + availableCount +
                 ", perNightPrice=" + perNightPrice +
+                ", room=" + room +
                 '}';
     }
 }

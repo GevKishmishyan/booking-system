@@ -5,21 +5,23 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "room_pictures")
-public class RoomPictures {
+public class RoomPictures extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "picture_url")
     private String picUrl;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "resort_number_id")
     private ResortNumber resortNumber;
+
+    public RoomPictures() {
+    }
 
     public RoomPictures(long id, String picUrl, ResortNumber resortNumber) {
         this.id = id;
         this.picUrl = picUrl;
         this.resortNumber = resortNumber;
-    }
-
-    public RoomPictures() {
     }
 
     public long getId() {

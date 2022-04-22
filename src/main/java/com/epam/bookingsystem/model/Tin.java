@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tin")
-public class Tin {
+public class Tin extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -15,14 +15,18 @@ public class Tin {
     private String serialNumber;
     @NotBlank
     private String document;
+    @OneToOne
+    @JoinColumn(name = "resort_id")
+    private Resort resort;
 
-    public Tin(long id, @Size(min = 8) String serialNumber, @NotBlank String document) {
+    public Tin() {
+    }
+
+    public Tin(long id, String serialNumber, String document, Resort resort) {
         this.id = id;
         this.serialNumber = serialNumber;
         this.document = document;
-    }
-
-    public Tin() {
+        this.resort = resort;
     }
 
     public long getId() {
@@ -49,17 +53,25 @@ public class Tin {
         this.document = document;
     }
 
+    public Resort getResort() {
+        return resort;
+    }
+
+    public void setResort(Resort resort) {
+        this.resort = resort;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tin tin = (Tin) o;
-        return id == tin.id && Objects.equals(serialNumber, tin.serialNumber) && Objects.equals(document, tin.document);
+        return id == tin.id && Objects.equals(serialNumber, tin.serialNumber) && Objects.equals(document, tin.document) && Objects.equals(resort, tin.resort);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, serialNumber, document);
+        return Objects.hash(id, serialNumber, document, resort);
     }
 
     @Override
@@ -68,6 +80,7 @@ public class Tin {
                 "id=" + id +
                 ", serialNumber='" + serialNumber + '\'' +
                 ", document='" + document + '\'' +
+                ", resort=" + resort +
                 '}';
     }
 }

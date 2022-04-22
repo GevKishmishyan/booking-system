@@ -1,6 +1,6 @@
 package com.epam.bookingsystem.model.enums;
 
-public enum HotelType {
+public enum ResortType {
 
     HOTEL, GUEST_HOUSE
 

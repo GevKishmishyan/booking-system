@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -16,23 +16,25 @@ public class Address {
     @NotBlank
     private String region;
     @NotBlank
-    @Column(name = "city_village")
     private String section;
     @NotBlank
     private String address;
+    @OneToOne
+    @JoinColumn(name = "resort_id")
+    private Resort resort;
 
-    public Address(long id, @NotBlank String country,
-                   @NotBlank String region,
-                   @NotBlank String section,
-                   @NotBlank String address) {
+    public Address() {
+    }
+
+    public Address(long id, String country,
+                   String region, String section,
+                   String address, Resort resort) {
         this.id = id;
         this.country = country;
         this.region = region;
         this.section = section;
         this.address = address;
-    }
-
-    public Address() {
+        this.resort = resort;
     }
 
     public long getId() {
@@ -75,17 +77,25 @@ public class Address {
         this.address = address;
     }
 
+    public Resort getResort() {
+        return resort;
+    }
+
+    public void setResort(Resort resort) {
+        this.resort = resort;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address1 = (Address) o;
-        return id == address1.id && Objects.equals(country, address1.country) && Objects.equals(region, address1.region) && Objects.equals(section, address1.section) && Objects.equals(address, address1.address);
+        return id == address1.id && Objects.equals(country, address1.country) && Objects.equals(region, address1.region) && Objects.equals(section, address1.section) && Objects.equals(address, address1.address) && Objects.equals(resort, address1.resort);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, region, section, address);
+        return Objects.hash(id, country, region, section, address, resort);
     }
 
     @Override
@@ -96,6 +106,7 @@ public class Address {
                 ", region='" + region + '\'' +
                 ", section='" + section + '\'' +
                 ", address='" + address + '\'' +
+                ", resort=" + resort +
                 '}';
     }
 }

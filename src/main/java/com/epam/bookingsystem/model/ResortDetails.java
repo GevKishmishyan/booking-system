@@ -5,35 +5,34 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "resort_details")
-public class ResortDetails {
+public class ResortDetails extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "airport_shuttle")
     private boolean airportShuttle;
-    @Column(name = "free_Wi_Fi")
     private boolean freeWiFi;
     private boolean bar;
     private boolean breakfast;
-    @Column(name = "tea_coffee_maker")
     private boolean teaCoffeeMaker;
-    @Column(name = "non_smoking_rooms")
     private boolean nonSmokingRooms;
-    @Column(name = "spa_and_wellness")
     private boolean spaAndWellness;
-    @Column(name = "fitness_center")
     private boolean fitnessCenter;
-    @Column(name = "facilities_for_disable_guests")
     private boolean facilitiesForDisabledGuests;
     private boolean restaurant;
-    @Column(name = "private_parking")
     private boolean privateParking;
+    @OneToOne
+    @JoinColumn(name = "resort_id")
+    private Resort resort;
 
-    public ResortDetails(long id, boolean airportShuttle, boolean freeWiFi,
-                         boolean bar, boolean breakfast, boolean teaCoffeeMaker,
+    public ResortDetails() {
+    }
+
+    public ResortDetails(long id, boolean airportShuttle,
+                         boolean freeWiFi, boolean bar,
+                         boolean breakfast, boolean teaCoffeeMaker,
                          boolean nonSmokingRooms, boolean spaAndWellness,
                          boolean fitnessCenter, boolean facilitiesForDisabledGuests,
-                         boolean restaurant, boolean privateParking) {
+                         boolean restaurant, boolean privateParking, Resort resort) {
         this.id = id;
         this.airportShuttle = airportShuttle;
         this.freeWiFi = freeWiFi;
@@ -46,9 +45,7 @@ public class ResortDetails {
         this.facilitiesForDisabledGuests = facilitiesForDisabledGuests;
         this.restaurant = restaurant;
         this.privateParking = privateParking;
-    }
-
-    public ResortDetails() {
+        this.resort = resort;
     }
 
     public long getId() {
@@ -147,17 +144,25 @@ public class ResortDetails {
         this.privateParking = privateParking;
     }
 
+    public Resort getResort() {
+        return resort;
+    }
+
+    public void setResort(Resort resort) {
+        this.resort = resort;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortDetails that = (ResortDetails) o;
-        return id == that.id && airportShuttle == that.airportShuttle && freeWiFi == that.freeWiFi && bar == that.bar && breakfast == that.breakfast && teaCoffeeMaker == that.teaCoffeeMaker && nonSmokingRooms == that.nonSmokingRooms && spaAndWellness == that.spaAndWellness && fitnessCenter == that.fitnessCenter && facilitiesForDisabledGuests == that.facilitiesForDisabledGuests && restaurant == that.restaurant && privateParking == that.privateParking;
+        return id == that.id && airportShuttle == that.airportShuttle && freeWiFi == that.freeWiFi && bar == that.bar && breakfast == that.breakfast && teaCoffeeMaker == that.teaCoffeeMaker && nonSmokingRooms == that.nonSmokingRooms && spaAndWellness == that.spaAndWellness && fitnessCenter == that.fitnessCenter && facilitiesForDisabledGuests == that.facilitiesForDisabledGuests && restaurant == that.restaurant && privateParking == that.privateParking && Objects.equals(resort, that.resort);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, airportShuttle, freeWiFi, bar, breakfast, teaCoffeeMaker, nonSmokingRooms, spaAndWellness, fitnessCenter, facilitiesForDisabledGuests, restaurant, privateParking);
+        return Objects.hash(id, airportShuttle, freeWiFi, bar, breakfast, teaCoffeeMaker, nonSmokingRooms, spaAndWellness, fitnessCenter, facilitiesForDisabledGuests, restaurant, privateParking, resort);
     }
 
     @Override
@@ -175,6 +180,7 @@ public class ResortDetails {
                 ", facilitiesForDisabledGuests=" + facilitiesForDisabledGuests +
                 ", restaurant=" + restaurant +
                 ", privateParking=" + privateParking +
+                ", resort=" + resort +
                 '}';
     }
 }
