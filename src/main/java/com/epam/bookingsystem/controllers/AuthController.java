@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
@@ -27,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequestDTO loginRequest) {
-        System.out.println("AuthController " + "/login " + loginRequest.toString());
+
         LoginResponseDTO loginResponseDTO = authService.loginUser(loginRequest);
         return ResponseEntity.ok(loginResponseDTO);
     }
@@ -86,10 +85,8 @@ public class AuthController {
 //    }
 
     @PostMapping("/refreshtoken")
-    public ResponseEntity<?> refreshtoken(HttpServletRequest httpServletRequest) {
-        System.out.println("AuthController " + "/refreshtoken");
-        TokenRefreshResponseDTO tokenRefreshResponseDTO = authService.refreshtoken(httpServletRequest);
-
+    public ResponseEntity<?> refreshToken(HttpServletRequest httpServletRequest) {
+        TokenRefreshResponseDTO tokenRefreshResponseDTO = authService.refreshToken(httpServletRequest);
         return ResponseEntity.ok(tokenRefreshResponseDTO);
     }
 
@@ -100,12 +97,9 @@ public class AuthController {
         return ResponseEntity.ok(messageResponse);
     }
 
-
     @PostMapping("/reset-password")
     public ResponseEntity<PasswordResetResponse> resetPassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
-        System.out.println("/reset-password");
         PasswordResetResponse passwordResetResponse = authService.resetPassword(passwordResetRequest);
-
         return ResponseEntity.ok().body(passwordResetResponse);
     }
 

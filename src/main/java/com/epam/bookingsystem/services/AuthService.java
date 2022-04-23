@@ -72,7 +72,6 @@ public class AuthService {
         } catch (BadCredentialsException exception) {
             throw new RuntimeException("Bad credentials " + loginRequest.getUsername() + " " + loginRequest.getPassword());
         } catch (AccountStatusException exception) {
-            // Base class for authentication exceptions which are caused by a particular user account status (locked, disabled etc).
             throw new RuntimeException(exception);
         }
 
@@ -88,7 +87,6 @@ public class AuthService {
         );
 
         return new LoginResponseDTO(jwtAccess, jwtRefresh, userDTO);
-
     }
 
     public MessageResponse logoutUser(LogOutRequestDTO logOutRequestDTO, HttpServletRequest request) {
@@ -105,10 +103,6 @@ public class AuthService {
             expirationDateDifferenceIsCorrect = true;
         }
 
-        System.out.println(jwtRefreshIsValid);
-        System.out.println(belongsToSameUser);
-        System.out.println(expirationDateDifferenceIsCorrect);
-
         if (jwtAccessIsValid && jwtRefreshIsValid && belongsToSameUser && expirationDateDifferenceIsCorrect) {
 
             BlockedJWTData blockedAccessJWTData = new BlockedJWTData(jwtAccess);
@@ -122,8 +116,7 @@ public class AuthService {
         return null;
     }
 
-    public TokenRefreshResponseDTO refreshtoken(HttpServletRequest httpServletRequest) {
-        System.out.println("Authservice refreshtoken()");
+    public TokenRefreshResponseDTO refreshToken(HttpServletRequest httpServletRequest) {
 
         String requestJwtRefresh = parseJwt(httpServletRequest);
 
@@ -136,7 +129,6 @@ public class AuthService {
         return new TokenRefreshResponseDTO(jwtAccess, jwtRefresh);
     }
 
-
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
@@ -147,40 +139,7 @@ public class AuthService {
         return null;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public PasswordResetResponse resetPassword(PasswordResetRequest passwordResetRequest) {
-        System.out.println(" service resetPassword(String newPassword)");
 
         UserDetails userDetails = getUserDetails();
         Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
@@ -198,7 +157,6 @@ public class AuthService {
 
         return new PasswordResetResponse(jwtAccess, jwtRefresh);
     }
-
 
     public static CurrentUser getUserDetails() {
         try {

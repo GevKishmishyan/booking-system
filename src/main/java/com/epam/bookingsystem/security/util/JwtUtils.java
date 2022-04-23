@@ -23,27 +23,21 @@ public class JwtUtils {
         this.secret = secret;
     }
 
-
     @Value("${jwt.accessExpirationMs}")
     public void setJwtAccessExpirationMs(int jwtAccessExpirationMs) {
         this.jwtAccessExpirationMs = jwtAccessExpirationMs;
     }
-
 
     @Value("${jwt.refreshExpirationMs}")
     public void setJwtRefreshExpirationInMs(int jwtRefreshExpirationMs) {
         this.jwtRefreshExpirationMs = jwtRefreshExpirationMs;
     }
 
-   // public String generateJwtToken(UserDetailsImpl userDetailsImpl, boolean forRefresh) {
     public String generateJwtToken(UserDetails userDetailsImpl, boolean forRefresh) {
-
-
         Map<String, Object> claims = new HashMap<>();
-         
-        final Date createdDate = new Date();
-        final Date expirationDate = calculateExpirationDate(createdDate,forRefresh);
 
+        final Date createdDate = new Date();
+        final Date expirationDate = calculateExpirationDate(createdDate, forRefresh);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetailsImpl.getUsername())
@@ -56,39 +50,13 @@ public class JwtUtils {
     private Date calculateExpirationDate(Date createdDate, boolean forRefresh) {
 
         int jwtExpirationInMs;
-
         if (forRefresh) {
             jwtExpirationInMs = jwtRefreshExpirationMs;
-        }else {
+        } else {
             jwtExpirationInMs = jwtAccessExpirationMs;
         }
-
         return new Date(createdDate.getTime() + jwtExpirationInMs);
     }
-
-//    public String generateTokenFromUsername(String username) {
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
-//                .compact();
-//    }
-
-//    public String generateAccessJWTFromUsername(String username) {
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
-//                .compact();
-//    }
-
-//    public String generateRefreshJWTFromUsername(String username) {
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
-//                .compact();
-//    }
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
@@ -98,18 +66,9 @@ public class JwtUtils {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException e) {
-            System.out.println(e);
-        } catch (MalformedJwtException e) {
-            System.out.println(e);
-        } catch (ExpiredJwtException e) {
-            System.out.println(e);
-        } catch (UnsupportedJwtException e) {
-            System.out.println(e);
-        } catch (IllegalArgumentException e) {
+        } catch (SignatureException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
             System.out.println(e);
         }
-
         return false;
     }
 
