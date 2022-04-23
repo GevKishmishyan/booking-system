@@ -4,8 +4,10 @@ package com.epam.bookingsystem.services;
 import com.epam.bookingsystem.dto.UserDTO;
 import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
+import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
+import com.epam.bookingsystem.dto.response.PasswordResetResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
 import com.epam.bookingsystem.entitys.BlockedJWTData;
 import com.epam.bookingsystem.entitys.User;
@@ -17,12 +19,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -30,7 +33,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
-    private final PasswordEncoder encoder;
+    private final PasswordEncoder passwordEncoder;
     private final BlockedJWTDataRepository blockedJWTDataRepository;
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -48,11 +51,11 @@ public class AuthService {
     }
 
     public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository
-            , JwtUtils jwtUtils, PasswordEncoder encoder, BlockedJWTDataRepository blockedJWTDataRepository, UserDetailsServiceImpl userDetailsService) {
+            , JwtUtils jwtUtils, PasswordEncoder passwordEncoder, BlockedJWTDataRepository blockedJWTDataRepository, UserDetailsServiceImpl userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
-        this.encoder = encoder;
+        this.passwordEncoder = passwordEncoder;
         this.blockedJWTDataRepository = blockedJWTDataRepository;
         this.userDetailsService = userDetailsService;
     }
@@ -144,4 +147,67 @@ public class AuthService {
         return null;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public PasswordResetResponse resetPassword(PasswordResetRequest passwordResetRequest) {
+        System.out.println(" service resetPassword(String newPassword)");
+
+        UserDetails userDetails = getUserDetails();
+        Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
+        User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (passwordEncoder.matches(passwordResetRequest.getCurrentPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(passwordResetRequest.getNewPassword()));
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("incorrect current password");
+        }
+
+        String jwtAccess = jwtUtils.generateJwtToken(userDetails, false);
+        String jwtRefresh = jwtUtils.generateJwtToken(userDetails, true);
+
+        return new PasswordResetResponse(jwtAccess, jwtRefresh);
+    }
+
+
+    public static CurrentUser getUserDetails() {
+        try {
+            return (CurrentUser) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+        } catch (Exception ignored) {
+            throw new RuntimeException("Access denied");
+        }
+    }
 }

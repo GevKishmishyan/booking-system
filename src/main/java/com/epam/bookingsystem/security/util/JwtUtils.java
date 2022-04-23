@@ -3,6 +3,7 @@ package com.epam.bookingsystem.security.util;
 import com.epam.bookingsystem.security.CurrentUser;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -35,7 +36,7 @@ public class JwtUtils {
     }
 
    // public String generateJwtToken(UserDetailsImpl userDetailsImpl, boolean forRefresh) {
-    public String generateJwtToken(CurrentUser userDetailsImpl, boolean forRefresh) {
+    public String generateJwtToken(UserDetails userDetailsImpl, boolean forRefresh) {
 
 
         Map<String, Object> claims = new HashMap<>();

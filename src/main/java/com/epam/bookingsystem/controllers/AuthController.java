@@ -1,5 +1,7 @@
 package com.epam.bookingsystem.controllers;
 
+import com.epam.bookingsystem.dto.request.PasswordResetRequest;
+import com.epam.bookingsystem.dto.response.PasswordResetResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
 import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
@@ -97,4 +99,15 @@ public class AuthController {
         MessageResponse messageResponse = authService.logoutUser(logOutRequestDTO, request);
         return ResponseEntity.ok(messageResponse);
     }
+
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<PasswordResetResponse> resetPassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
+        System.out.println("/reset-password");
+        PasswordResetResponse passwordResetResponse = authService.resetPassword(passwordResetRequest);
+
+        return ResponseEntity.ok().body(passwordResetResponse);
+    }
+
+
 }
