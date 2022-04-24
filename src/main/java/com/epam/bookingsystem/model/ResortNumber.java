@@ -10,9 +10,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "resort_number")
 public class ResortNumber extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
     @NotNull
@@ -35,14 +32,6 @@ public class ResortNumber extends BaseEntity {
         this.availableCount = availableCount;
         this.perNightPrice = perNightPrice;
         this.room = room;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public RoomType getRoomType() {

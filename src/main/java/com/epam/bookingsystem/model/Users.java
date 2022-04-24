@@ -14,9 +14,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 public class Users extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @NotNull
     private String firstName;
     @NotNull
@@ -54,14 +51,6 @@ public class Users extends BaseEntity {
         this.profilePicture = profilePicture;
         this.password = password;
         this.createdAt = createdAt;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getFirstName() {

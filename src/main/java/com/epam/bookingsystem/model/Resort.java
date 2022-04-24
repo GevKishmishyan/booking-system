@@ -11,9 +11,6 @@ import java.util.Objects;
 @Table(name = "resort")
 public class Resort extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @NotBlank
     private String name;
     @Enumerated(EnumType.STRING)
@@ -42,14 +39,6 @@ public class Resort extends BaseEntity {
         this.email = email;
         this.telephone = telephone;
         this.description = description;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

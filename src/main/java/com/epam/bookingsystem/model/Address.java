@@ -8,9 +8,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "address")
 public class Address extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @NotBlank
     private String country;
     @NotBlank
@@ -26,23 +23,13 @@ public class Address extends BaseEntity {
     public Address() {
     }
 
-    public Address(long id, String country,
-                   String region, String section,
-                   String address, Resort resort) {
-        this.id = id;
+    public Address(long id, @NotBlank String country, @NotBlank String region, @NotBlank String section, @NotBlank String address, Resort resort) {
+        super(id);
         this.country = country;
         this.region = region;
         this.section = section;
         this.address = address;
         this.resort = resort;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getCountry() {

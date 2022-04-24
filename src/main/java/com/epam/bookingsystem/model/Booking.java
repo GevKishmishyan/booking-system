@@ -9,19 +9,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "booking")
-public class Booking extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Booking extends BaseEntity {
     private LocalDateTime bookedFrom;
     private LocalDateTime bookedTo;
     @NotNull
     @Column(name = "all_pr")
     private BigDecimal allPr;
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     private Room room;
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private Users users;
 
@@ -37,14 +34,6 @@ public class Booking extends BaseEntity{
         this.allPr = allPr;
         this.room = room;
         this.users = users;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public LocalDateTime getBookedFrom() {

@@ -6,9 +6,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "room_pictures")
 public class RoomPictures extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @Column(name = "picture_url")
     private String picUrl;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -22,14 +19,6 @@ public class RoomPictures extends BaseEntity {
         this.id = id;
         this.picUrl = picUrl;
         this.resortNumber = resortNumber;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getPicUrl() {

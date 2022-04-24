@@ -8,9 +8,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "tin")
 public class Tin extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @Size(min = 8)
     private String serialNumber;
     @NotBlank
@@ -27,14 +24,6 @@ public class Tin extends BaseEntity {
         this.serialNumber = serialNumber;
         this.document = document;
         this.resort = resort;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getSerialNumber() {

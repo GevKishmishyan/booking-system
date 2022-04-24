@@ -6,9 +6,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "review")
 public class Review extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private Double rate;
     private String comment;
     @ManyToOne (fetch = FetchType.EAGER)
@@ -30,14 +27,6 @@ public class Review extends BaseEntity{
         this.comment = comment;
         this.resort = resort;
         this.users = users;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Double getRate() {

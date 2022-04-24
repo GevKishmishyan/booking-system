@@ -5,10 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "room_details")
-public class RoomDetails extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class RoomDetails extends BaseEntity {
     private boolean airConditioner;
     @Column(name = "tv")
     private boolean television;
@@ -50,14 +47,6 @@ public class RoomDetails extends BaseEntity{
         this.dishes = dishes;
         this.electricKettle = electricKettle;
         this.resortNumber = resortNumber;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public boolean isAirConditioner() {

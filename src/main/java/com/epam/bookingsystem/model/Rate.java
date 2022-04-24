@@ -6,10 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "rate")
-public class Rate extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Rate extends BaseEntity {
     private Double rating;
     private Double totalRate;
     private Integer ratesCount;
@@ -27,14 +24,6 @@ public class Rate extends BaseEntity{
         this.totalRate = totalRate;
         this.ratesCount = ratesCount;
         this.resort = resort;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Double getRating() {

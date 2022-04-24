@@ -5,10 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "resort_details")
-public class ResortDetails extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class ResortDetails extends BaseEntity {
     private boolean airportShuttle;
     private boolean freeWiFi;
     private boolean bar;
@@ -46,14 +43,6 @@ public class ResortDetails extends BaseEntity{
         this.restaurant = restaurant;
         this.privateParking = privateParking;
         this.resort = resort;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public boolean isAirportShuttle() {

@@ -8,10 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "room")
-public class Room extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Room extends BaseEntity {
     @NotNull
     private Integer roomNumber;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -25,14 +22,6 @@ public class Room extends BaseEntity{
         this.id = id;
         this.roomNumber = roomNumber;
         this.resort = resort;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Integer getRoomNumber() {
