@@ -12,6 +12,7 @@ import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
 import com.epam.bookingsystem.entitys.BlockedJWTData;
 import com.epam.bookingsystem.entitys.User;
 import com.epam.bookingsystem.repository.BlockedJWTDataRepository;
+import com.epam.bookingsystem.repository.JWTBlacklistDAO;
 import com.epam.bookingsystem.repository.UserRepository;
 import com.epam.bookingsystem.security.CurrentUser;
 import com.epam.bookingsystem.security.util.JwtUtils;
@@ -36,6 +37,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final BlockedJWTDataRepository blockedJWTDataRepository;
     private final UserDetailsServiceImpl userDetailsService;
+    private final JWTBlacklistDAO jwtBlacklistDAO;
+
 
     private int jwtAccessExpirationMs;
     private int jwtRefreshExpirationMs;
@@ -51,13 +54,15 @@ public class AuthService {
     }
 
     public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository
-            , JwtUtils jwtUtils, PasswordEncoder passwordEncoder, BlockedJWTDataRepository blockedJWTDataRepository, UserDetailsServiceImpl userDetailsService) {
+            , JwtUtils jwtUtils, PasswordEncoder passwordEncoder, BlockedJWTDataRepository blockedJWTDataRepository,
+                       UserDetailsServiceImpl userDetailsService, JWTBlacklistDAO jwtBlacklistDAO) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
         this.blockedJWTDataRepository = blockedJWTDataRepository;
         this.userDetailsService = userDetailsService;
+        this.jwtBlacklistDAO = jwtBlacklistDAO;
     }
 
 
@@ -90,6 +95,7 @@ public class AuthService {
     }
 
     public MessageResponse logoutUser(LogOutRequestDTO logOutRequestDTO, HttpServletRequest request) {
+        System.out.println("authService logoutUser ");
         String jwtAccess = parseJwt(request);
         String jwtRefresh = logOutRequestDTO.getJwtRefresh();
 
@@ -99,17 +105,20 @@ public class AuthService {
         boolean expirationDateDifferenceIsCorrect = false;
 
         if (jwtUtils.extractExpiration(jwtRefresh).getTime()
-                == jwtUtils.extractExpiration(jwtAccess).getTime() + jwtRefreshExpirationMs - jwtAccessExpirationMs) {
+                == jwtUtils.extractExpiration(jwtAccess).getTime()
+                + jwtRefreshExpirationMs - jwtAccessExpirationMs) {
             expirationDateDifferenceIsCorrect = true;
         }
 
         if (jwtAccessIsValid && jwtRefreshIsValid && belongsToSameUser && expirationDateDifferenceIsCorrect) {
+            System.out.println("doFilterInternal , block if ,, now  jwt has to be added in blacklist");
+            //BlockedJWTData blockedAccessJWTData = new BlockedJWTData(jwtAccess);
+            //BlockedJWTData blockedRefreshJWTData = new BlockedJWTData(jwtRefresh);
 
-            BlockedJWTData blockedAccessJWTData = new BlockedJWTData(jwtAccess);
-            BlockedJWTData blockedRefreshJWTData = new BlockedJWTData(jwtRefresh);
-
-            blockedJWTDataRepository.save(blockedAccessJWTData);
-            blockedJWTDataRepository.save(blockedRefreshJWTData);
+           // blockedJWTDataRepository.save(blockedAccessJWTData);
+           // blockedJWTDataRepository.save(blockedRefreshJWTData);
+            jwtBlacklistDAO.addJWTInBlacklist(jwtAccess);
+            jwtBlacklistDAO.addJWTInBlacklist(jwtRefresh);
 
             return new MessageResponse("Log out successful!");
         }

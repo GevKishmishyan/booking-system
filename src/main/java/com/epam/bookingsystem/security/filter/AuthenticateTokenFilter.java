@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.security.filter;
 
 import com.epam.bookingsystem.repository.BlockedJWTDataRepository;
+import com.epam.bookingsystem.repository.JWTBlacklistDAO;
 import com.epam.bookingsystem.security.util.JwtUtils;
 import com.epam.bookingsystem.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,34 +21,39 @@ import java.io.IOException;
 public class AuthenticateTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
-
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-
     @Autowired
     private BlockedJWTDataRepository blockedJWTDataRepository;
+    @Autowired
+    JWTBlacklistDAO jwtBlacklistDAO;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
         try {
             String jwt = parseJwt(request);
-            System.out.println("doFilterInternal " + "jwt is in blacklist = " + blockedJWTDataRepository.existsByJwt(jwt));
-            if (jwt != null && jwtUtils.validateJwtToken(jwt) && !blockedJWTDataRepository.existsByJwt(jwt)) {
+            System.out.println("doFilterInternal " + "jwt is in blacklist = " + jwtBlacklistDAO.existsInBlacklist(jwt));
+            //if (jwt != null && jwtUtils.validateJwtToken(jwt) && !blockedJWTDataRepository.existsByJwt(jwt)) {
+            if (jwt != null && jwtUtils.validateJwtToken(jwt) && !jwtBlacklistDAO.existsInBlacklist(jwt)) {
+                System.out.println("doFilterInternal , block if");
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
+                // todo this has to be replaced , see other examples in the web
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null,
+                                userDetails.getAuthorities());
+                System.out.println("doFilterInternal in block if , after thrown exception ");
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("doFilterInternal in ckach block " + e);
         }
 
         filterChain.doFilter(request, response);

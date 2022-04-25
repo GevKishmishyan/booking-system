@@ -49,16 +49,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/logout").authenticated()
-                .antMatchers("/api/auth/refreshtoken").authenticated()
-                .antMatchers("/api/auth/reset-password").authenticated()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/auth/logout").authenticated()
+                .antMatchers("/auth/refreshtoken").authenticated()
+                .antMatchers("/auth/reset-password").authenticated()
+                .antMatchers("/auth/**").permitAll()
                 //
-                .antMatchers("/api/test/user").hasAnyRole("USER","MODERATOR","ADMIN")
-                .antMatchers("/api/test/hotel_manager").hasAnyRole("HOTEL_MANAGER","MODERATOR","ADMIN")
-                .antMatchers("/api/test/moderator").hasAnyRole("MODERATOR","ADMIN")
-                .antMatchers("/api/test/admin").hasRole("ADMIN")
-                .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/test/user").hasAnyRole("USER","MODERATOR","ADMIN")
+                .antMatchers("/test/hotel_manager").hasAnyRole("HOTEL_MANAGER","MODERATOR","ADMIN")
+                .antMatchers("/test/moderator").hasAnyRole("MODERATOR","ADMIN")
+                .antMatchers("/test/admin").hasRole("ADMIN")
+                .antMatchers("/test/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
