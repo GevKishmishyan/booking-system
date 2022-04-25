@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS booking_system.resort(
      name                 VARCHAR(255) NOT NULL,
      resort_type          VARCHAR(255),
      star                 INTEGER,
-     email                VARCHAR(255) NOT NULL DEFAULT 'email',
+     email                VARCHAR(255) NOT NULL,
      telephone            VARCHAR(255),
      description          TEXT(255)
 );
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS booking_system.users (
      last_name            VARCHAR(255) NOT NULL,
      birthday             DATE,
      gender               VARCHAR(255),
-     email                VARCHAR(255) NOT NULL DEFAULT 'email',
+     email                VARCHAR(255) NOT NULL,
      role                 VARCHAR(255),
      is_active            BOOLEAN,
      profile_picture      VARCHAR(255),
@@ -177,13 +177,12 @@ ALTER TABLE booking_system.room
 
 ALTER TABLE booking_system.review
     ADD CONSTRAINT review_resort_fk
-        FOREIGN KEY (resort_id) REFERENCES booking_system.resort(id)
-            ON DELETE CASCADE ON UPDATE RESTRICT ;
-
-ALTER TABLE booking_system.review
+        FOREIGN KEY (resort_id) REFERENCES booking_system.resort(id),
     ADD CONSTRAINT review_users_fk
         FOREIGN KEY (users_id) REFERENCES booking_system.users(id)
             ON DELETE CASCADE ON UPDATE RESTRICT ;
+
+
 
 
 
