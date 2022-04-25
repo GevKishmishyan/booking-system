@@ -1,6 +1,5 @@
 package com.epam.bookingsystem.services;
 
-
 import com.epam.bookingsystem.dto.UserDTO;
 import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
@@ -9,7 +8,6 @@ import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.PasswordResetResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
-import com.epam.bookingsystem.entitys.BlockedJWTData;
 import com.epam.bookingsystem.entitys.User;
 import com.epam.bookingsystem.repository.BlockedJWTDataRepository;
 import com.epam.bookingsystem.repository.JWTBlacklistDAO;
@@ -115,8 +113,8 @@ public class AuthService {
             //BlockedJWTData blockedAccessJWTData = new BlockedJWTData(jwtAccess);
             //BlockedJWTData blockedRefreshJWTData = new BlockedJWTData(jwtRefresh);
 
-           // blockedJWTDataRepository.save(blockedAccessJWTData);
-           // blockedJWTDataRepository.save(blockedRefreshJWTData);
+            // blockedJWTDataRepository.save(blockedAccessJWTData);
+            // blockedJWTDataRepository.save(blockedRefreshJWTData);
             jwtBlacklistDAO.addJWTInBlacklist(jwtAccess);
             jwtBlacklistDAO.addJWTInBlacklist(jwtRefresh);
 
