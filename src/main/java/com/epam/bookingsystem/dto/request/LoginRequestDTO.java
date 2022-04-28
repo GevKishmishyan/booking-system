@@ -4,14 +4,6 @@ import javax.validation.constraints.NotBlank;
 
 public class LoginRequestDTO {
 
-	@Override
-	public String toString() {
-		return "LoginRequest{" +
-				"username='" + username + '\'' +
-				", password='" + password + '\'' +
-				'}';
-	}
-
 	@NotBlank
 	private String username;
 
@@ -33,4 +25,13 @@ public class LoginRequestDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public String toString() {
+		return "LoginRequest{" +
+				"username='" + username + '\'' +
+				", password='" + password + '\'' +
+				'}';
+	}
+
 }

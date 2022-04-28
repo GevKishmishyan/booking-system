@@ -8,17 +8,16 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  flyway:
-    baseline-on-migrate: true
-    schemas: booking_system
+  #  flyway:
+  #   baseline-on-migrate: true
+  #  schemas: booking_system
 
 jwt:
-  secret : bookingSystem
-  # For test
-  accessExpirationMs : 180000
-  refreshExpirationMs : 300000
-server:
-  port: 8080
+  secret: bookingSystem
+  # those are the expiration durations for jwt access and jwt refresh
+  # introduced in milliseconds which are equal to 3 minutes and 5 minutes
+  accessExpirationMs: 180000
+  refreshExpirationMs: 300000
 
 redis:
   host: localhost

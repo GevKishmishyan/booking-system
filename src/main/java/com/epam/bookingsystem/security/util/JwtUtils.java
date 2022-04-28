@@ -2,6 +2,7 @@ package com.epam.bookingsystem.security.util;
 
 import com.epam.bookingsystem.security.CurrentUser;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.util.function.Function;
 
 import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
+@Slf4j
 @Component
 public class JwtUtils {
 
@@ -36,14 +38,14 @@ public class JwtUtils {
         this.jwtRefreshExpirationMs = jwtRefreshExpirationMs;
     }
 
-    public String generateJwtToken(UserDetails userDetailsImpl, boolean forRefresh) {
+    public String generateJwtToken(UserDetails userDetails, boolean forRefresh) {
         Map<String, Object> claims = new HashMap<>();
 
         final Date createdDate = new Date();
         final Date expirationDate = calculateExpirationDate(createdDate, forRefresh);
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userDetailsImpl.getUsername())
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, secret)
@@ -69,10 +71,19 @@ public class JwtUtils {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            System.out.println(e);
+        } catch (SignatureException e) {
+            log.error("Invalid JWT signature: ", e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token: ", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: ", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("JWT token is unsupported: ", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty: ", e.getMessage());
         }
         return false;
+
     }
 
     public Date extractExpiration(String token) {

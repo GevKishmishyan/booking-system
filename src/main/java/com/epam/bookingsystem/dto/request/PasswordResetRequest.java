@@ -1,9 +1,15 @@
 package com.epam.bookingsystem.dto.request;
 
+import javax.validation.constraints.NotBlank;
+
 public class PasswordResetRequest {
-    // todo add validation annotations
+
+    // todo add more validation annotations
+    @NotBlank
     String currentPassword;
-    // todo add validation annotations
+
+    // todo add more validation annotations
+    @NotBlank
     String newPassword;
 
     public PasswordResetRequest(String currentPassword, String newPassword) {

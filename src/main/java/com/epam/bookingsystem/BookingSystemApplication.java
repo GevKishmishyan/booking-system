@@ -24,14 +24,25 @@ public class BookingSystemApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User user = new User();
-        user.setNotBlocked(true);
-        user.setEnabled(true);
-        user.setEmail("admin@gmail.com");
-        user.setPassword(passwordEncoder.encode("12345"));
-        user.setRole(Role.ADMIN);
-        if (!userRepository.existsByEmail(user.getEmail())) {
-            userRepository.save(user);
+
+        User admin = new User();
+        admin.setNotBlocked(true);
+        admin.setEnabled(true);
+        admin.setEmail("admin@gmail.com");
+        admin.setPassword(passwordEncoder.encode("12345"));
+        admin.setRole(Role.ADMIN);
+        if (!userRepository.existsByEmail(admin.getEmail())) {
+            userRepository.save(admin);
+        }
+
+        User moderator = new User();
+        moderator.setNotBlocked(true);
+        moderator.setEnabled(true);
+        moderator.setEmail("moderator@gmail.com");
+        moderator.setPassword(passwordEncoder.encode("12345"));
+        moderator.setRole(Role.MODERATOR);
+        if (!userRepository.existsByEmail(moderator.getEmail())) {
+            userRepository.save(moderator);
         }
 
     }

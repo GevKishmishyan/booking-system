@@ -1,14 +1,13 @@
-package com.epam.bookingsystem.dto.response;
+package com.epam.bookingsystem.exceptions;
 
-public class PasswordResetResponse {
+public class JwtsExpirationDateDifferenceIsNotCorrectException extends RuntimeException {
+    private String jwtAccess;
+    private String jwtRefresh;
 
-    public PasswordResetResponse(String jwtAccess, String jwtRefresh) {
+    public JwtsExpirationDateDifferenceIsNotCorrectException(String jwtAccess, String jwtRefresh) {
         this.jwtAccess = jwtAccess;
         this.jwtRefresh = jwtRefresh;
     }
-
-    private String jwtAccess;
-    private String jwtRefresh;
 
     public String getJwtAccess() {
         return jwtAccess;

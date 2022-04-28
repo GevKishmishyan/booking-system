@@ -12,6 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class JWTBlacklistConfig {
 
+
     @Value("${redis.host}")
     private String redisHost;
 

@@ -8,11 +8,12 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 
     private User user;
 
+    // todo be replaced with mapper
     public CurrentUser(User user) {
-        super(user.getEmail(), user.getPassword(),user.isEnabled(),true,true, user.isNotBlocked()
-                , AuthorityUtils.createAuthorityList("ROLE_" + user.role.name()));
-        this.user = user;    }
-
+        super(user.getEmail(), user.getPassword(), user.isEnabled(), true, true,
+                user.isNotBlocked(), AuthorityUtils.createAuthorityList("ROLE_" + user.role.name()));
+        this.user = user;
+    }
 
     public User getUser() {
         return user;

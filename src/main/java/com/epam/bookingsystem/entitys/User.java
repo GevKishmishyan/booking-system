@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "users")
 public class User {
 
     @Id
@@ -49,8 +49,6 @@ public class User {
         this.notBlocked = notBlocked;
     }
 
-    //
-    //
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -168,6 +166,5 @@ public class User {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
 
 }

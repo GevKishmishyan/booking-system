@@ -11,7 +11,9 @@ public class UserDTO {
     private String lastName;
     private String email;
     private Role role;
+    // todo might be removed
     private boolean isActive;
+    // todo might be replaced
     private String profilePicture;
     private LocalDateTime createdAt;
 
