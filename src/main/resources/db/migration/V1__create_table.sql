@@ -105,7 +105,8 @@ CREATE TABLE IF NOT EXISTS booking_system.users (
      gender               VARCHAR(255),
      email                VARCHAR(255) NOT NULL,
      role                 VARCHAR(255),
-     is_active            BOOLEAN,
+     enabled              BOOLEAN,
+     not_blocked           BOOLEAN,
      profile_picture      VARCHAR(255),
      password             VARCHAR(255),
      created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

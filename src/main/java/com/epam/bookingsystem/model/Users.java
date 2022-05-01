@@ -26,32 +26,14 @@ public class Users extends BaseEntity {
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private boolean isActive;
+    private boolean enabled = false;
+
+    private boolean notBlocked = true;
+
     private String profilePicture;
     @Size(min = 6)
     private String password;
     private LocalDateTime createdAt;
-
-    public Users() {
-    }
-
-    public Users(long id, String firstName, String lastName,
-                 LocalDateTime birthday, Gender gender,
-                 String email, Role role, boolean isActive,
-                 String profilePicture, String password,
-                 LocalDateTime createdAt) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.email = email;
-        this.role = role;
-        this.isActive = isActive;
-        this.profilePicture = profilePicture;
-        this.password = password;
-        this.createdAt = createdAt;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -101,12 +83,20 @@ public class Users extends BaseEntity {
         this.role = role;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isNotBlocked() {
+        return notBlocked;
+    }
+
+    public void setNotBlocked(boolean notBlocked) {
+        this.notBlocked = notBlocked;
     }
 
     public String getProfilePicture() {
@@ -138,25 +128,35 @@ public class Users extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Users users = (Users) o;
-        return id == users.id && isActive == users.isActive && Objects.equals(firstName, users.firstName) && Objects.equals(lastName, users.lastName) && Objects.equals(birthday, users.birthday) && gender == users.gender && Objects.equals(email, users.email) && role == users.role && Objects.equals(profilePicture, users.profilePicture) && Objects.equals(password, users.password) && Objects.equals(createdAt, users.createdAt);
+        return enabled == users.enabled &&
+                notBlocked == users.notBlocked &&
+                Objects.equals(firstName, users.firstName) &&
+                Objects.equals(lastName, users.lastName) &&
+                Objects.equals(birthday, users.birthday) &&
+                gender == users.gender &&
+                Objects.equals(email, users.email) &&
+                role == users.role &&
+                Objects.equals(profilePicture, users.profilePicture) &&
+                Objects.equals(password, users.password) &&
+                Objects.equals(createdAt, users.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, birthday, gender, email, role, isActive, profilePicture, password, createdAt);
+        return Objects.hash(firstName, lastName, birthday, gender, email, role, enabled, notBlocked, profilePicture, password, createdAt);
     }
 
     @Override
     public String toString() {
         return "Users{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthday=" + birthday +
                 ", gender=" + gender +
                 ", email='" + email + '\'' +
                 ", role=" + role +
-                ", isActive=" + isActive +
+                ", enabled=" + enabled +
+                ", notBlocked=" + notBlocked +
                 ", profilePicture='" + profilePicture + '\'' +
                 ", password='" + password + '\'' +
                 ", createdAt=" + createdAt +
