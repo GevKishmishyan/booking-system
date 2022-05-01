@@ -1,8 +1,6 @@
-package com.epam.bookingsystem.util;
+package com.epam.bookingsystem.exception;
 
-import com.epam.bookingsystem.exception.EntityAlreadyExistsException;
-import com.epam.bookingsystem.exception.EntityNotFoundException;
-import org.springframework.http.HttpHeaders;
+import com.epam.bookingsystem.exception.dto.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +11,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 @RestControllerAdvice
-public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleNotFound(EntityNotFoundException ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getClass().getSimpleName(),
