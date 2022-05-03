@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,25 +16,13 @@ import java.util.function.Function;
 @Slf4j
 @Component
 public class JwtUtils {
-
+    @Value("${jwt.secret}")
     private String secret;
+    @Value("${jwt.accessExpirationMs}")
     private int jwtAccessExpirationMs;
+    @Value("${jwt.refreshExpirationMs}")
     private int jwtRefreshExpirationMs;
 
-    @Value("${jwt.secret}")
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    @Value("${jwt.accessExpirationMs}")
-    public void setJwtAccessExpirationMs(int jwtAccessExpirationMs) {
-        this.jwtAccessExpirationMs = jwtAccessExpirationMs;
-    }
-
-    @Value("${jwt.refreshExpirationMs}")
-    public void setJwtRefreshExpirationInMs(int jwtRefreshExpirationMs) {
-        this.jwtRefreshExpirationMs = jwtRefreshExpirationMs;
-    }
 
     public String generateJwtToken(UserDetails userDetails, boolean forRefresh) {
         Map<String, Object> claims = new HashMap<>();
@@ -48,16 +38,16 @@ public class JwtUtils {
                 .compact();
     }
 
-    private Date calculateExpirationDate(Date createdDate, boolean forRefresh) {
+    public String parseJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
 
-        int jwtExpirationInMs;
-        if (forRefresh) {
-            jwtExpirationInMs = jwtRefreshExpirationMs;
-        } else {
-            jwtExpirationInMs = jwtAccessExpirationMs;
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7, headerAuth.length());
         }
-        return new Date(createdDate.getTime() + jwtExpirationInMs);
+
+        return null;
     }
+
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
@@ -97,6 +87,17 @@ public class JwtUtils {
 
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
+    }
+
+    private Date calculateExpirationDate(Date createdDate, boolean forRefresh) {
+
+        int jwtExpirationInMs;
+        if (forRefresh) {
+            jwtExpirationInMs = jwtRefreshExpirationMs;
+        } else {
+            jwtExpirationInMs = jwtAccessExpirationMs;
+        }
+        return new Date(createdDate.getTime() + jwtExpirationInMs);
     }
 
 }

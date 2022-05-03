@@ -1,7 +1,5 @@
 package com.epam.bookingsystem.dto.response;
 
-import com.epam.bookingsystem.dto.UserDTO;
-
 import java.util.Objects;
 
 public class LoginResponseDTO {
@@ -9,12 +7,12 @@ public class LoginResponseDTO {
 	private String jwtAccess;
 	private String type = "Bearer";
 	private String jwtRefresh;
-	private UserDTO userDTO;
+	private UserResponseDTO userResponseDTO;
 
-	public LoginResponseDTO(String jwtAccess, String jwtRefresh, UserDTO userDTO) {
+	public LoginResponseDTO(String jwtAccess, String jwtRefresh, UserResponseDTO userResponseDTO) {
 		this.jwtAccess = jwtAccess;
 		this.jwtRefresh = jwtRefresh;
-		this.userDTO = userDTO;
+		this.userResponseDTO = userResponseDTO;
 	}
 
 	public LoginResponseDTO() {
@@ -44,12 +42,12 @@ public class LoginResponseDTO {
 		this.jwtRefresh = jwtRefresh;
 	}
 
-	public UserDTO getUserDTO() {
-		return userDTO;
+	public UserResponseDTO getUserDTO() {
+		return userResponseDTO;
 	}
 
-	public void setUserDTO(UserDTO userDTO) {
-		this.userDTO = userDTO;
+	public void setUserDTO(UserResponseDTO userResponseDTO) {
+		this.userResponseDTO = userResponseDTO;
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class LoginResponseDTO {
 				"jwtAccess='" + jwtAccess + '\'' +
 				", type='" + type + '\'' +
 				", jwtRefresh='" + jwtRefresh + '\'' +
-				", userDTO=" + userDTO +
+				", userDTO=" + userResponseDTO +
 				'}';
 	}
 
@@ -67,11 +65,11 @@ public class LoginResponseDTO {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		LoginResponseDTO that = (LoginResponseDTO) o;
-		return Objects.equals(jwtAccess, that.jwtAccess) && Objects.equals(type, that.type) && Objects.equals(jwtRefresh, that.jwtRefresh) && Objects.equals(userDTO, that.userDTO);
+		return Objects.equals(jwtAccess, that.jwtAccess) && Objects.equals(type, that.type) && Objects.equals(jwtRefresh, that.jwtRefresh) && Objects.equals(userResponseDTO, that.userResponseDTO);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(jwtAccess, type, jwtRefresh, userDTO);
+		return Objects.hash(jwtAccess, type, jwtRefresh, userResponseDTO);
 	}
 }

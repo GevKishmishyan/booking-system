@@ -34,7 +34,7 @@ public class BookingSystemApplication implements CommandLineRunner {
         admin.setRole(Role.ADMIN);
         admin.setEnabled(true);
         admin.setNotBlocked(true);
-        admin.setPassword(passwordEncoder.encode("12345"));
+        admin.setPassword(passwordEncoder.encode("1234567"));
         admin.setCreatedAt(LocalDateTime.now());
 
         if (!userRepository.existsByEmail(admin.getEmail())) {
@@ -49,7 +49,7 @@ public class BookingSystemApplication implements CommandLineRunner {
         moderator.setRole(Role.MODERATOR);
         moderator.setEnabled(true);
         moderator.setNotBlocked(true);
-        moderator.setPassword(passwordEncoder.encode("12345"));
+        moderator.setPassword(passwordEncoder.encode("1234567"));
         moderator.setCreatedAt(LocalDateTime.now());
 
         if (!userRepository.existsByEmail(moderator.getEmail())) {

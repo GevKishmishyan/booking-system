@@ -1,11 +1,11 @@
-package com.epam.bookingsystem.dto;
+package com.epam.bookingsystem.dto.response;
 
 import com.epam.bookingsystem.model.enums.Role;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class UserDTO {
+public class UserResponseDTO {
     private Long id;
     private String firstName;
     private String lastName;
@@ -14,7 +14,7 @@ public class UserDTO {
     private String profilePicture;
     private LocalDateTime createdAt;
 
-    public UserDTO(Long id, String firstName, String lastName, String email, Role role, String profilePicture, LocalDateTime createdAt) {
+    public UserResponseDTO(Long id, String firstName, String lastName, String email, Role role, String profilePicture, LocalDateTime createdAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,7 +24,7 @@ public class UserDTO {
         this.createdAt = createdAt;
     }
 
-    public UserDTO() {
+    public UserResponseDTO() {
     }
 
     public Long getId() {
@@ -87,14 +87,14 @@ public class UserDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(id, userDTO.id) &&
-                Objects.equals(firstName, userDTO.firstName) &&
-                Objects.equals(lastName, userDTO.lastName) &&
-                Objects.equals(email, userDTO.email) &&
-                role == userDTO.role &&
-                Objects.equals(profilePicture, userDTO.profilePicture) &&
-                Objects.equals(createdAt, userDTO.createdAt);
+        UserResponseDTO userResponseDTO = (UserResponseDTO) o;
+        return Objects.equals(id, userResponseDTO.id) &&
+                Objects.equals(firstName, userResponseDTO.firstName) &&
+                Objects.equals(lastName, userResponseDTO.lastName) &&
+                Objects.equals(email, userResponseDTO.email) &&
+                role == userResponseDTO.role &&
+                Objects.equals(profilePicture, userResponseDTO.profilePicture) &&
+                Objects.equals(createdAt, userResponseDTO.createdAt);
     }
 
     @Override

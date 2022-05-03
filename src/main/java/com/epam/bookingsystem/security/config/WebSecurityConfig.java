@@ -2,12 +2,11 @@ package com.epam.bookingsystem.security.config;
 
 import com.epam.bookingsystem.security.AuthEntryPointJwt;
 import com.epam.bookingsystem.security.filter.AuthenticateTokenFilter;
-import com.epam.bookingsystem.services.UserDetailsServiceImpl;
+import com.epam.bookingsystem.services.impl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,14 +19,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final UserDetailsServiceImpl userDetailsService;
-	private final AuthEntryPointJwt unauthorizedHandler;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthEntryPointJwt unauthorizedHandler;
 
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
     }
-
 
 
     @Override
@@ -43,13 +41,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/auth/logout").authenticated()
-                .antMatchers("/auth/refreshtoken").authenticated()
+                .antMatchers("/auth/refresh-token").authenticated()
                 .antMatchers("/auth/reset-password").authenticated()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/signup/**").permitAll()
                 //
-                .antMatchers("/test/user").hasAnyRole("USER","MODERATOR","ADMIN")
-                .antMatchers("/test/hotel_manager").hasAnyRole("HOTEL_MANAGER","MODERATOR","ADMIN")
-                .antMatchers("/test/moderator").hasAnyRole("MODERATOR","ADMIN")
+                .antMatchers("/test/user").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .antMatchers("/test/hotel_manager").hasAnyRole("HOTEL_MANAGER", "MODERATOR", "ADMIN")
+                .antMatchers("/test/moderator").hasAnyRole("MODERATOR", "ADMIN")
                 .antMatchers("/test/admin").hasRole("ADMIN")
                 .antMatchers("/test/**").permitAll()
                 .anyRequest().authenticated();

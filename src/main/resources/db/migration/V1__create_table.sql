@@ -128,6 +128,12 @@ CREATE TABLE IF NOT EXISTS `booking_system`.`resort_details` (
      private_parking      BOOLEAN,
      resort_id            BIGINT UNIQUE
 );
+CREATE TABLE IF NOT EXISTS booking_system.access_code(
+     id                   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+     code                 VARCHAR(255) NOT NULL,
+     users_id             BIGINT UNIQUE,
+     created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+     );
 
 ALTER TABLE booking_system.room_pictures
     ADD CONSTRAINT room_pictures_resort_number_fk
@@ -184,7 +190,10 @@ ALTER TABLE booking_system.review
             ON DELETE CASCADE ON UPDATE RESTRICT ;
 
 
-
+ALTER TABLE booking_system.access_code
+    ADD CONSTRAINT access_code_user_fk
+        FOREIGN KEY (users_id) REFERENCES booking_system.users(id)
+            ON DELETE CASCADE ON UPDATE RESTRICT ;
 
 
 

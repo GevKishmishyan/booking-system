@@ -1,15 +1,14 @@
 package com.epam.bookingsystem.security.filter;
 
-import com.epam.bookingsystem.repository.JWTBlacklistDAO;
+import com.epam.bookingsystem.dao.JWTBlacklistDAO;
 import com.epam.bookingsystem.security.util.JwtUtils;
-import com.epam.bookingsystem.services.UserDetailsServiceImpl;
+import com.epam.bookingsystem.services.impl.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -28,12 +27,13 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
     @Autowired
     JWTBlacklistDAO jwtBlacklistDAO;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         try {
-            String jwt = parseJwt(request);
+            String jwt = jwtUtils.parseJwt(request);
 
             if (jwt != null && jwtUtils.validateJwtToken(jwt) && !jwtBlacklistDAO.existsInBlacklist(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
@@ -54,13 +54,5 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
 
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7, headerAuth.length());
-        }
-
-        return null;
-    }
 }

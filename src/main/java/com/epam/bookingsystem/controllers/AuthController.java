@@ -7,6 +7,7 @@ import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
 import com.epam.bookingsystem.services.AuthService;
+import com.epam.bookingsystem.services.impl.AuthServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class AuthController {
     private final AuthService authService;
 
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
     }
 
@@ -35,7 +36,7 @@ public class AuthController {
         return ResponseEntity.ok(loginResponseDTO);
     }
 
-    @PostMapping("/refreshtoken")
+    @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(HttpServletRequest httpServletRequest) {
         TokenRefreshResponseDTO tokenRefreshResponseDTO = authService.refreshToken(httpServletRequest);
         return ResponseEntity.ok(tokenRefreshResponseDTO);

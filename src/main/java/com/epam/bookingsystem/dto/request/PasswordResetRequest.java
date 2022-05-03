@@ -1,15 +1,16 @@
 package com.epam.bookingsystem.dto.request;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class PasswordResetRequest {
 
-    // todo add more validation annotations
     @NotBlank
+    @Size(min = 6, max = 24)
     String currentPassword;
 
-    // todo add more validation annotations
     @NotBlank
+    @Size(min = 6, max = 24)
     String newPassword;
 
     public PasswordResetRequest(String currentPassword, String newPassword) {

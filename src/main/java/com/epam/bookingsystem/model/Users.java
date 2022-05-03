@@ -24,6 +24,7 @@ public class Users extends BaseEntity {
     @NotNull
     @Email
     private String email;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
     private boolean enabled = false;
@@ -31,7 +32,7 @@ public class Users extends BaseEntity {
     private boolean notBlocked = true;
 
     private String profilePicture;
-    @Size(min = 6)
+    @NotNull
     private String password;
     private LocalDateTime createdAt;
 

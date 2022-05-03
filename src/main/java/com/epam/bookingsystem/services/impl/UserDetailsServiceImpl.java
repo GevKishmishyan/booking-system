@@ -1,4 +1,4 @@
-package com.epam.bookingsystem.services;
+package com.epam.bookingsystem.services.impl;
 
 import com.epam.bookingsystem.model.Users;
 import com.epam.bookingsystem.repository.UserRepository;

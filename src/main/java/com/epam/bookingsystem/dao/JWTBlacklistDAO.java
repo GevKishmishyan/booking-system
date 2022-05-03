@@ -1,4 +1,4 @@
-package com.epam.bookingsystem.repository;
+package com.epam.bookingsystem.dao;
 
 
 import com.epam.bookingsystem.security.CurrentUser;
