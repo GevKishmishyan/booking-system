@@ -2,15 +2,13 @@ package com.epam.bookingsystem.services.impl;
 
 
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
-import com.epam.bookingsystem.mapper.Mapper;
 import com.epam.bookingsystem.mapper.impl.UserMapper;
 import com.epam.bookingsystem.model.AccessCode;
-import com.epam.bookingsystem.model.Users;
+import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.repository.AccessCodeRepository;
 import com.epam.bookingsystem.repository.UserRepository;
 import com.epam.bookingsystem.services.MailService;
 import com.epam.bookingsystem.services.SignupService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +33,7 @@ public class SignupServiceImpl implements SignupService {
     }
 
     @Override
-    public Optional<Users> findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -46,7 +44,7 @@ public class SignupServiceImpl implements SignupService {
           throw new RuntimeException("Code does not exist");
         }
 
-        Optional<Users> byId = userRepository.findById(byCode.get().getUser().getId());
+        Optional<User> byId = userRepository.findById(byCode.get().getUser().getId());
         if (byId.isEmpty()){
             throw new RuntimeException("User does not exist");
         }
@@ -58,7 +56,7 @@ public class SignupServiceImpl implements SignupService {
     }
 
     @Override
-    public UserResponseDTO save(Users user) {
+    public UserResponseDTO save(User user) {
         String subject = "Your verification link and code";
         String code = mailService.generatePassword();
         String confirmLink="http://localhost:8080/signup/confirm-email/"+code;

@@ -20,14 +20,14 @@ public class Booking extends BaseEntity {
     private Room room;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User users;
 
     public Booking() {
     }
 
     public Booking(long id, LocalDateTime bookedFrom,
                    LocalDateTime bookedTo, BigDecimal allPr,
-                   Room room, Users users) {
+                   Room room, User users) {
         this.id = id;
         this.bookedFrom = bookedFrom;
         this.bookedTo = bookedTo;
@@ -68,11 +68,11 @@ public class Booking extends BaseEntity {
         this.room = room;
     }
 
-    public Users getUsers() {
+    public User getUsers() {
         return users;
     }
 
-    public void setUsers(Users users) {
+    public void setUsers(User users) {
         this.users = users;
     }
 

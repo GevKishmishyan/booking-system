@@ -6,17 +6,19 @@ import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
+import com.epam.bookingsystem.exception.dto.ErrorDetails;
 import com.epam.bookingsystem.services.AuthService;
 import com.epam.bookingsystem.services.impl.AuthServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -24,7 +26,6 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AuthService authService;
-
 
     public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
@@ -36,10 +37,13 @@ public class AuthController {
         return ResponseEntity.ok(loginResponseDTO);
     }
 
-    @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(HttpServletRequest httpServletRequest) {
-        TokenRefreshResponseDTO tokenRefreshResponseDTO = authService.refreshToken(httpServletRequest);
-        return ResponseEntity.ok(tokenRefreshResponseDTO);
+    @ExceptionHandler()
+    protected ResponseEntity<ErrorDetails> handleValidationExceptions(MethodArgumentNotValidException exception, WebRequest request) {
+        log.error("MethodArgumentNotValidException handler , " + "message = "
+                + exception.getMessage() + " , exception type is " + exception.getClass().getName());
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
+                exception.getMessage(), request.getDescription(false));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
 
     /**
@@ -54,6 +58,13 @@ public class AuthController {
         MessageResponse messageResponse = authService.logoutUser(logOutRequestDTO, request);
         return ResponseEntity.ok(messageResponse);
     }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(HttpServletRequest httpServletRequest) {
+        TokenRefreshResponseDTO tokenRefreshResponseDTO = authService.refreshToken(httpServletRequest);
+        return ResponseEntity.ok(tokenRefreshResponseDTO);
+    }
+
 
     @PostMapping("/reset-password")
     public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {

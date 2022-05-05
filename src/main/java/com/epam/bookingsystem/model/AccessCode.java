@@ -12,13 +12,13 @@ public class AccessCode {
     private String code;
     @OneToOne
     @JoinColumn(name = "users_id")
-    private Users user;
+    private User user;
     private LocalDateTime createdAt;
 
     public AccessCode() {
     }
 
-    public AccessCode(Long id, String code, Users user, LocalDateTime createdAt) {
+    public AccessCode(Long id, String code, User user, LocalDateTime createdAt) {
         this.id = id;
         this.code = code;
         this.user = user;
@@ -41,11 +41,11 @@ public class AccessCode {
         this.code = code;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

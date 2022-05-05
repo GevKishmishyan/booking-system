@@ -1,6 +1,6 @@
 package com.epam.bookingsystem.services.impl;
 
-import com.epam.bookingsystem.model.Users;
+import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.repository.UserRepository;
 import com.epam.bookingsystem.security.CurrentUser;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Users user = userRepository.findByEmail(email)
+    User user = userRepository.findByEmail(email)
         .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
 
     return new CurrentUser(user);

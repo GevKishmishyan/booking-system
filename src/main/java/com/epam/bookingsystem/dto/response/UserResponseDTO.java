@@ -1,5 +1,6 @@
 package com.epam.bookingsystem.dto.response;
 
+import com.epam.bookingsystem.model.enums.Gender;
 import com.epam.bookingsystem.model.enums.Role;
 
 import java.time.LocalDateTime;
@@ -13,8 +14,10 @@ public class UserResponseDTO {
     private Role role;
     private String profilePicture;
     private LocalDateTime createdAt;
+    private Gender gender;
 
-    public UserResponseDTO(Long id, String firstName, String lastName, String email, Role role, String profilePicture, LocalDateTime createdAt) {
+    public UserResponseDTO(Long id, String firstName, String lastName, String email, Role role,
+                           String profilePicture, LocalDateTime createdAt, Gender gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -22,9 +25,18 @@ public class UserResponseDTO {
         this.role = role;
         this.profilePicture = profilePicture;
         this.createdAt = createdAt;
+        this.gender = gender;
     }
 
     public UserResponseDTO() {
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Long getId() {

@@ -13,7 +13,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class Users extends BaseEntity {
+public class User extends BaseEntity {
+
     @NotNull
     private String firstName;
     @NotNull
@@ -29,12 +30,13 @@ public class Users extends BaseEntity {
     private Role role;
     private boolean enabled = false;
 
-    private boolean notBlocked = true;
+    private boolean blocked = false;
 
     private String profilePicture;
     @NotNull
     private String password;
     private LocalDateTime createdAt;
+
 
     public String getFirstName() {
         return firstName;
@@ -92,12 +94,12 @@ public class Users extends BaseEntity {
         this.enabled = enabled;
     }
 
-    public boolean isNotBlocked() {
-        return notBlocked;
+    public boolean isBlocked() {
+        return blocked;
     }
 
-    public void setNotBlocked(boolean notBlocked) {
-        this.notBlocked = notBlocked;
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
     public String getProfilePicture() {
@@ -122,45 +124,5 @@ public class Users extends BaseEntity {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
-        return enabled == users.enabled &&
-                notBlocked == users.notBlocked &&
-                Objects.equals(firstName, users.firstName) &&
-                Objects.equals(lastName, users.lastName) &&
-                Objects.equals(birthday, users.birthday) &&
-                gender == users.gender &&
-                Objects.equals(email, users.email) &&
-                role == users.role &&
-                Objects.equals(profilePicture, users.profilePicture) &&
-                Objects.equals(password, users.password) &&
-                Objects.equals(createdAt, users.createdAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, birthday, gender, email, role, enabled, notBlocked, profilePicture, password, createdAt);
-    }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
-                ", gender=" + gender +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", enabled=" + enabled +
-                ", notBlocked=" + notBlocked +
-                ", profilePicture='" + profilePicture + '\'' +
-                ", password='" + password + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
     }
 }

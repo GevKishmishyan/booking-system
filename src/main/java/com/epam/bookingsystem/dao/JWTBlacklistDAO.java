@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.dao;
 
 
+import com.epam.bookingsystem.exception.JWTIsInBlacklistException;
 import com.epam.bookingsystem.security.CurrentUser;
 import com.epam.bookingsystem.security.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,11 @@ public class JWTBlacklistDAO {
     }
 
     public boolean existsInBlacklist(String jwt) {
-        return template.hasKey(jwt);
+        if (template.hasKey(jwt)){
+            log.error("jwt " + jwt + " is in blacklist");
+            throw new JWTIsInBlacklistException("you are logged out , please log in again");
+        }
+        return false;
     }
 
     public static CurrentUser getUserDetails() {

@@ -1,7 +1,6 @@
 package com.epam.bookingsystem.services.impl;
 
 import com.epam.bookingsystem.dao.JWTBlacklistDAO;
-import com.epam.bookingsystem.dto.response.UserResponseDTO;
 import com.epam.bookingsystem.dto.request.ForgotPasswordRequestDTO;
 import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
@@ -9,8 +8,11 @@ import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
+import com.epam.bookingsystem.dto.response.UserResponseDTO;
+import com.epam.bookingsystem.exception.EntityNotFoundException;
+import com.epam.bookingsystem.exception.IncorrectCurrentPasswordException;
 import com.epam.bookingsystem.model.AccessCode;
-import com.epam.bookingsystem.model.Users;
+import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.repository.AccessCodeRepository;
 import com.epam.bookingsystem.repository.UserRepository;
 import com.epam.bookingsystem.security.CurrentUser;
@@ -19,7 +21,8 @@ import com.epam.bookingsystem.services.AuthService;
 import com.epam.bookingsystem.services.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +37,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
-    private  final AccessCodeRepository accessCodeRepository;
+
+    private final AccessCodeRepository accessCodeRepository;
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
@@ -49,7 +53,8 @@ public class AuthServiceImpl implements AuthService {
     private int jwtRefreshExpirationMs;
 
 
-    public AuthServiceImpl(AccessCodeRepository accessCodeRepository, MailService mailService, AuthenticationManager authenticationManager, UserRepository userRepository
+    public AuthServiceImpl(AccessCodeRepository accessCodeRepository, MailService mailService,
+                           AuthenticationManager authenticationManager, UserRepository userRepository
             , JwtUtils jwtUtils, PasswordEncoder passwordEncoder,
                            UserDetailsServiceImpl userDetailsService, JWTBlacklistDAO jwtBlacklistDAO) {
         this.accessCodeRepository = accessCodeRepository;
@@ -65,20 +70,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponseDTO loginUser(LoginRequestDTO loginRequest) {
 
-        Authentication authentication = null;
-        try {
-            authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
-                            loginRequest.getPassword()));
-
-        } catch (BadCredentialsException exception) {
-            log.error("user tries to logIn but credentials are not correct " + loginRequest.toString());
-        } catch (DisabledException e) {
-            log.error("user tries to logIn but account is disabled " + loginRequest.toString());
-        } catch (LockedException exception) {
-            log.error("user tries to logIn but account is blocked " + loginRequest.toString());
-            throw new RuntimeException(exception);
-        }
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+                        loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -87,16 +81,12 @@ public class AuthServiceImpl implements AuthService {
         String jwtRefresh = jwtUtils.generateJwtToken(currentUser, true);
 
         // todo be replaced by using mapper
-        Users user = currentUser.getUser();
+        User user = currentUser.getUser();
         UserResponseDTO userResponseDTO = new UserResponseDTO(
                 user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getRole(), user.getProfilePicture(), user.getCreatedAt()
+                user.getRole(), user.getProfilePicture(), user.getCreatedAt(), user.getGender()
         );
-
-
-        // todo have to ask , can the password be written in the logs file (if not then I have to log only the username)
-        log.info("user with userName " + loginRequest.getUsername() + " is logged in successfully , "
-                + " jwtAccess = " + jwtAccess + " , jwtRefresh = " + jwtRefresh);
+        log.info("user with userName " + loginRequest.getUsername() + " is logged in successfully");
         return new LoginResponseDTO(jwtAccess, jwtRefresh, userResponseDTO);
     }
 
@@ -127,14 +117,17 @@ public class AuthServiceImpl implements AuthService {
         if (!belongsToSameUser) {
             log.error("jwt access and jwt refresh do not belong to the same user , "
                     + "jwt access = " + jwtAccess + "jwt refresh = " + jwtRefresh);
+            // todo replase this with right exception
+            throw new RuntimeException("JWTs dont belong to same user");
         }
         if (!expirationDateDifferenceIsCorrect) {
             log.error("jwts expiration date difference is not correct");
+            // todo replase this with right exception
+            throw new RuntimeException("jwts expiration date difference is not correct");
         }
         jwtBlacklistDAO.addJWTInBlacklist(jwtAccess);
         jwtBlacklistDAO.addJWTInBlacklist(jwtRefresh);
         log.info(" the user with username " + getUserDetails().getUsername() + " logged out successfully ");
-
         return new MessageResponse("Log out successful!");
     }
 
@@ -149,7 +142,6 @@ public class AuthServiceImpl implements AuthService {
         log.info("successfully jwt refresh for the user with username "
                 + getUserDetails().getUsername() + " with access token "
                 + jwtAccess + " , and with refresh token " + jwtRefresh);
-
         return new TokenRefreshResponseDTO(jwtAccess, jwtRefresh);
     }
 
@@ -157,36 +149,36 @@ public class AuthServiceImpl implements AuthService {
     public MessageResponse resetPassword(PasswordResetRequest passwordResetRequest) {
 
         UserDetails userDetails = getUserDetails();
-        Optional<Users> optionalUser = userRepository.findByEmail(userDetails.getUsername());
-        Users user = optionalUser.orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
+        User user = optionalUser.orElseThrow(() -> new EntityNotFoundException("User not found"));
+
         if (passwordEncoder.matches(passwordResetRequest.getCurrentPassword(), user.getPassword())) {
+
             user.setPassword(passwordEncoder.encode(passwordResetRequest.getNewPassword()));
             userRepository.save(user);
             log.info("successful password reset by a user with a username " + getUserDetails().getUsername()
                     + ", new password is " + passwordResetRequest.getCurrentPassword());
         } else {
             log.error("user with the username " + getUserDetails().getUsername() + " provided an incorrect current password");
+            throw new IncorrectCurrentPasswordException("Incorrect password");
         }
         return new MessageResponse("Password reset was successful");
     }
 
     private static CurrentUser getUserDetails() {
-        try {
-            return (CurrentUser) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-        } catch (Exception ignored) {
-            throw new RuntimeException("Access denied");
-        }
+        return (CurrentUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
     }
+
     @Override
     public void sendEmail(String email) {
         String subject = "Your verification link and code";
         String code = mailService.generatePassword();
-        Users byEmail = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException(email + "email does not exist"));
+        User byEmail = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email + "email does not exist"));
 
-        if (byEmail.isEnabled()&&byEmail.isNotBlocked()) {
+        if (byEmail.isEnabled() && !byEmail.isBlocked()) {
             Optional<AccessCode> byUserId = accessCodeRepository.findByUserId(byEmail.getId());
             if (byUserId.isPresent()) {
                 mailService.send(email, subject, code);
@@ -202,19 +194,20 @@ public class AuthServiceImpl implements AuthService {
 
                 accessCodeRepository.save(accessCode);
             }
-        }else {
+        } else {
             throw new RuntimeException("Account either disabled or blocked");
         }
     }
+
     //todo rename method
     @Override
-    public void forgotPassword( ForgotPasswordRequestDTO forgotPasswordRequestDTO) {
+    public void resetForgottenPassword(ForgotPasswordRequestDTO forgotPasswordRequestDTO) {
         Optional<AccessCode> byCode = accessCodeRepository.findByCode(forgotPasswordRequestDTO.getCode());
         if (byCode.isEmpty()) {
             throw new RuntimeException("Code does not exist");
         }
         if (forgotPasswordRequestDTO.getPassword().equals(forgotPasswordRequestDTO.getConfirmPassword())) {
-            Optional<Users> userById = userRepository.findById(byCode.get().getUser().getId());
+            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
             userById.get().setPassword(passwordEncoder.encode(forgotPasswordRequestDTO.getPassword()));
             userRepository.save(userById.get());
             accessCodeRepository.deleteById(byCode.get().getId());

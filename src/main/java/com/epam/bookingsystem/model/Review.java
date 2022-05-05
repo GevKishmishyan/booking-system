@@ -13,7 +13,7 @@ public class Review extends BaseEntity{
     private Resort resort;
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User users;
 
     public Review() {
     }
@@ -21,7 +21,7 @@ public class Review extends BaseEntity{
     public Review(long id, Double rate,
                   String comment,
                   Resort resort,
-                  Users users) {
+                  User users) {
         this.id = id;
         this.rate = rate;
         this.comment = comment;
@@ -53,11 +53,11 @@ public class Review extends BaseEntity{
         this.resort = resort;
     }
 
-    public Users getUsers() {
+    public User getUsers() {
         return users;
     }
 
-    public void setUsers(Users users) {
+    public void setUsers(User users) {
         this.users = users;
     }
 

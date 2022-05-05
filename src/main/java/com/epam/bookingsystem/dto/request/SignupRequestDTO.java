@@ -2,12 +2,10 @@ package com.epam.bookingsystem.dto.request;
 
 
 import com.epam.bookingsystem.anotations.UserOrHotelManager;
+import com.epam.bookingsystem.model.enums.Gender;
 import com.epam.bookingsystem.model.enums.Role;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class SignupRequestDTO {
 
@@ -30,15 +28,27 @@ public class SignupRequestDTO {
     @NotEmpty(message = "*Please provide your password")
     private String password;
 
+    @NotNull
+    private Gender gender;
+
     public SignupRequestDTO() {
     }
 
-    public SignupRequestDTO(String firstName, String lastName, Role role, String email, String password) {
+    public SignupRequestDTO(String firstName, String lastName, Role role, String email, String password, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.email = email;
         this.password = password;
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getFirstName() {

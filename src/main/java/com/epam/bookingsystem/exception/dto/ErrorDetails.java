@@ -3,6 +3,7 @@ package com.epam.bookingsystem.exception.dto;
 import java.util.Date;
 
 public class ErrorDetails {
+
     private Date timestamp;
     private String exception;
     private String message;
@@ -19,35 +20,35 @@ public class ErrorDetails {
     public ErrorDetails() {
     }
 
-    public Date getCustom_timestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setCustom_timestamp(Date timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
-    public String getCustom_exception() {
+    public String getException() {
         return exception;
     }
 
-    public void setCustom_exception(String exception) {
+    public void setException(String exception) {
         this.exception = exception;
     }
 
-    public String getCustom_message() {
+    public String getMessage() {
         return message;
     }
 
-    public void setCustom_message(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public String getCustom_details() {
+    public String getDetails() {
         return details;
     }
 
-    public void setCustom_details(String details) {
+    public void setDetails(String details) {
         this.details = details;
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.bookingsystem;
 
-import com.epam.bookingsystem.model.Users;
+import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.model.enums.Role;
 import com.epam.bookingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,12 @@ public class BookingSystemApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Users admin = new Users();
+        User admin = new User();
         admin.setFirstName("admin");
         admin.setLastName("admin");
         admin.setEmail("admin@gmail.com");
         admin.setRole(Role.ADMIN);
         admin.setEnabled(true);
-        admin.setNotBlocked(true);
         admin.setPassword(passwordEncoder.encode("1234567"));
         admin.setCreatedAt(LocalDateTime.now());
 
@@ -42,13 +41,12 @@ public class BookingSystemApplication implements CommandLineRunner {
         }
 
 
-        Users moderator = new Users();
+        User moderator = new User();
         moderator.setFirstName("moderator");
         moderator.setLastName("moderator");
         moderator.setEmail("moderator@gmail.com");
         moderator.setRole(Role.MODERATOR);
         moderator.setEnabled(true);
-        moderator.setNotBlocked(true);
         moderator.setPassword(passwordEncoder.encode("1234567"));
         moderator.setCreatedAt(LocalDateTime.now());
 

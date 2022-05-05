@@ -1,11 +1,16 @@
 package com.epam.bookingsystem.security.util;
 
+import com.epam.bookingsystem.exception.dto.ErrorDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -44,7 +49,6 @@ public class JwtUtils {
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7, headerAuth.length());
         }
-
         return null;
     }
 
@@ -59,18 +63,36 @@ public class JwtUtils {
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: ", e.getMessage());
+            throw e;
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token: ", e.getMessage());
+            throw e;
         } catch (ExpiredJwtException e) {
             log.error("JWT token is expired: ", e.getMessage());
+            throw e;
         } catch (UnsupportedJwtException e) {
             log.error("JWT token is unsupported: ", e.getMessage());
+            throw e;
         } catch (IllegalArgumentException e) {
             log.error("JWT claims string is empty: ", e.getMessage());
+            throw e;
         }
-        return false;
-
     }
+
+    @ExceptionHandler()
+    protected ResponseEntity<Object> handleAllExceptions(Exception exception, WebRequest request) {
+        log.error("in jwt util class    all exception handler , " + "message = "
+                + exception.getMessage() + " , exception type is " + exception.getClass().getName());
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
+                exception.getMessage(), request.getDescription(false));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
+    }
+
+
+
+
+
+
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
