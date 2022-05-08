@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * It can be used by one of the security filters as an AuthenticationException handler,
@@ -34,10 +32,10 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException exception)
             throws IOException, ServletException {
 
-        log.error("RestAuthenticationEntryPoint " + "Unauthorized error: {}", exception.getMessage() + "exception is " + exception.getClass().getSimpleName() );
+        log.error("RestAuthenticationEntryPoint " + "Unauthorized error: {}", exception.getMessage() + " , exception type is " + exception.getClass().getSimpleName() );
 
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
-                exception.getMessage(), request.getServletPath());
+                exception.getMessage(), request.getServletPath(),401);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

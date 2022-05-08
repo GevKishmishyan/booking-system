@@ -2,15 +2,13 @@ package com.epam.bookingsystem.services.impl;
 
 import com.epam.bookingsystem.dao.JWTBlacklistDAO;
 import com.epam.bookingsystem.dto.request.ForgotPasswordRequestDTO;
-import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
 import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
-import com.epam.bookingsystem.dto.response.UserResponseDTO;
-import com.epam.bookingsystem.exception.EntityNotFoundException;
-import com.epam.bookingsystem.exception.IncorrectCurrentPasswordException;
+import com.epam.bookingsystem.exception.*;
+import com.epam.bookingsystem.mapper.impl.UserMapper;
 import com.epam.bookingsystem.model.AccessCode;
 import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.repository.AccessCodeRepository;
@@ -57,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
                            AuthenticationManager authenticationManager, UserRepository userRepository
             , JwtUtils jwtUtils, PasswordEncoder passwordEncoder,
                            UserDetailsServiceImpl userDetailsService, JWTBlacklistDAO jwtBlacklistDAO) {
+
         this.accessCodeRepository = accessCodeRepository;
         this.mailService = mailService;
         this.authenticationManager = authenticationManager;
@@ -65,6 +64,7 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.jwtBlacklistDAO = jwtBlacklistDAO;
+
     }
 
     @Override
@@ -80,28 +80,24 @@ public class AuthServiceImpl implements AuthService {
         String jwtAccess = jwtUtils.generateJwtToken(currentUser, false);
         String jwtRefresh = jwtUtils.generateJwtToken(currentUser, true);
 
-        // todo be replaced by using mapper
-        User user = currentUser.getUser();
-        UserResponseDTO userResponseDTO = new UserResponseDTO(
-                user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
-                user.getRole(), user.getProfilePicture(), user.getCreatedAt(), user.getGender()
-        );
         log.info("user with userName " + loginRequest.getUsername() + " is logged in successfully");
-        return new LoginResponseDTO(jwtAccess, jwtRefresh, userResponseDTO);
+        return new LoginResponseDTO(jwtAccess, jwtRefresh, UserMapper.userToDto(currentUser.getUser()));
     }
 
     /**
      * Logouts the user from the system by adding it`s access jwt and refresh jwt to the redis database blacklist.
      *
-     * @param logOutRequestDTO contains the refresh token has to be added in the redis database blacklist.
-     * @param request          HttpServletRequest object from witch has to be taken the access jwt token to be added to the redis database blacklist.
+     * @param request HttpServletRequest object from witch has to be taken the access jwt token to be added to the redis database blacklist.
      * @return returns a successful logout message if the logout process was successful.
      */
     @Override
-    public MessageResponse logoutUser(LogOutRequestDTO logOutRequestDTO, HttpServletRequest request) {
+    public MessageResponse logoutUser(HttpServletRequest request) {
 
         String jwtAccess = jwtUtils.parseJwt(request);
-        String jwtRefresh = logOutRequestDTO.getJwtRefresh();
+        String jwtRefresh = jwtUtils.parseRefreshJwt(request);
+        if (jwtRefresh == null) {
+            throw new RefreshJWTIsEmptyException("To log out, you also need to provide a refresh token.");
+        }
 
         jwtUtils.validateJwtToken(jwtAccess);
         jwtUtils.validateJwtToken(jwtRefresh);
@@ -117,23 +113,25 @@ public class AuthServiceImpl implements AuthService {
         if (!belongsToSameUser) {
             log.error("jwt access and jwt refresh do not belong to the same user , "
                     + "jwt access = " + jwtAccess + "jwt refresh = " + jwtRefresh);
-            // todo replase this with right exception
-            throw new RuntimeException("JWTs dont belong to same user");
+            throw new DifferentUserJWTsException("JWTs dont belong to same user");
         }
         if (!expirationDateDifferenceIsCorrect) {
-            log.error("jwts expiration date difference is not correct");
-            // todo replase this with right exception
-            throw new RuntimeException("jwts expiration date difference is not correct");
+            log.error("Expiration date difference of access jwt and refresh jwt is not correct.");
+            throw new JWTsExpirationDateDifferenceIsNotCorrectException("Expiration date difference of access jwt and refresh jwt is not correct.");
         }
+
         jwtBlacklistDAO.addJWTInBlacklist(jwtAccess);
         jwtBlacklistDAO.addJWTInBlacklist(jwtRefresh);
-        log.info(" the user with username " + getUserDetails().getUsername() + " logged out successfully ");
+
+        log.info("User with username " + getUserDetails().getUsername() + "successfully logged out.");
         return new MessageResponse("Log out successful!");
     }
 
     @Override
     public TokenRefreshResponseDTO refreshToken(HttpServletRequest httpServletRequest) {
+
         String requestJwtRefresh = jwtUtils.parseJwt(httpServletRequest);
+
         CurrentUser currentUser = (CurrentUser) userDetailsService.loadUserByUsername(
                 jwtUtils.getUserNameFromJwtToken(requestJwtRefresh));
 
@@ -147,6 +145,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public MessageResponse resetPassword(PasswordResetRequest passwordResetRequest) {
+
+        if (!passwordResetRequest.getNewPassword().equals(passwordResetRequest.getConformNewPassword())) {
+            throw new RuntimeException("Password and confirm_password do not match");
+        }
 
         UserDetails userDetails = getUserDetails();
         Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
@@ -199,7 +201,6 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    //todo rename method
     @Override
     public void resetForgottenPassword(ForgotPasswordRequestDTO forgotPasswordRequestDTO) {
         Optional<AccessCode> byCode = accessCodeRepository.findByCode(forgotPasswordRequestDTO.getCode());

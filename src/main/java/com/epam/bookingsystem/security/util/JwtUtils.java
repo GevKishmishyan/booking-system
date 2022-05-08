@@ -28,7 +28,6 @@ public class JwtUtils {
     @Value("${jwt.refreshExpirationMs}")
     private int jwtRefreshExpirationMs;
 
-
     public String generateJwtToken(UserDetails userDetails, boolean forRefresh) {
         Map<String, Object> claims = new HashMap<>();
 
@@ -45,6 +44,15 @@ public class JwtUtils {
 
     public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7, headerAuth.length());
+        }
+        return null;
+    }
+
+    public String parseRefreshJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Refresh-Toket");
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7, headerAuth.length());
@@ -79,21 +87,6 @@ public class JwtUtils {
         }
     }
 
-    @ExceptionHandler()
-    protected ResponseEntity<Object> handleAllExceptions(Exception exception, WebRequest request) {
-        log.error("in jwt util class    all exception handler , " + "message = "
-                + exception.getMessage() + " , exception type is " + exception.getClass().getName());
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
-                exception.getMessage(), request.getDescription(false));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
-    }
-
-
-
-
-
-
-
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -121,5 +114,6 @@ public class JwtUtils {
         }
         return new Date(createdDate.getTime() + jwtExpirationInMs);
     }
+
 
 }

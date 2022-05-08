@@ -1,7 +1,6 @@
 package com.epam.bookingsystem.services;
 
 import com.epam.bookingsystem.dto.request.ForgotPasswordRequestDTO;
-import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
 import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
@@ -16,11 +15,10 @@ public interface AuthService {
     /**
      * Logouts the user from the system by adding it`s access jwt and refresh jwt to the redis database blacklist.
      *
-     * @param logOutRequestDTO contains the refresh token has to be added in the redis database blacklist.
      * @param request          HttpServletRequest object from witch has to be taken the access jwt token to be added to the redis database blacklist.
      * @return returns a successful logout message if the logout process was successful.
      */
-    MessageResponse logoutUser(LogOutRequestDTO logOutRequestDTO, HttpServletRequest request);
+    MessageResponse logoutUser(HttpServletRequest request);
 
     TokenRefreshResponseDTO refreshToken(HttpServletRequest httpServletRequest);
 

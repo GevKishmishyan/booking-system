@@ -5,20 +5,22 @@ import javax.validation.constraints.Size;
 
 public class PasswordResetRequest {
 
-    @NotBlank
+    @NotBlank(message = "Please provide your password")
     @Size(min = 6, max = 24)
     String currentPassword;
 
-    @NotBlank
+    @NotBlank(message = "Please provide new password to reset your password")
     @Size(min = 6, max = 24)
     String newPassword;
 
-    public PasswordResetRequest(String currentPassword, String newPassword) {
+    @NotBlank(message = "Please conform your new password")
+    @Size(min = 6, max = 24)
+    String conformNewPassword;
+
+    public PasswordResetRequest(String currentPassword, String newPassword, String conformNewPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
-    }
-
-    public PasswordResetRequest() {
+        this.conformNewPassword = conformNewPassword;
     }
 
     public String getCurrentPassword() {
@@ -35,5 +37,13 @@ public class PasswordResetRequest {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getConformNewPassword() {
+        return conformNewPassword;
+    }
+
+    public void setConformNewPassword(String conformNewPassword) {
+        this.conformNewPassword = conformNewPassword;
     }
 }

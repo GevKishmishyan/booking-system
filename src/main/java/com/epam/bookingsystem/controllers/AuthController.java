@@ -1,6 +1,5 @@
 package com.epam.bookingsystem.controllers;
 
-import com.epam.bookingsystem.dto.request.LogOutRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
 import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
@@ -42,20 +41,19 @@ public class AuthController {
         log.error("MethodArgumentNotValidException handler , " + "message = "
                 + exception.getMessage() + " , exception type is " + exception.getClass().getName());
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
-                exception.getMessage(), request.getDescription(false));
+                exception.getMessage(), request.getDescription(false), 400);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
     }
 
     /**
      * Logouts the user from the system by adding it`s access jwt and refresh jwt to the redis database blacklist.
      *
-     * @param logOutRequestDTO contains the refresh token has to be added in the redis database blacklist.
-     * @param request          HttpServletRequest object from witch has to be taken the access jwt token to be added to the redis database blacklist.
+     * @param request HttpServletRequest object from witch has to be taken the access jwt token to be added to the redis database blacklist.
      * @return returns a successful logout message if the logout process was successful.
      */
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequestDTO logOutRequestDTO, HttpServletRequest request) {
-        MessageResponse messageResponse = authService.logoutUser(logOutRequestDTO, request);
+    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
+        MessageResponse messageResponse = authService.logoutUser(request);
         return ResponseEntity.ok(messageResponse);
     }
 
@@ -71,6 +69,5 @@ public class AuthController {
         MessageResponse messageResponse = authService.resetPassword(passwordResetRequest);
         return ResponseEntity.ok().body(messageResponse);
     }
-
 
 }

@@ -24,9 +24,7 @@ public class SignupController {
     private final SignupService signupService;
 
     public SignupController( SignupService signupService) {
-
         this.signupService = signupService;
-
     }
 
     @PostMapping("/user")
@@ -43,16 +41,13 @@ public class SignupController {
         }
         UserResponseDTO savedUser = signupService.save(UserMapper.dtoToUser(signupRequestDTO));
         return ResponseEntity.ok().body(savedUser);
-
     }
 
     @GetMapping("/confirm-email/{code}")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<?> confirmEmail(@PathVariable("code") String code) {
-        System.out.println("Controller confirmEmail() ");
         signupService.confirmEmail(code);
-        System.out.println("before return");
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 
 }

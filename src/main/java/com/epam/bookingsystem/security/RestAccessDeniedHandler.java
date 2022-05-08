@@ -23,10 +23,10 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,
                        AccessDeniedException exception) throws IOException, ServletException {
-        log.error("AccessDeniedException " + "date = " + new Date() + " message = " + exception.getMessage());
+        log.error("Exception = " + exception.getClass().getSimpleName() + " date = " + new Date() + " message = " + exception.getMessage());
 
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
-                exception.getMessage(), httpServletRequest.getServletPath());
+                exception.getMessage(), httpServletRequest.getServletPath(),403);
 
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setStatus(403);

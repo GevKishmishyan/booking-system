@@ -8,13 +8,15 @@ public class ErrorDetails {
     private String exception;
     private String message;
     private String details;
+    private int status;
 
     public ErrorDetails(Date timestamp, String exception,
-                        String message, String details) {
+                        String message, String details , int status) {
         this.timestamp = timestamp;
         this.exception = exception;
         this.message = message;
         this.details = details;
+        this.status = status;
     }
 
     public ErrorDetails() {
@@ -50,5 +52,13 @@ public class ErrorDetails {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
