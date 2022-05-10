@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.controllers;
 
 import com.epam.bookingsystem.dto.request.SignupRequestDTO;
+import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
 import com.epam.bookingsystem.mapper.impl.UserMapper;
 import com.epam.bookingsystem.model.User;
@@ -23,7 +24,7 @@ public class SignupController {
 
     private final SignupService signupService;
 
-    public SignupController( SignupService signupService) {
+    public SignupController(SignupService signupService) {
         this.signupService = signupService;
     }
 
@@ -43,11 +44,10 @@ public class SignupController {
         return ResponseEntity.ok().body(savedUser);
     }
 
-    @GetMapping("/confirm-email/{code}")
+    @GetMapping("/confirm-email")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResponseEntity<?> confirmEmail(@PathVariable("code") String code) {
-        signupService.confirmEmail(code);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> confirmEmail(@RequestParam("code") String code) {
+        return ResponseEntity.ok().body(signupService.confirmEmail(code));
     }
 
 }

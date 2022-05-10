@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.services.impl;
 
 
+import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
 import com.epam.bookingsystem.mapper.impl.UserMapper;
 import com.epam.bookingsystem.model.AccessCode;
@@ -38,34 +39,35 @@ public class SignupServiceImpl implements SignupService {
     }
 
     @Override
-    public void confirmEmail(String code) {
+    public MessageResponse confirmEmail(String code) {
         Optional<AccessCode> byCode = accessCodeRepository.findByCode(code);
         if (byCode.isEmpty()) {
-          throw new RuntimeException("Code does not exist");
+            throw new RuntimeException("Code does not exist");
         }
 
         Optional<User> byId = userRepository.findById(byCode.get().getUser().getId());
-        if (byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new RuntimeException("User does not exist");
         }
         byId.get().setEnabled(true);
         userRepository.save(byId.get());
         accessCodeRepository.deleteById(byCode.get().getId());
-
-
+        return new MessageResponse("Your email has been successfully confirmed, now you can log in to your account");
     }
 
     @Override
     public UserResponseDTO save(User user) {
-        String subject = "Your verification link and code";
+        String subject = "Here is your verification code";
         String code = mailService.generatePassword();
-        String confirmLink="http://localhost:8080/signup/confirm-email/"+code;
-        String mailText="Please click on this link to confirm your email \n"+confirmLink;
+
+        String mailText = "Verification code is " + code;
+
         user.setPassword(encoder.encode(user.getPassword()));
 
         UserResponseDTO userResponse = UserMapper.userToDto(userRepository.save(user));
 
-        mailService.send(user.getEmail(),subject,mailText);
+        mailService.send(user.getEmail(), subject, mailText);
+
 
         AccessCode accessCode = new AccessCode();
         accessCode.setCode(code);
@@ -75,6 +77,5 @@ public class SignupServiceImpl implements SignupService {
         accessCodeRepository.save(accessCode);
         return userResponse;
     }
-
 
 }
