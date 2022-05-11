@@ -1,5 +1,6 @@
 package com.epam.bookingsystem.controllers;
 
+import com.epam.bookingsystem.dto.request.ForgotPasswordRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
 import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
@@ -68,6 +69,17 @@ public class AuthController {
     public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
         MessageResponse messageResponse = authService.resetPassword(passwordResetRequest);
         return ResponseEntity.ok().body(messageResponse);
+    }
+
+
+    @PostMapping("/forgot_password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO forgotPasswordDTO){
+        try {
+            authService.forgotPassword(forgotPasswordDTO);
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

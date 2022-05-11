@@ -1,4 +1,6 @@
-package com.epam.bookingsystem.anotations;
+package com.epam.bookingsystem.validation.annotation;
+
+import com.epam.bookingsystem.validation.UserOrHotelManagerValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

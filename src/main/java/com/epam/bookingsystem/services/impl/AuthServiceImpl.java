@@ -176,9 +176,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void sendEmail(String email) {
-        String subject = "Your verification link and code";
-        String code = mailService.generatePassword();
+
+
         User byEmail = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email + "email does not exist"));
+        String subject = "Your verification code ";
+        String code = mailService.generatePassword();
 
         if (byEmail.isEnabled() && !byEmail.isBlocked()) {
             Optional<AccessCode> byUserId = accessCodeRepository.findByUserId(byEmail.getId());
@@ -216,5 +218,21 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Password and confirm_password do not match");
         }
 
+    }
+
+    @Override
+    public void forgotPassword(ForgotPasswordRequestDTO forgotPasswordDTO) {
+        Optional<AccessCode> byCode = accessCodeRepository.findByCode(forgotPasswordDTO.getCode());
+        if (byCode.isEmpty()) {
+            throw new RuntimeException("Code does not exist");
+        }
+        if (forgotPasswordDTO.getPassword().equals(forgotPasswordDTO.getConfirmPassword())) {
+            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
+            userById.get().setPassword(passwordEncoder.encode(forgotPasswordDTO.getPassword()));
+            userRepository.save(userById.get());
+            accessCodeRepository.deleteById(byCode.get().getId());
+        } else {
+            throw new RuntimeException("Password and confirm_password do not match");
+        }
     }
 }

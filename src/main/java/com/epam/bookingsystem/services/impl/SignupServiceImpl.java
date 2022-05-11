@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.services.impl;
 
 
+import com.epam.bookingsystem.dto.request.SignupRequestDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
 import com.epam.bookingsystem.mapper.impl.UserMapper;
@@ -45,6 +46,9 @@ public class SignupServiceImpl implements SignupService {
             throw new RuntimeException("Code does not exist");
         }
 
+        if (byCode.get().getCreatedDate().isBefore(LocalDateTime.now().minusMinutes(1)) ){
+            throw new RuntimeException("The deadline for providing information by mail has expired");
+        }
         Optional<User> byId = userRepository.findById(byCode.get().getUser().getId());
         if (byId.isEmpty()) {
             throw new RuntimeException("User does not exist");
@@ -56,26 +60,33 @@ public class SignupServiceImpl implements SignupService {
     }
 
     @Override
-    public UserResponseDTO save(User user) {
-        String subject = "Here is your verification code";
-        String code = mailService.generatePassword();
+    public UserResponseDTO save(SignupRequestDTO signupRequestDTO) {
 
-        String mailText = "Verification code is " + code;
+        if (!signupRequestDTO.getPassword().equals(signupRequestDTO.getConfirmPassword())) {
+            throw new RuntimeException("Wrong password confirmation");
+        }
 
+        User user = UserMapper.dtoToUser(signupRequestDTO);
         user.setPassword(encoder.encode(user.getPassword()));
-
         UserResponseDTO userResponse = UserMapper.userToDto(userRepository.save(user));
 
-        mailService.send(user.getEmail(), subject, mailText);
-
+        String code = mailService.generatePassword();
 
         AccessCode accessCode = new AccessCode();
         accessCode.setCode(code);
         accessCode.setUser(user);
         accessCode.setCreatedDate(LocalDateTime.now());
-
         accessCodeRepository.save(accessCode);
+
+        sendEmail(user.getEmail(), code);
         return userResponse;
+    }
+
+    private void sendEmail(String email, String code) {
+        String subject = "Here is your verification code";
+        String confirmLink = "http://localhost:8080/signup/confirm-email/" + code;
+        String mailText = "Please click on this link to confirm your email \n" + confirmLink;
+        mailService.send(email, subject, mailText);
     }
 
 }

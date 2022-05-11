@@ -25,4 +25,8 @@ public interface AuthService {
     MessageResponse resetPassword(PasswordResetRequest passwordResetRequest);
     void sendEmail(String email);
     void resetForgottenPassword(ForgotPasswordRequestDTO forgotPasswordRequestDTO);
+
+    void forgotPassword(ForgotPasswordRequestDTO forgotPasswordDTO);
+
 }
+

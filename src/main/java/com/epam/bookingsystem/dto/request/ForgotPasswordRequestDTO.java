@@ -1,18 +1,12 @@
 package com.epam.bookingsystem.dto.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import com.epam.bookingsystem.validation.annotation.ValidPassword;
 
 public class ForgotPasswordRequestDTO {
     private String code;
-    @Size(min = 6,max = 24)
-    @NotBlank
-    @NotEmpty(message = "*Please provide your password")
+    @ValidPassword
     private String password;
-    @Size(min = 6,max = 24)
-    @NotBlank
-    @NotEmpty(message = "*Please provide your password")
+    @ValidPassword
     private String confirmPassword;
 
     public ForgotPasswordRequestDTO(String code, String password, String confirmPassword) {

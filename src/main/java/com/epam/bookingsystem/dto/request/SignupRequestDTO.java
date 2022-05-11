@@ -1,7 +1,8 @@
 package com.epam.bookingsystem.dto.request;
 
 
-import com.epam.bookingsystem.anotations.UserOrHotelManager;
+import com.epam.bookingsystem.validation.annotation.UserOrHotelManager;
+import com.epam.bookingsystem.validation.annotation.ValidPassword;
 import com.epam.bookingsystem.model.enums.Gender;
 import com.epam.bookingsystem.model.enums.Role;
 
@@ -23,10 +24,10 @@ public class SignupRequestDTO {
     @Email
     private String email;
 
-    @NotBlank
-    @Size(min = 6, max = 24)
-    @NotEmpty(message = "*Please provide your password")
+    @ValidPassword
     private String password;
+    @ValidPassword
+    private String confirmPassword;
 
     @NotNull
     private Gender gender;
@@ -41,6 +42,14 @@ public class SignupRequestDTO {
         this.email = email;
         this.password = password;
         this.gender = gender;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public Gender getGender() {
@@ -93,21 +102,14 @@ public class SignupRequestDTO {
 
     @Override
     public String toString() {
-        return "UserRegisterRequest{"
-                + ", firstName='"
-                + firstName
-                + '\''
-                + ", lastName='"
-                + lastName
-                + '\''
-                + ", role="
-                + role
-                + ", email='"
-                + email
-                + '\''
-                + ", password='"
-                + password
-                + '\''
-                + '}';
+        return "SignupRequestDTO{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role=" + role +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", gender=" + gender +
+                '}';
     }
 }

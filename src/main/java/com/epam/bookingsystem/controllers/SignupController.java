@@ -40,14 +40,16 @@ public class SignupController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        UserResponseDTO savedUser = signupService.save(UserMapper.dtoToUser(signupRequestDTO));
+        UserResponseDTO savedUser = signupService.save(signupRequestDTO);
         return ResponseEntity.ok().body(savedUser);
     }
 
-    @GetMapping("/confirm-email")
+    @GetMapping("/confirm-email/{code}")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResponseEntity<?> confirmEmail(@RequestParam("code") String code) {
-        return ResponseEntity.ok().body(signupService.confirmEmail(code));
+    public ResponseEntity<?> confirmEmail(@PathVariable("code") String code) {
+        signupService.confirmEmail(code);
+        return ResponseEntity.ok().build();
     }
+
 
 }

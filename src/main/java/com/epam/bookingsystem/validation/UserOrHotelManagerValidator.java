@@ -1,6 +1,7 @@
-package com.epam.bookingsystem.anotations;
+package com.epam.bookingsystem.validation;
 
 import com.epam.bookingsystem.model.enums.Role;
+import com.epam.bookingsystem.validation.annotation.UserOrHotelManager;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
