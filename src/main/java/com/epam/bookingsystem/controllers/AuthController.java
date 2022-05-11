@@ -12,6 +12,7 @@ import com.epam.bookingsystem.services.impl.AuthServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -71,14 +72,15 @@ public class AuthController {
         return ResponseEntity.ok().body(messageResponse);
     }
 
+    @PostMapping("/send-mail")
+    public ResponseEntity<?> sendMain(@RequestParam("email") String email) {
+        authService.sendEmail(email);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/forgot_password")
-    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO forgotPasswordDTO){
-        try {
-            authService.forgotPassword(forgotPasswordDTO);
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO forgotPasswordDTO) {
+        authService.forgotPassword(forgotPasswordDTO);
         return ResponseEntity.ok().build();
     }
 
