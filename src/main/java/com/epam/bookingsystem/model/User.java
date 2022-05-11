@@ -32,7 +32,8 @@ public class User extends BaseEntity {
 
     private boolean blocked = false;
 
-    private String profilePicture;
+    private String profilePicture = "C:\\BookingSystem\\pictures\\userDefaultProfilePicture.png";
+
     @NotNull
     private String password;
     private LocalDateTime createdAt;
