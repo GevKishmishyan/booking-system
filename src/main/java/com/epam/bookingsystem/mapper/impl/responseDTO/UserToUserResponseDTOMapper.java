@@ -1,4 +1,4 @@
-package com.epam.bookingsystem.mapper.impl;
+package com.epam.bookingsystem.mapper.impl.responseDTO;
 
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
 import com.epam.bookingsystem.model.User;

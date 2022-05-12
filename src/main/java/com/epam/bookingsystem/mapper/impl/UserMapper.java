@@ -1,6 +1,6 @@
 package com.epam.bookingsystem.mapper.impl;
 
-import com.epam.bookingsystem.dto.request.SignupRequestDTO;
+import com.epam.bookingsystem.dto.request.SignupUserRequestDTO;
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
 import com.epam.bookingsystem.model.User;
 
@@ -12,7 +12,7 @@ public class UserMapper {
         throw new IllegalStateException("Can not create an object of utility class.");
     }
 
-    public static User dtoToUser(SignupRequestDTO request) {
+    public static User dtoToUser(SignupUserRequestDTO request) {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setLastName(request.getLastName());

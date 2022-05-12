@@ -1,13 +1,13 @@
-package com.epam.bookingsystem.mapper.impl;
+package com.epam.bookingsystem.mapper.impl.requestDTO;
 
-import com.epam.bookingsystem.dto.request.SignupRequestDTO;
+import com.epam.bookingsystem.dto.request.SignupUserRequestDTO;
 import com.epam.bookingsystem.model.User;
 
 import java.time.LocalDateTime;
 
 public class SignupRequestDTOToUserMapper {
 
-    public static User signupRequestDTOToUser(SignupRequestDTO request) {
+    public static User signupRequestDTOToUser(SignupUserRequestDTO request) {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setLastName(request.getLastName());
@@ -19,5 +19,7 @@ public class SignupRequestDTOToUserMapper {
 
         return user;
     }
+
+
 
 }

@@ -1,16 +1,11 @@
 package com.epam.bookingsystem.controllers;
 
-import com.epam.bookingsystem.dto.request.SignupRequestDTO;
-import com.epam.bookingsystem.dto.response.MessageResponse;
+import com.epam.bookingsystem.dto.request.SignupUserRequestDTO;
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
-import com.epam.bookingsystem.mapper.impl.UserMapper;
 import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.services.SignupService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +24,8 @@ public class SignupController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequestDTO signupRequestDTO, BindingResult bindingResult) {
-        Optional<User> byEmail = signupService.findByEmail(signupRequestDTO.getEmail());
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupUserRequestDTO signupUserRequestDTO, BindingResult bindingResult) {
+        Optional<User> byEmail = signupService.findByEmail(signupUserRequestDTO.getEmail());
         if (byEmail.isPresent()) {
             bindingResult.rejectValue(
                     "email",
@@ -40,16 +35,26 @@ public class SignupController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
-        UserResponseDTO savedUser = signupService.save(signupRequestDTO);
+        UserResponseDTO savedUser = signupService.saveUser(signupUserRequestDTO);
         return ResponseEntity.ok().body(savedUser);
+    }
+    @PostMapping("/moderator")
+    public ResponseEntity<?> registerModerator(@RequestParam("email")String email){
+
+        UserResponseDTO save = signupService.saveModerator(email);
+        return ResponseEntity.ok().body(save);
     }
 
     @GetMapping("/confirm-email/{code}")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<?> confirmEmail(@PathVariable("code") String code) {
         signupService.confirmEmail(code);
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/send-new-access-code")
+    public ResponseEntity<?> sendNewAccessCode(@RequestParam("email") String email) {
+        signupService.sendNewAccessCode(email);
+        return ResponseEntity.ok().build();
+    }
 
 }

@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/refresh-token").authenticated()
                 .antMatchers("/auth/reset-password").authenticated()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/signup/moderator").hasRole("ADMIN")
                 .antMatchers("/signup/**").permitAll()
                 //
                 .antMatchers("/test/user").hasAnyRole("USER", "MODERATOR", "ADMIN")

@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = UserOrHotelManagerValidator.class)
-public @interface UserOrHotelManager {
+public @interface ValidRole {
 
 String message() default  "Not valid role";
 Class<?>[] groups() default { };

@@ -36,6 +36,7 @@ public class User extends BaseEntity {
 
     @NotNull
     private String password;
+
     private LocalDateTime createdAt;
 
 
