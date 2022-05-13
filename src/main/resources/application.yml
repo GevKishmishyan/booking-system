@@ -16,8 +16,8 @@ jwt:
   secret: bookingSystem
   # those are the expiration durations for jwt access and jwt refresh
   # introduced in milliseconds which are equal to 3 minutes and 5 minutes
-  accessExpirationMs: 180000
-  refreshExpirationMs: 300000
+  accessExpirationMs: 18000000
+  refreshExpirationMs: 30000000
 
 redis:
   # exchange these fields for yours

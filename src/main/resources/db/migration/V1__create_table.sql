@@ -135,6 +135,13 @@ CREATE TABLE IF NOT EXISTS booking_system.access_code(
      created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
      );
 
+CREATE TABLE IF NOT EXISTS booking_system.hotel_register_request(
+     id                   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+     comment              VARCHAR(255) NOT NULL,
+     request_status       VARCHAR(255),
+     resort_id            BIGINT UNIQUE
+);
+
 ALTER TABLE booking_system.room_pictures
     ADD CONSTRAINT room_pictures_resort_number_fk
         FOREIGN KEY (resort_number_id) REFERENCES booking_system.resort_number (id)
@@ -193,6 +200,11 @@ ALTER TABLE booking_system.review
 ALTER TABLE booking_system.access_code
     ADD CONSTRAINT access_code_user_fk
         FOREIGN KEY (users_id) REFERENCES booking_system.users(id)
+            ON DELETE CASCADE ON UPDATE RESTRICT ;
+
+ALTER TABLE booking_system.hotel_register_request
+    ADD CONSTRAINT hotel_register_request_resort_fk
+        FOREIGN KEY (resort_id) REFERENCES booking_system.resort(id)
             ON DELETE CASCADE ON UPDATE RESTRICT ;
 
 
