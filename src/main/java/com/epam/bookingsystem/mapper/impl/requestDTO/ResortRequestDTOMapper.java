@@ -1,8 +1,6 @@
 package com.epam.bookingsystem.mapper.impl.requestDTO;
 
-import com.epam.bookingsystem.dto.request.AddressRequestDTO;
 import com.epam.bookingsystem.dto.request.ResortRequestDTO;
-import com.epam.bookingsystem.model.Address;
 import com.epam.bookingsystem.model.Resort;
 
 public class ResortRequestDTOMapper {
@@ -13,6 +11,7 @@ public class ResortRequestDTOMapper {
         resort.setStar(resortRequestDTO.getStar());
         resort.setEmail(resortRequestDTO.getEmail());
         resort.setTelephone(resortRequestDTO.getTelephone());
+        resort.setDescription(resortRequestDTO.getDescription());
         return resort;
     }
 }

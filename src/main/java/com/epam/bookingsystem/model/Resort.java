@@ -21,7 +21,7 @@ public class Resort extends BaseEntity {
     @NotNull
     @Email
     private String email;
-    @Pattern(regexp = "(^$|[0-9]{10})")
+//    @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephone;
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;

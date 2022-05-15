@@ -18,10 +18,18 @@ public class ResortRequestDTO {
     @NotNull
     @Email
     private String email;
-    @Pattern(regexp = "(^$|[0-9]{10})")
+//    @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephone;
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+    AddressRequestDTO addressRequestDTO;
+    ResortDetailsRequestDTO resortDetailsRequestDTO;
+    ResortNumberRequestDTO resortNumberRequestDTO;
+    RoomDetailsRequestDTO roomDetailsRequestDTO;
+    RoomPicturesRequestDTO roomPicturesRequestDTO;
+    RoomRequestDTO roomRequestDTO;
+    TinRequestDTO tinRequestDTO;
 
     public String getName() {
         return name;
@@ -69,5 +77,61 @@ public class ResortRequestDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public AddressRequestDTO getAddressRequestDTO() {
+        return addressRequestDTO;
+    }
+
+    public void setAddressRequestDTO(AddressRequestDTO addressRequestDTO) {
+        this.addressRequestDTO = addressRequestDTO;
+    }
+
+    public ResortDetailsRequestDTO getResortDetailsRequestDTO() {
+        return resortDetailsRequestDTO;
+    }
+
+    public void setResortDetailsRequestDTO(ResortDetailsRequestDTO resortDetailsRequestDTO) {
+        this.resortDetailsRequestDTO = resortDetailsRequestDTO;
+    }
+
+    public ResortNumberRequestDTO getResortNumberRequestDTO() {
+        return resortNumberRequestDTO;
+    }
+
+    public void setResortNumberRequestDTO(ResortNumberRequestDTO resortNumberRequestDTO) {
+        this.resortNumberRequestDTO = resortNumberRequestDTO;
+    }
+
+    public RoomDetailsRequestDTO getRoomDetailsRequestDTO() {
+        return roomDetailsRequestDTO;
+    }
+
+    public void setRoomDetailsRequestDTO(RoomDetailsRequestDTO roomDetailsRequestDTO) {
+        this.roomDetailsRequestDTO = roomDetailsRequestDTO;
+    }
+
+    public RoomPicturesRequestDTO getRoomPicturesRequestDTO() {
+        return roomPicturesRequestDTO;
+    }
+
+    public void setRoomPicturesRequestDTO(RoomPicturesRequestDTO roomPicturesRequestDTO) {
+        this.roomPicturesRequestDTO = roomPicturesRequestDTO;
+    }
+
+    public RoomRequestDTO getRoomRequestDTO() {
+        return roomRequestDTO;
+    }
+
+    public void setRoomRequestDTO(RoomRequestDTO roomRequestDTO) {
+        this.roomRequestDTO = roomRequestDTO;
+    }
+
+    public TinRequestDTO getTinRequestDTO() {
+        return tinRequestDTO;
+    }
+
+    public void setTinRequestDTO(TinRequestDTO tinRequestDTO) {
+        this.tinRequestDTO = tinRequestDTO;
     }
 }
