@@ -12,42 +12,14 @@ public class Tin extends BaseEntity {
     private String serialNumber;
     @NotBlank
     private String document;
-    @OneToOne
-    @JoinColumn(name = "resort_id")
-    private Resort resort;
 
     public Tin() {
     }
 
-    public Tin(long id, String serialNumber, String document, Resort resort) {
-        this.id = id;
+    public Tin(long id, @Size(min = 8) String serialNumber, @NotBlank String document) {
+        super(id);
         this.serialNumber = serialNumber;
         this.document = document;
-        this.resort = resort;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
-        this.document = document;
-    }
-
-    public Resort getResort() {
-        return resort;
-    }
-
-    public void setResort(Resort resort) {
-        this.resort = resort;
     }
 
     @Override
@@ -55,21 +27,19 @@ public class Tin extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tin tin = (Tin) o;
-        return id == tin.id && Objects.equals(serialNumber, tin.serialNumber) && Objects.equals(document, tin.document) && Objects.equals(resort, tin.resort);
+        return Objects.equals(serialNumber, tin.serialNumber) && Objects.equals(document, tin.document);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, serialNumber, document, resort);
+        return Objects.hash(serialNumber, document);
     }
 
     @Override
     public String toString() {
         return "Tin{" +
-                "id=" + id +
-                ", serialNumber='" + serialNumber + '\'' +
+                "serialNumber='" + serialNumber + '\'' +
                 ", document='" + document + '\'' +
-                ", resort=" + resort +
                 '}';
     }
 }

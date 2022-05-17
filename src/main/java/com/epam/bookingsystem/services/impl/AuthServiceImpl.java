@@ -187,14 +187,11 @@ public class AuthServiceImpl implements AuthService {
             if (byUserId.isPresent()) {
                 mailService.send(email, subject, code);
                 byUserId.get().setCode(code);
-                byUserId.get().setCreatedDate(LocalDateTime.now());
                 accessCodeRepository.save(byUserId.get());
             } else {
                 mailService.send(email, subject, code);
                 AccessCode accessCode = new AccessCode();
                 accessCode.setCode(code);
-                accessCode.setUser(byEmail);
-                accessCode.setCreatedDate(LocalDateTime.now());
 
                 accessCodeRepository.save(accessCode);
             }
@@ -210,9 +207,9 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Code does not exist");
         }
         if (forgotPasswordRequestDTO.getPassword().equals(forgotPasswordRequestDTO.getConfirmPassword())) {
-            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
-            userById.get().setPassword(passwordEncoder.encode(forgotPasswordRequestDTO.getPassword()));
-            userRepository.save(userById.get());
+//            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
+//            userById.get().setPassword(passwordEncoder.encode(forgotPasswordRequestDTO.getPassword()));
+//            userRepository.save(userById.get());
             accessCodeRepository.deleteById(byCode.get().getId());
         } else {
             throw new RuntimeException("Password and confirm_password do not match");
@@ -227,9 +224,9 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Code does not exist");
         }
         if (forgotPasswordDTO.getPassword().equals(forgotPasswordDTO.getConfirmPassword())) {
-            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
-            userById.get().setPassword(passwordEncoder.encode(forgotPasswordDTO.getPassword()));
-            userRepository.save(userById.get());
+//            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
+//            userById.get().setPassword(passwordEncoder.encode(forgotPasswordDTO.getPassword()));
+//            userRepository.save(userById.get());
             accessCodeRepository.deleteById(byCode.get().getId());
         } else {
             throw new RuntimeException("Password and confirm_password do not match");

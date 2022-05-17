@@ -5,6 +5,7 @@ import com.epam.bookingsystem.model.enums.RoomType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,21 +18,24 @@ public class ResortNumber extends BaseEntity {
     @NotNull
     private BigDecimal perNightPrice;
     @OneToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @JoinColumn(name = "id")
+    private RoomDetails roomDetails;
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<RoomPictures> roomPictures;
 
-    public ResortNumber() {
-    }
-
-    public ResortNumber(long id, RoomType roomType,
-                        Integer availableCount,
-                        BigDecimal perNightPrice,
-                        Room room) {
-        this.id = id;
+    public ResortNumber(long id, RoomType roomType, @NotNull Integer availableCount,
+                        @NotNull BigDecimal perNightPrice, RoomDetails roomDetails,
+                        List<RoomPictures> roomPictures) {
+        super(id);
         this.roomType = roomType;
         this.availableCount = availableCount;
         this.perNightPrice = perNightPrice;
-        this.room = room;
+        this.roomDetails = roomDetails;
+        this.roomPictures = roomPictures;
+    }
+
+    public ResortNumber() {
     }
 
     public RoomType getRoomType() {
@@ -58,12 +62,20 @@ public class ResortNumber extends BaseEntity {
         this.perNightPrice = perNightPrice;
     }
 
-    public Room getRoom() {
-        return room;
+    public RoomDetails getRoomDetails() {
+        return roomDetails;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomDetails(RoomDetails roomDetails) {
+        this.roomDetails = roomDetails;
+    }
+
+    public List<RoomPictures> getRoomPictures() {
+        return roomPictures;
+    }
+
+    public void setRoomPictures(List<RoomPictures> roomPictures) {
+        this.roomPictures = roomPictures;
     }
 
     @Override
@@ -71,22 +83,22 @@ public class ResortNumber extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortNumber that = (ResortNumber) o;
-        return id == that.id && roomType == that.roomType && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(room, that.room);
+        return roomType == that.roomType && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(roomPictures, that.roomPictures);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, roomType, availableCount, perNightPrice, room);
+        return Objects.hash(roomType, availableCount, perNightPrice, roomDetails, roomPictures);
     }
 
     @Override
     public String toString() {
         return "ResortNumber{" +
-                "id=" + id +
-                ", roomType=" + roomType +
+                "roomType=" + roomType +
                 ", availableCount=" + availableCount +
                 ", perNightPrice=" + perNightPrice +
-                ", room=" + room +
+                ", roomDetails=" + roomDetails +
+                ", roomPictures=" + roomPictures +
                 '}';
     }
 }

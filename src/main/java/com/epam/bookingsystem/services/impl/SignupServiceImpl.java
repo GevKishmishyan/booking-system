@@ -51,15 +51,15 @@ public class SignupServiceImpl implements SignupService {
         if (byCode.isEmpty()) {
             throw new RuntimeException("Code does not exist");
         }
-        if (byCode.get().getCreatedDate().isBefore(LocalDateTime.now().minusMinutes(1))) {
-            throw new RuntimeException("The deadline for providing information by mail has expired");
-        }
-        Optional<User> byId = userRepository.findById(byCode.get().getUser().getId());
-        if (byId.isEmpty()) {
-            throw new RuntimeException("User does not exist");
-        }
-        byId.get().setEnabled(true);
-        userRepository.save(byId.get());
+//        if (byCode.get().getCreatedDate().isBefore(LocalDateTime.now().minusMinutes(1))) {
+//            throw new RuntimeException("The deadline for providing information by mail has expired");
+//        }
+//        Optional<User> byId = userRepository.findById(byCode.get().getUser().getId());
+//        if (byId.isEmpty()) {
+//            throw new RuntimeException("User does not exist");
+//        }
+//        byId.get().setEnabled(true);
+//        userRepository.save(byId.get());
         accessCodeRepository.deleteById(byCode.get().getId());
         return new MessageResponse("Your email has been successfully confirmed, now you can log in to your account");
     }
@@ -131,9 +131,9 @@ public class SignupServiceImpl implements SignupService {
         } else {
             accessCode = new AccessCode();
             accessCode.setCode(code);
-            accessCode.setUser(user);
+//            accessCode.setUser(user);
         }
-        accessCode.setCreatedDate(LocalDateTime.now());
+//        accessCode.setCreatedDate(LocalDateTime.now());
         accessCodeRepository.save(accessCode);
     }
 }
