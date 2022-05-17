@@ -2,7 +2,7 @@ package com.epam.bookingsystem.dto.request;
 
 import com.epam.bookingsystem.validation.annotation.ValidPassword;
 
-public class ForgotPasswordRequestDTO {
+public class ForgotPasswordRequestDTO extends RequestDto {
     private String code;
     @ValidPassword
     private String password;

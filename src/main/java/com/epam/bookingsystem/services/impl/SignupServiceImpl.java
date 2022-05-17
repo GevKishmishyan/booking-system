@@ -4,7 +4,8 @@ package com.epam.bookingsystem.services.impl;
 import com.epam.bookingsystem.dto.request.SignupUserRequestDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
-import com.epam.bookingsystem.mapper.impl.UserMapper;
+import com.epam.bookingsystem.mapper.Mapper;
+import com.epam.bookingsystem.mapper.impl.SignupMapper;
 import com.epam.bookingsystem.model.AccessCode;
 import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.model.enums.Role;
@@ -29,14 +30,15 @@ public class SignupServiceImpl implements SignupService {
     private final PasswordEncoder encoder;
     private final MailService mailService;
     private final AccessCodeRepository accessCodeRepository;
+    private final Mapper<User, SignupUserRequestDTO, UserResponseDTO> signupMapper;
 
-
-    public SignupServiceImpl(UserRepository userRepository, PasswordEncoder encoder, MailService mailService, AccessCodeRepository accessCodeRepository) {
+    public SignupServiceImpl(UserRepository userRepository, PasswordEncoder encoder, MailService mailService, AccessCodeRepository accessCodeRepository, SignupMapper signupMapper) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.mailService = mailService;
         this.accessCodeRepository = accessCodeRepository;
 
+        this.signupMapper = signupMapper;
     }
 
     @Override
@@ -61,45 +63,36 @@ public class SignupServiceImpl implements SignupService {
         byId.get().setEnabled(true);
         userRepository.save(byId.get());
         accessCodeRepository.deleteById(byCode.get().getId());
-        return new MessageResponse("Your email has been successfully confirmed, now you can log in to your account");
+        return new MessageResponse("Your email has been successfully confirmed, now you can login to your account");
     }
 
     @Override
-    public UserResponseDTO saveUser(SignupUserRequestDTO signupUserRequestDTO) {
+    public User saveUser(SignupUserRequestDTO signupUserRequestDTO) {
 
         if (!signupUserRequestDTO.getPassword().equals(signupUserRequestDTO.getConfirmPassword())) {
             throw new RuntimeException("Wrong password confirmation");
         }
-        User user = UserMapper.dtoToUser(signupUserRequestDTO);
+        User user = signupMapper.mapToEntity(signupUserRequestDTO);
         user.setPassword(encoder.encode(user.getPassword()));
-        UserResponseDTO userResponse = UserMapper.userToDto(userRepository.save(user));
-
+        User userResp = userRepository.save(user);
         String code = mailService.generatePassword();
         saveAccessCode(user, code);
-
         sendEmail(user.getEmail(), code);
-        return userResponse;
+
+        return userResp;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public UserResponseDTO saveModerator(String email) {
+    public User saveModerator(String email) {
         Optional<User> byEmail = userRepository.findByEmail(email);
-        if (byEmail.isPresent()){
+        if (byEmail.isPresent()) {
             throw new RuntimeException("Email is present");
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setFirstName("Moderator");
-        user.setLastName("Moderator");
-        String password = String.valueOf(UUID.randomUUID()).substring(0,8);
-        user.setPassword(encoder.encode(password));
-        user.setEnabled(true);
-        user.setRole(Role.MODERATOR);
-        user.setCreatedAt(LocalDateTime.now());
-        UserResponseDTO userResponse = UserMapper.userToDto(userRepository.save(user));
-        sendUsernamePasswordToEmail(email, password);
-        return userResponse;
+        User moderator = createModerator(email);
+        User saveUser = userRepository.save(moderator);
+        sendUsernamePasswordToEmail(email, moderator.getPassword());
+        return saveUser;
     }
 
     public void sendNewAccessCode(String email) {
@@ -116,9 +109,10 @@ public class SignupServiceImpl implements SignupService {
         String mailText = "Please click on this link to confirm your email \n" + confirmLink;
         mailService.send(email, subject, mailText);
     }
+
     private void sendUsernamePasswordToEmail(String email, String password) {
         String subject = "Here is your username and password.Please change your password,firstname,lastname, after logging in ";
-        String mailText = "this is your username and password  \n"+"Your username: "+email+"\n"+"Your password: "+password ;
+        String mailText = "this is your username and password  \n" + "Your username: " + email + "\n" + "Your password: " + password;
         mailService.send(email, subject, mailText);
     }
 
@@ -135,5 +129,18 @@ public class SignupServiceImpl implements SignupService {
         }
         accessCode.setCreatedDate(LocalDateTime.now());
         accessCodeRepository.save(accessCode);
+    }
+
+    private User createModerator(String email) {
+        User user = new User();
+        user.setEmail(email);
+        user.setFirstName("Moderator");
+        user.setLastName("Moderator");
+        String password = String.valueOf(UUID.randomUUID()).substring(0, 8);
+        user.setPassword(encoder.encode(password));
+        user.setEnabled(true);
+        user.setRole(Role.MODERATOR);
+        user.setCreatedAt(LocalDateTime.now());
+        return user;
     }
 }

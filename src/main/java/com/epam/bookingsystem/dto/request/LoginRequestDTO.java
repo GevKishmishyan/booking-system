@@ -3,7 +3,7 @@ package com.epam.bookingsystem.dto.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class LoginRequestDTO {
+public class LoginRequestDTO extends RequestDto {
 
 	@NotBlank
 	private String username;

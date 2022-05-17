@@ -8,7 +8,7 @@ import com.epam.bookingsystem.model.enums.Role;
 
 import javax.validation.constraints.*;
 
-public class SignupUserRequestDTO {
+public class SignupUserRequestDTO extends RequestDto {
 
 
     @Size(min = 2, max = 50)
