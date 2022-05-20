@@ -41,7 +41,7 @@ public class JWTBlacklistDAO {
     }
 
     public boolean existsInBlacklist(String jwt) {
-        if (template.hasKey(jwt)){
+        if (template.hasKey(jwt)) {
             log.error("jwt " + jwt + " is in blacklist");
             throw new JWTIsInBlacklistException("you are logged out , please log in again");
         }

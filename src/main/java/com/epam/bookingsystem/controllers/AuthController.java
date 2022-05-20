@@ -54,13 +54,13 @@ public class AuthController {
      * @return returns a successful logout message if the logout process was successful.
      */
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
+    public ResponseEntity<MessageResponse> logoutUser(HttpServletRequest request) {
         MessageResponse messageResponse = authService.logoutUser(request);
         return ResponseBuilder.build(HttpStatus.OK, messageResponse);
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<TokenRefreshResponseDTO> refreshToken(HttpServletRequest httpServletRequest) {
         TokenRefreshResponseDTO tokenRefreshResponseDTO = authService.refreshToken(httpServletRequest);
         return ResponseBuilder.build(HttpStatus.OK, tokenRefreshResponseDTO);
     }

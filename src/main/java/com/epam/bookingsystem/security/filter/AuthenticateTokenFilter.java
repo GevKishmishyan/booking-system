@@ -7,11 +7,9 @@ import com.epam.bookingsystem.security.util.JwtUtils;
 import com.epam.bookingsystem.services.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
-import jdk.jshell.Snippet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisConnectionFailureException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +40,6 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
 
-
         try {
             String jwt = jwtUtils.parseJwt(request);
 
@@ -61,7 +58,7 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
         } catch (JwtException | IllegalArgumentException | JWTIsInBlacklistException exception) {
 
             ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
-                   exception.getMessage(), request.getServletPath(),400);
+                    exception.getMessage(), request.getServletPath(), 400);
 
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -70,7 +67,7 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
             final ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(out, errorDetails);
             out.flush();
-        } catch (RedisConnectionFailureException exception){
+        } catch (RedisConnectionFailureException exception) {
 
             log.error("exception type is " + exception.getClass().getSimpleName() + " , message = " +
                     exception.getMessage() + " , description " + request.getServletPath());
@@ -78,7 +75,7 @@ public class AuthenticateTokenFilter extends OncePerRequestFilter {
             ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
                     exception.getMessage() + "The most likely causes of the failure may be\n" +
                             "1 Redis database is not running\n" +
-                            "2 Password of the Redis database has not been set" , request.getServletPath(),500);
+                            "2 Password of the Redis database has not been set", request.getServletPath(), 500);
 
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

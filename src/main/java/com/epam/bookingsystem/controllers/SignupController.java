@@ -30,8 +30,6 @@ public class SignupController {
         this.signupMapper = signupMapper;
     }
 
-    ;
-
     @PostMapping("/user")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupUserRequestDTO signupUserRequestDTO, BindingResult bindingResult) {
         Optional<User> byEmail = signupService.findByEmail(signupUserRequestDTO.getEmail());
@@ -55,14 +53,14 @@ public class SignupController {
     }
 
     @PostMapping("/moderator")
-    public ResponseEntity<?> registerModerator(@RequestParam("email") String email) {
+    public ResponseEntity<UserResponseDTO> registerModerator(@RequestParam("email") String email) {
 
         User user = signupService.saveModerator(email);
         return ResponseBuilder.build(HttpStatus.OK, user, signupMapper);
     }
 
     @GetMapping("/confirm-email/{code}")
-    public ResponseEntity<?> confirmEmail(@PathVariable("code") String code) {
+    public ResponseEntity<MessageResponse> confirmEmail(@PathVariable("code") String code) {
         MessageResponse messageResponse = signupService.confirmEmail(code);
         return ResponseBuilder.build(HttpStatus.OK, messageResponse);
     }

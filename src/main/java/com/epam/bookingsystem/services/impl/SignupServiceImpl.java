@@ -13,6 +13,7 @@ import com.epam.bookingsystem.repository.AccessCodeRepository;
 import com.epam.bookingsystem.repository.UserRepository;
 import com.epam.bookingsystem.services.MailService;
 import com.epam.bookingsystem.services.SignupService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,11 @@ public class SignupServiceImpl implements SignupService {
     private final MailService mailService;
     private final AccessCodeRepository accessCodeRepository;
     private final Mapper<User, SignupUserRequestDTO, UserResponseDTO> signupMapper;
+
+    @Value("${spring.mail.confirmLinkIP}")
+    private String confirmLinkIP;
+
+
 
     public SignupServiceImpl(UserRepository userRepository, PasswordEncoder encoder, MailService mailService, AccessCodeRepository accessCodeRepository, SignupMapper signupMapper) {
         this.userRepository = userRepository;
@@ -105,7 +111,7 @@ public class SignupServiceImpl implements SignupService {
 
     private void sendEmail(String email, String code) {
         String subject = "Here is your verification code";
-        String confirmLink = "http://localhost:8080/signup/confirm-email/" + code;
+        String confirmLink = confirmLinkIP+"signup/confirm-email/" + code;
         String mailText = "Please click on this link to confirm your email \n" + confirmLink;
         mailService.send(email, subject, mailText);
     }

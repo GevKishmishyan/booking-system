@@ -13,7 +13,9 @@ import java.lang.annotation.*;
 public @interface ValidRole {
 
 String message() default  "Not valid role";
+
 Class<?>[] groups() default { };
+
 Class<? extends Payload> [] payload() default { };
 
 }

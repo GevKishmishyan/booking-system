@@ -17,7 +17,7 @@ public class JWTBlacklistConfig {
     private String redisHost;
 
     @Value("${redis.port}")
-    private  Integer redisPort;
+    private Integer redisPort;
 
     @Value("${redis.password}")
     private String redisPassword;
