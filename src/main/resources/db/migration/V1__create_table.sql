@@ -1,5 +1,5 @@
-/*create table that store pictures url of room pictur*/
-CREATE TABLE IF NOT EXISTS booking_system.room_pictures(
+/*create table that store pictures url of room picture*/
+CREATE TABLE IF NOT EXISTS booking_system.room_picture(
     id                    BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     picture_url           VARCHAR(255),
     resort_number_id      BIGINT
@@ -93,7 +93,8 @@ CREATE TABLE IF NOT EXISTS booking_system.resort(
      star                 INTEGER,
      email                VARCHAR(255) NOT NULL,
      telephone            VARCHAR(255),
-     description          TEXT(255)
+     description          TEXT(255),
+     is_active            BOOLEAN
 );
 
 /*created a table that represents the user*/
@@ -128,14 +129,21 @@ CREATE TABLE IF NOT EXISTS `booking_system`.`resort_details` (
      private_parking      BOOLEAN,
      resort_id            BIGINT UNIQUE
 );
+
 CREATE TABLE IF NOT EXISTS booking_system.access_code(
      id                   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
      code                 VARCHAR(255) NOT NULL,
      users_id             BIGINT UNIQUE,
      created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-     );
+);
 
-ALTER TABLE booking_system.room_pictures
+CREATE TABLE IF NOT EXISTS booking_system.resort_register_request(
+    id                   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    resort_id            BIGINT UNIQUE,
+    register_status       VARCHAR(255)
+);
+
+ALTER TABLE booking_system.room_picture
     ADD CONSTRAINT room_pictures_resort_number_fk
         FOREIGN KEY (resort_number_id) REFERENCES booking_system.resort_number (id)
             ON DELETE CASCADE ON UPDATE RESTRICT ;

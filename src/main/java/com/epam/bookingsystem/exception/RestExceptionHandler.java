@@ -65,6 +65,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 exception.getMessage() + " , description " + request.getDescription(false));
 
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
+                // todo let this message to be deleted when the development branch is merging to the master branch
                 exception.getMessage() + "The most likely causes of the failure may be\n" +
                         "1 Redis database is not running\n" +
                         "2 Password of the Redis database has not been set", request.getDescription(false), 500);
