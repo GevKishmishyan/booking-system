@@ -7,8 +7,9 @@ import com.epam.bookingsystem.dto.request.PasswordResetRequest;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
+import com.epam.bookingsystem.dto.response.UserResponseDTO;
 import com.epam.bookingsystem.exception.*;
-import com.epam.bookingsystem.mapper.impl.UserMapper;
+import com.epam.bookingsystem.mapper.Mapper;
 import com.epam.bookingsystem.model.AccessCode;
 import com.epam.bookingsystem.model.User;
 import com.epam.bookingsystem.repository.AccessCodeRepository;
@@ -44,6 +45,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
     private final JWTBlacklistDAO jwtBlacklistDAO;
+    private final Mapper<User, LoginRequestDTO, UserResponseDTO> mapper;
 
     @Value("${jwt.accessExpirationMs}")
     private int jwtAccessExpirationMs;
@@ -54,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceImpl(AccessCodeRepository accessCodeRepository, MailService mailService,
                            AuthenticationManager authenticationManager, UserRepository userRepository
             , JwtUtils jwtUtils, PasswordEncoder passwordEncoder,
-                           UserDetailsServiceImpl userDetailsService, JWTBlacklistDAO jwtBlacklistDAO) {
+                           UserDetailsServiceImpl userDetailsService, JWTBlacklistDAO jwtBlacklistDAO, Mapper<User, LoginRequestDTO, UserResponseDTO> mapper) {
 
         this.accessCodeRepository = accessCodeRepository;
         this.mailService = mailService;
@@ -64,6 +66,8 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.jwtBlacklistDAO = jwtBlacklistDAO;
+        this.mapper = mapper;
+
 
     }
 
@@ -81,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
         String jwtRefresh = jwtUtils.generateJwtToken(currentUser, true);
 
         log.info("user with userName " + loginRequest.getUsername() + " is logged in successfully");
-        return new LoginResponseDTO(jwtAccess, jwtRefresh, UserMapper.userToDto(currentUser.getUser()));
+        return new LoginResponseDTO(jwtAccess, jwtRefresh, mapper.mapToResponseDto(currentUser.getUser()));
     }
 
     /**
@@ -215,24 +219,10 @@ public class AuthServiceImpl implements AuthService {
             userRepository.save(userById.get());
             accessCodeRepository.deleteById(byCode.get().getId());
         } else {
-            throw new RuntimeException("Password and confirm_password do not match");
+            throw new RuntimeException("Password and confirm password do not match");
         }
 
     }
 
-    @Override
-    public void forgotPassword(ForgotPasswordRequestDTO forgotPasswordDTO) {
-        Optional<AccessCode> byCode = accessCodeRepository.findByCode(forgotPasswordDTO.getCode());
-        if (byCode.isEmpty()) {
-            throw new RuntimeException("Code does not exist");
-        }
-        if (forgotPasswordDTO.getPassword().equals(forgotPasswordDTO.getConfirmPassword())) {
-            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
-            userById.get().setPassword(passwordEncoder.encode(forgotPasswordDTO.getPassword()));
-            userRepository.save(userById.get());
-            accessCodeRepository.deleteById(byCode.get().getId());
-        } else {
-            throw new RuntimeException("Password and confirm_password do not match");
-        }
-    }
+
 }

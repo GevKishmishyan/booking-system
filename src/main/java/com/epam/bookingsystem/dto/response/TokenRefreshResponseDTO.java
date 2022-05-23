@@ -1,6 +1,6 @@
 package com.epam.bookingsystem.dto.response;
 
-public class TokenRefreshResponseDTO {
+public class TokenRefreshResponseDTO extends ResponseDTO {
 
     private String jwtAccess;
     private String type = "Bearer";

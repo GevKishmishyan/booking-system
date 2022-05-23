@@ -3,9 +3,8 @@ package com.epam.bookingsystem.dto.request;
 import com.epam.bookingsystem.validation.annotation.ValidPassword;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
-public class PasswordResetRequest {
+public class PasswordResetRequest extends RequestDto {
 
     @NotBlank(message = "Please provide your password")
     String currentPassword;

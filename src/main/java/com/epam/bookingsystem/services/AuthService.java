@@ -15,7 +15,7 @@ public interface AuthService {
     /**
      * Logouts the user from the system by adding it`s access jwt and refresh jwt to the redis database blacklist.
      *
-     * @param request          HttpServletRequest object from witch has to be taken the access jwt token to be added to the redis database blacklist.
+     * @param request HttpServletRequest object from witch has to be taken the access jwt token to be added to the redis database blacklist.
      * @return returns a successful logout message if the logout process was successful.
      */
     MessageResponse logoutUser(HttpServletRequest request);
@@ -23,10 +23,11 @@ public interface AuthService {
     TokenRefreshResponseDTO refreshToken(HttpServletRequest httpServletRequest);
 
     MessageResponse resetPassword(PasswordResetRequest passwordResetRequest);
+
     void sendEmail(String email);
+
     void resetForgottenPassword(ForgotPasswordRequestDTO forgotPasswordRequestDTO);
 
-    void forgotPassword(ForgotPasswordRequestDTO forgotPasswordDTO);
 
 }
 

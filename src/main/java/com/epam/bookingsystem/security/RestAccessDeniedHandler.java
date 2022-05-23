@@ -26,7 +26,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
         log.error("Exception = " + exception.getClass().getSimpleName() + " date = " + new Date() + " message = " + exception.getMessage());
 
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
-                exception.getMessage(), httpServletRequest.getServletPath(),403);
+                exception.getMessage(), httpServletRequest.getServletPath(), 403);
 
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setStatus(403);
