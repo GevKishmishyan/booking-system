@@ -7,12 +7,12 @@ import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
 import com.epam.bookingsystem.exception.dto.ErrorDetails;
+import com.epam.bookingsystem.http.ResponseBuilder;
 import com.epam.bookingsystem.services.AuthService;
 import com.epam.bookingsystem.services.impl.AuthServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -35,7 +35,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> loginUser(@Valid @RequestBody LoginRequestDTO loginRequest) {
         LoginResponseDTO loginResponseDTO = authService.loginUser(loginRequest);
-        return ResponseEntity.ok(loginResponseDTO);
+        return ResponseBuilder.build(HttpStatus.OK, loginResponseDTO);
     }
 
     @ExceptionHandler()
@@ -54,34 +54,34 @@ public class AuthController {
      * @return returns a successful logout message if the logout process was successful.
      */
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
+    public ResponseEntity<MessageResponse> logoutUser(HttpServletRequest request) {
         MessageResponse messageResponse = authService.logoutUser(request);
-        return ResponseEntity.ok(messageResponse);
+        return ResponseBuilder.build(HttpStatus.OK, messageResponse);
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<TokenRefreshResponseDTO> refreshToken(HttpServletRequest httpServletRequest) {
         TokenRefreshResponseDTO tokenRefreshResponseDTO = authService.refreshToken(httpServletRequest);
-        return ResponseEntity.ok(tokenRefreshResponseDTO);
+        return ResponseBuilder.build(HttpStatus.OK, tokenRefreshResponseDTO);
     }
 
 
     @PostMapping("/reset-password")
     public ResponseEntity<MessageResponse> resetPassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
         MessageResponse messageResponse = authService.resetPassword(passwordResetRequest);
-        return ResponseEntity.ok().body(messageResponse);
+        return ResponseBuilder.build(HttpStatus.OK, messageResponse);
     }
 
     @PostMapping("/send-mail")
     public ResponseEntity<?> sendMain(@RequestParam("email") String email) {
         authService.sendEmail(email);
-        return ResponseEntity.ok().build();
+        return ResponseBuilder.build(HttpStatus.OK);
     }
 
     @PostMapping("/forgot_password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO forgotPasswordDTO) {
-        authService.forgotPassword(forgotPasswordDTO);
-        return ResponseEntity.ok().build();
+        authService.resetForgottenPassword(forgotPasswordDTO);
+        return ResponseBuilder.build(HttpStatus.OK);
     }
 
 }

@@ -11,7 +11,7 @@ public class ErrorDetails {
     private int status;
 
     public ErrorDetails(Date timestamp, String exception,
-                        String message, String details , int status) {
+                        String message, String details, int status) {
         this.timestamp = timestamp;
         this.exception = exception;
         this.message = message;

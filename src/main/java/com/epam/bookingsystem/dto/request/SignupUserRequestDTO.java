@@ -1,14 +1,17 @@
 package com.epam.bookingsystem.dto.request;
 
 
-import com.epam.bookingsystem.validation.annotation.ValidRole;
-import com.epam.bookingsystem.validation.annotation.ValidPassword;
 import com.epam.bookingsystem.model.enums.Gender;
 import com.epam.bookingsystem.model.enums.Role;
+import com.epam.bookingsystem.validation.annotation.ValidPassword;
+import com.epam.bookingsystem.validation.annotation.ValidRole;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-public class SignupUserRequestDTO {
+public class SignupUserRequestDTO extends RequestDto {
 
 
     @Size(min = 2, max = 50)
