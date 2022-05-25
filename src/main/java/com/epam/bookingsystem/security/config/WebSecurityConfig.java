@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/signup/moderator").hasRole("ADMIN")
                 .antMatchers("/signup/**").permitAll()
+
                 //
                 .antMatchers("/test/user").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .antMatchers("/test/hotel_manager").hasAnyRole("HOTEL_MANAGER", "MODERATOR", "ADMIN")
@@ -64,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/**").permitAll()
                 .antMatchers("/resort-register-requests/all").hasAnyRole("MODERATOR", "ADMIN")
                 // todo to be removed
-                .antMatchers("/resort-register-requests/test").permitAll()
+                .antMatchers("/resort-register-requests/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

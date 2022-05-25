@@ -20,6 +20,7 @@ public class Room extends BaseEntity {
     private ResortNumber resortNumber;
 
 
+
     public Room(long id, Integer roomNumber, List<Booking> booking, ResortNumber resortNumber) {
         super(id);
         this.roomNumber = roomNumber;

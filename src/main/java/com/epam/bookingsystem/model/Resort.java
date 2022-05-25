@@ -12,14 +12,14 @@ import java.util.Objects;
 @Table(name = "resort")
 public class Resort extends BaseEntity {
 
-    @NotBlank
+//    @NotBlank
     private String name;
     @Enumerated(EnumType.STRING)
     private ResortType resortType;
-    @Min(1)
-    @Max(5)
+//    @Min(1)
+//    @Max(5)
     private Integer star;
-    @NotNull
+//    @NotNull
     @Email
     private String email;
     @Pattern(regexp = "(^$|[0-9]{10})")
@@ -34,7 +34,7 @@ public class Resort extends BaseEntity {
     @JoinColumn(name = "id")
     private ResortDetails resortDetails;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "resort_id")
     private List<Room> room;
     @OneToOne
     @JoinColumn(name = "id")
