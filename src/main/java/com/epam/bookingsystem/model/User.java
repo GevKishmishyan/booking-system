@@ -44,7 +44,7 @@ public class User extends BaseEntity {
 
     private LocalDateTime createdAt;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "access_code_id")
     private AccessCode accessCode;
 
     public User(long id, @NotNull String firstName, @NotNull String lastName, LocalDateTime birthday,

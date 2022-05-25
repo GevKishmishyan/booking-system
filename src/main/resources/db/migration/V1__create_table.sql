@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS booking_system.users (
      role                 VARCHAR(255),
      enabled              BOOLEAN,
      blocked              BOOLEAN,
+     access_code_id       BIGINT UNIQUE,
      profile_picture      VARCHAR(255),
      password             VARCHAR(255),
      created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -131,7 +132,6 @@ CREATE TABLE IF NOT EXISTS `booking_system`.`resort_details` (
 CREATE TABLE IF NOT EXISTS booking_system.access_code(
      id                   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
      code                 VARCHAR(255) NOT NULL,
-     users_id             BIGINT UNIQUE,
      created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
      );
 
@@ -190,9 +190,9 @@ ALTER TABLE booking_system.review
             ON DELETE CASCADE ON UPDATE RESTRICT ;
 
 
-ALTER TABLE booking_system.access_code
-    ADD CONSTRAINT access_code_user_fk
-        FOREIGN KEY (users_id) REFERENCES booking_system.users(id)
+ALTER TABLE booking_system.users
+    ADD CONSTRAINT users_access_code_fk
+        FOREIGN KEY (access_code_id) REFERENCES booking_system.access_code(id)
             ON DELETE CASCADE ON UPDATE RESTRICT ;
 
 

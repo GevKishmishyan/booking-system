@@ -28,6 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ import java.util.Optional;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final AccessCodeRepository accessCodeRepository;
+
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
@@ -45,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
     private final JWTBlacklistDAO jwtBlacklistDAO;
+    private final AccessCodeRepository accessCodeRepository;
     private final Mapper<User, LoginRequestDTO, UserResponseDTO> mapper;
 
     @Value("${jwt.accessExpirationMs}")
@@ -53,12 +55,11 @@ public class AuthServiceImpl implements AuthService {
     private int jwtRefreshExpirationMs;
 
 
-    public AuthServiceImpl(AccessCodeRepository accessCodeRepository, MailService mailService,
+    public AuthServiceImpl(MailService mailService,
                            AuthenticationManager authenticationManager, UserRepository userRepository
             , JwtUtils jwtUtils, PasswordEncoder passwordEncoder,
-                           UserDetailsServiceImpl userDetailsService, JWTBlacklistDAO jwtBlacklistDAO, Mapper<User, LoginRequestDTO, UserResponseDTO> mapper) {
+                           UserDetailsServiceImpl userDetailsService, JWTBlacklistDAO jwtBlacklistDAO, AccessCodeRepository accessCodeRepository, Mapper<User, LoginRequestDTO, UserResponseDTO> mapper) {
 
-        this.accessCodeRepository = accessCodeRepository;
         this.mailService = mailService;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
@@ -66,6 +67,7 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.jwtBlacklistDAO = jwtBlacklistDAO;
+        this.accessCodeRepository = accessCodeRepository;
         this.mapper = mapper;
 
 
@@ -187,20 +189,20 @@ public class AuthServiceImpl implements AuthService {
         String code = mailService.generatePassword();
 
         if (byEmail.isEnabled() && !byEmail.isBlocked()) {
-            Optional<AccessCode> byUserId = accessCodeRepository.findByUserId(byEmail.getId());
-            if (byUserId.isPresent()) {
+            if (byEmail.getAccessCode()!=null) {
                 mailService.send(email, subject, code);
-                byUserId.get().setCode(code);
-                byUserId.get().setCreatedDate(LocalDateTime.now());
-                accessCodeRepository.save(byUserId.get());
+                byEmail.getAccessCode().setCode(code);
+                byEmail.getAccessCode().setCreatedAt(LocalDateTime.now());
+                userRepository.save(byEmail);
             } else {
                 mailService.send(email, subject, code);
                 AccessCode accessCode = new AccessCode();
                 accessCode.setCode(code);
-                accessCode.setUser(byEmail);
-                accessCode.setCreatedDate(LocalDateTime.now());
-
+                accessCode.setCreatedAt(LocalDateTime.now());
+                byEmail.setAccessCode(accessCode);
                 accessCodeRepository.save(accessCode);
+                userRepository.save(byEmail);
+
             }
         } else {
             throw new RuntimeException("Account either disabled or blocked");
@@ -209,15 +211,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void resetForgottenPassword(ForgotPasswordRequestDTO forgotPasswordRequestDTO) {
-        Optional<AccessCode> byCode = accessCodeRepository.findByCode(forgotPasswordRequestDTO.getCode());
-        if (byCode.isEmpty()) {
-            throw new RuntimeException("Code does not exist");
-        }
+        AccessCode code = accessCodeRepository.findByCode(forgotPasswordRequestDTO.getCode()).orElseThrow(()->new NotFoundException("Wrong code"));
+        User byAccessCode = userRepository.findByAccessCodeId(code.getId()).orElseThrow(()->new NotFoundException("Code does not exist"));
+
         if (forgotPasswordRequestDTO.getPassword().equals(forgotPasswordRequestDTO.getConfirmPassword())) {
-            Optional<User> userById = userRepository.findById(byCode.get().getUser().getId());
-            userById.get().setPassword(passwordEncoder.encode(forgotPasswordRequestDTO.getPassword()));
-            userRepository.save(userById.get());
-            accessCodeRepository.deleteById(byCode.get().getId());
+
+            byAccessCode.setPassword(passwordEncoder.encode(forgotPasswordRequestDTO.getPassword()));
+            byAccessCode.setAccessCode(null);
+            userRepository.save(byAccessCode);
+
+
         } else {
             throw new RuntimeException("Password and confirm password do not match");
         }

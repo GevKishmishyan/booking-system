@@ -1,11 +1,12 @@
 package com.epam.bookingsystem.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "access_code")
-public class AccessCode {
+public class AccessCode implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
