@@ -34,14 +34,13 @@ public class User extends BaseEntity {
 
     private String profilePicture = "C:\\BookingSystem\\pictures\\userDefaultProfilePicture.png";
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "booking_id")
     private List<Booking> booking;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "review_id")
     private List<Review> review;
     @NotNull
     private String password;
-
     private LocalDateTime createdAt;
     @OneToOne
     @JoinColumn(name = "access_code_id")

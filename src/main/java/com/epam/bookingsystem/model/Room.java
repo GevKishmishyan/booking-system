@@ -13,10 +13,10 @@ public class Room extends BaseEntity {
     @NotNull
     private Integer roomNumber;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "booking_id")
     private List<Booking> booking;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "resort_number_id")
     private ResortNumber resortNumber;
 
     public Room(long id, Integer roomNumber, List<Booking> booking, ResortNumber resortNumber) {

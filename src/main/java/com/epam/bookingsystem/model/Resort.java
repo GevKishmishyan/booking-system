@@ -25,22 +25,22 @@ public class Resort extends BaseEntity {
     @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephone;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "address_id")
     private Address address;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "rate_id")
     private Rate rate;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "resort_details_id")
     private ResortDetails resortDetails;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "room_id")
     private List<Room> room;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "tin_id")
     private Tin tin;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "review_id")
     private List<Review> review;
 
     public Resort(long id, @NotBlank String name, ResortType resortType, @Min(1) @Max(5) Integer star,
