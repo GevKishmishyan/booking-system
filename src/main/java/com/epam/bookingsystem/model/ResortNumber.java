@@ -17,8 +17,8 @@ public class ResortNumber extends BaseEntity {
     private Integer availableCount;
     @NotNull
     private BigDecimal perNightPrice;
-    @OneToOne
-    @JoinColumn(name = "room_details_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_details_id", referencedColumnName = "id")
     private RoomDetails roomDetails;
     @OneToMany
     @JoinColumn(name = "room_pictures_id")

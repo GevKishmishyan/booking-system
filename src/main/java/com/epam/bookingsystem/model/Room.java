@@ -15,8 +15,8 @@ public class Room extends BaseEntity {
     @OneToMany
     @JoinColumn(name = "booking_id")
     private List<Booking> booking;
-    @OneToOne
-    @JoinColumn(name = "resort_number_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resort_number_id",referencedColumnName = "id")
     private ResortNumber resortNumber;
 
     public Room(long id, Integer roomNumber, List<Booking> booking, ResortNumber resortNumber) {

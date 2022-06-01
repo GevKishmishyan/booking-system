@@ -24,35 +24,39 @@ public class Resort extends BaseEntity {
     private String email;
     @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephone;
-    @OneToOne
-    @JoinColumn(name = "address_id")
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-    @OneToOne
-    @JoinColumn(name = "rate_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rate_id", referencedColumnName = "id")
     private Rate rate;
-    @OneToOne
-    @JoinColumn(name = "resort_details_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resort_details_id", referencedColumnName = "id")
     private ResortDetails resortDetails;
     @OneToMany
     @JoinColumn(name = "room_id")
     private List<Room> room;
-    @OneToOne
-    @JoinColumn(name = "tin_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tin_id", referencedColumnName = "id")
     private Tin tin;
     @OneToMany
     @JoinColumn(name = "review_id")
     private List<Review> review;
 
-    public Resort(long id, @NotBlank String name, ResortType resortType, @Min(1) @Max(5) Integer star,
-                  @NotNull @Email String email, @Pattern(regexp = "(^$|[0-9]{10})") String telephone,
-                  Address address, Rate rate, ResortDetails resortDetails, List<Room> room,
-                  Tin tin, List<Review> review) {
+    public Resort(long id, @NotBlank String name, ResortType resortType,
+                  @Min(1) @Max(5) Integer star, @NotNull @Email String email,
+                  @Pattern(regexp = "(^$|[0-9]{10})") String telephone,
+                  String description, Address address, Rate rate, ResortDetails resortDetails,
+                  List<Room> room, Tin tin, List<Review> review) {
         super(id);
         this.name = name;
         this.resortType = resortType;
         this.star = star;
         this.email = email;
         this.telephone = telephone;
+        this.description = description;
         this.address = address;
         this.rate = rate;
         this.resortDetails = resortDetails;
@@ -102,6 +106,14 @@ public class Resort extends BaseEntity {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Address getAddress() {
@@ -157,12 +169,12 @@ public class Resort extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resort resort = (Resort) o;
-        return Objects.equals(name, resort.name) && resortType == resort.resortType && Objects.equals(star, resort.star) && Objects.equals(email, resort.email) && Objects.equals(telephone, resort.telephone) && Objects.equals(address, resort.address) && Objects.equals(rate, resort.rate) && Objects.equals(resortDetails, resort.resortDetails) && Objects.equals(room, resort.room) && Objects.equals(tin, resort.tin) && Objects.equals(review, resort.review);
+        return Objects.equals(name, resort.name) && resortType == resort.resortType && Objects.equals(star, resort.star) && Objects.equals(email, resort.email) && Objects.equals(telephone, resort.telephone) && Objects.equals(description, resort.description) && Objects.equals(address, resort.address) && Objects.equals(rate, resort.rate) && Objects.equals(resortDetails, resort.resortDetails) && Objects.equals(room, resort.room) && Objects.equals(tin, resort.tin) && Objects.equals(review, resort.review);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, resortType, star, email, telephone, address, rate, resortDetails, room, tin, review);
+        return Objects.hash(name, resortType, star, email, telephone, description, address, rate, resortDetails, room, tin, review);
     }
 
     @Override
@@ -173,6 +185,7 @@ public class Resort extends BaseEntity {
                 ", star=" + star +
                 ", email='" + email + '\'' +
                 ", telephone='" + telephone + '\'' +
+                ", description='" + description + '\'' +
                 ", address=" + address +
                 ", rate=" + rate +
                 ", resortDetails=" + resortDetails +

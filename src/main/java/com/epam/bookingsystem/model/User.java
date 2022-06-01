@@ -42,8 +42,8 @@ public class User extends BaseEntity {
     @NotNull
     private String password;
     private LocalDateTime createdAt;
-    @OneToOne
-    @JoinColumn(name = "access_code_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "access_code_id",referencedColumnName = "id")
     private AccessCode accessCode;
 
     public User(long id, @NotNull String firstName, @NotNull String lastName, LocalDateTime birthday,
