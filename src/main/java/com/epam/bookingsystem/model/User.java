@@ -34,10 +34,10 @@ public class User extends BaseEntity {
 
     private String profilePicture = "C:\\BookingSystem\\pictures\\userDefaultProfilePicture.png";
     @OneToMany
-    @JoinColumn(name = "booking_id")
+    @JoinColumn(name = "users_id")
     private List<Booking> booking;
     @OneToMany
-    @JoinColumn(name = "review_id")
+    @JoinColumn(name = "users_id")
     private List<Review> review;
     @NotNull
     private String password;
@@ -46,10 +46,10 @@ public class User extends BaseEntity {
     @JoinColumn(name = "access_code_id",referencedColumnName = "id")
     private AccessCode accessCode;
 
-    public User(long id, @NotNull String firstName, @NotNull String lastName, LocalDateTime birthday,
-                Gender gender, @NotNull @Email String email, @NotNull Role role, boolean enabled,
+    public User(long id, String firstName, String lastName, LocalDateTime birthday,
+                Gender gender,  String email,Role role, boolean enabled,
                 boolean blocked, String profilePicture, List<Booking> booking, List<Review> review,
-                @NotNull String password, LocalDateTime createdAt, AccessCode accessCode) {
+                String password, LocalDateTime createdAt, AccessCode accessCode) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;

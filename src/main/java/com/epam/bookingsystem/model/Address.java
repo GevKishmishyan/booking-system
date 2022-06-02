@@ -18,7 +18,7 @@ public class Address extends BaseEntity {
     @NotBlank
     private String address;
 
-    public Address(long id, @NotBlank String country, @NotBlank String region, @NotBlank String section, @NotBlank String address) {
+    public Address(long id,  String country, String region, String section, String address) {
         super(id);
         this.country = country;
         this.region = region;

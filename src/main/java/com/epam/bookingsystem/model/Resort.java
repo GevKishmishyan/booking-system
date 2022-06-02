@@ -36,13 +36,13 @@ public class Resort extends BaseEntity {
     @JoinColumn(name = "resort_details_id", referencedColumnName = "id")
     private ResortDetails resortDetails;
     @OneToMany
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "resort_id")
     private List<Room> room;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tin_id", referencedColumnName = "id")
     private Tin tin;
     @OneToMany
-    @JoinColumn(name = "review_id")
+    @JoinColumn(name = "resort_id")
     private List<Review> review;
 
     public Resort(long id, @NotBlank String name, ResortType resortType,

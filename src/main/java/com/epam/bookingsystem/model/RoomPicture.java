@@ -4,17 +4,17 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "room_pictures")
-public class RoomPictures extends BaseEntity {
+@Table(name = "room_picture")
+public class RoomPicture extends BaseEntity {
     @Column(name = "picture_url")
     private String picUrl;
 
-    public RoomPictures(long id, String picUrl) {
+    public RoomPicture(long id, String picUrl) {
         super(id);
         this.picUrl = picUrl;
     }
 
-    public RoomPictures() {
+    public RoomPicture() {
     }
 
     public String getPicUrl() {
@@ -29,7 +29,7 @@ public class RoomPictures extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RoomPictures that = (RoomPictures) o;
+        RoomPicture that = (RoomPicture) o;
         return Objects.equals(picUrl, that.picUrl);
     }
 

@@ -13,17 +13,14 @@ public class Room extends BaseEntity {
     @NotNull
     private Integer roomNumber;
     @OneToMany
-    @JoinColumn(name = "booking_id")
+    @JoinColumn(name = "room_id")
     private List<Booking> booking;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "resort_number_id",referencedColumnName = "id")
-    private ResortNumber resortNumber;
 
-    public Room(long id, Integer roomNumber, List<Booking> booking, ResortNumber resortNumber) {
+
+    public Room(long id, Integer roomNumber, List<Booking> booking) {
         super(id);
         this.roomNumber = roomNumber;
         this.booking = booking;
-        this.resortNumber = resortNumber;
     }
 
     public Room() {
@@ -45,25 +42,18 @@ public class Room extends BaseEntity {
         this.booking = booking;
     }
 
-    public ResortNumber getResortNumber() {
-        return resortNumber;
-    }
-
-    public void setResortNumber(ResortNumber resortNumber) {
-        this.resortNumber = resortNumber;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equals(roomNumber, room.roomNumber) && Objects.equals(booking, room.booking) && Objects.equals(resortNumber, room.resortNumber);
+        return Objects.equals(roomNumber, room.roomNumber) && Objects.equals(booking, room.booking) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomNumber, booking, resortNumber);
+        return Objects.hash(roomNumber, booking);
     }
 
     @Override
@@ -71,7 +61,6 @@ public class Room extends BaseEntity {
         return "Room{" +
                 "roomNumber=" + roomNumber +
                 ", booking=" + booking +
-                ", resortNumber=" + resortNumber +
                 '}';
     }
 }
