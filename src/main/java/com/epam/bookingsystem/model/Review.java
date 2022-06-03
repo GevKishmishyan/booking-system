@@ -1,32 +1,22 @@
 package com.epam.bookingsystem.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Table(name = "review")
-public class Review extends BaseEntity{
+public class Review extends BaseEntity {
     private Double rate;
     private String comment;
-    @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn(name = "resort_id")
-    private Resort resort;
-    @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_id")
-    private User users;
 
-    public Review() {
-    }
-
-    public Review(long id, Double rate,
-                  String comment,
-                  Resort resort,
-                  User users) {
-        this.id = id;
+    public Review(long id, Double rate, String comment) {
+        super(id);
         this.rate = rate;
         this.comment = comment;
-        this.resort = resort;
-        this.users = users;
+    }
+
+    public Review() {
     }
 
     public Double getRate() {
@@ -45,43 +35,24 @@ public class Review extends BaseEntity{
         this.comment = comment;
     }
 
-    public Resort getResort() {
-        return resort;
-    }
-
-    public void setResort(Resort resort) {
-        this.resort = resort;
-    }
-
-    public User getUsers() {
-        return users;
-    }
-
-    public void setUsers(User users) {
-        this.users = users;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return id == review.id && Objects.equals(rate, review.rate) && Objects.equals(comment, review.comment) && Objects.equals(resort, review.resort) && Objects.equals(users, review.users);
+        return Objects.equals(rate, review.rate) && Objects.equals(comment, review.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rate, comment, resort, users);
+        return Objects.hash(rate, comment);
     }
 
     @Override
     public String toString() {
         return "Review{" +
-                "id=" + id +
-                ", rate=" + rate +
+                "rate=" + rate +
                 ", comment='" + comment + '\'' +
-                ", resort=" + resort +
-                ", users=" + users +
                 '}';
     }
 }

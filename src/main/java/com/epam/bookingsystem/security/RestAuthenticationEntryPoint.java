@@ -18,8 +18,8 @@ import java.util.Date;
 /**
  * It can be used by one of the security filters as an AuthenticationException handler,
  * because exceptions arised in filters cannot be handled in the class with @RestControllerAdvice annotation.
- *
- *  (it handles exceptions which have bean thrown after reaching to dispatcher servlet)
+ * <p>
+ * (it handles exceptions which have bean thrown after reaching to dispatcher servlet)
  * for setting this class as a handler we can use httpSecurity.exceptionHandling().authenticationEntryPoint(unauthorizedHandler) method
  * in security config class
  */
@@ -32,10 +32,10 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException exception)
             throws IOException, ServletException {
 
-        log.error("RestAuthenticationEntryPoint " + "Unauthorized error: {}", exception.getMessage() + " , exception type is " + exception.getClass().getSimpleName() );
+        log.error("RestAuthenticationEntryPoint " + "Unauthorized error: {}", exception.getMessage() + " , exception type is " + exception.getClass().getSimpleName());
 
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
-                exception.getMessage(), request.getServletPath(),401);
+                exception.getMessage(), request.getServletPath(), 401);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
