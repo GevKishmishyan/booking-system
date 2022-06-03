@@ -15,13 +15,14 @@ public class Booking extends BaseEntity {
     private LocalDateTime bookedFrom;
     private LocalDateTime bookedTo;
     @NotNull
-    private BigDecimal total_amount;
+    @Column(name = "total_amount")
+    private BigDecimal totalAmount;
 
-    public Booking(long id, LocalDateTime bookedFrom, LocalDateTime bookedTo, BigDecimal total_amount) {
+    public Booking(long id, LocalDateTime bookedFrom, LocalDateTime bookedTo, BigDecimal totalAmount) {
         super(id);
         this.bookedFrom = bookedFrom;
         this.bookedTo = bookedTo;
-        this.total_amount = total_amount;
+        this.totalAmount = totalAmount;
     }
 
     public Booking() {
@@ -44,11 +45,11 @@ public class Booking extends BaseEntity {
     }
 
     public BigDecimal getTotalAmount() {
-        return total_amount;
+        return totalAmount;
     }
 
     public void setTotalAmount(BigDecimal allPr) {
-        this.total_amount = allPr;
+        this.totalAmount = allPr;
     }
 
     @Override
@@ -56,12 +57,12 @@ public class Booking extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(total_amount, booking.total_amount);
+        return Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(totalAmount, booking.totalAmount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bookedFrom, bookedTo, total_amount);
+        return Objects.hash(bookedFrom, bookedTo, totalAmount);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class Booking extends BaseEntity {
         return "Booking{" +
                 "bookedFrom=" + bookedFrom +
                 ", bookedTo=" + bookedTo +
-                ", allPr=" + total_amount +
+                ", allPr=" + totalAmount +
                 '}';
     }
 }
