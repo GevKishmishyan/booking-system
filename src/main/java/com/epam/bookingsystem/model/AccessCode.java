@@ -1,27 +1,24 @@
 package com.epam.bookingsystem.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "access_code")
-public class AccessCode {
+public class AccessCode implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String code;
-    @OneToOne
-    @JoinColumn(name = "users_id")
-    private User user;
     private LocalDateTime createdAt;
 
     public AccessCode() {
     }
 
-    public AccessCode(Long id, String code, User user, LocalDateTime createdAt) {
+    public AccessCode(Long id, String code, LocalDateTime createdAt) {
         this.id = id;
         this.code = code;
-        this.user = user;
         this.createdAt = createdAt;
     }
 
@@ -41,19 +38,11 @@ public class AccessCode {
         this.code = code;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getCreatedDate() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdAt = createdDate;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

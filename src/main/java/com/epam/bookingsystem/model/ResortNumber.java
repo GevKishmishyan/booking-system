@@ -5,6 +5,7 @@ import com.epam.bookingsystem.model.enums.RoomType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,25 +14,27 @@ public class ResortNumber extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
     @NotNull
-    private Integer availableCount;
-    @NotNull
     private BigDecimal perNightPrice;
-    @OneToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_details_id", referencedColumnName = "id")
+    private RoomDetails roomDetails;
+    @OneToMany
+    @JoinColumn(name = "resort_number_id")
+    private List<Room> rooms;
+    @OneToMany
+    @JoinColumn(name = "resort_number_id")
+    private List<RoomPicture> roomPictures;
 
-    public ResortNumber() {
+    public ResortNumber(long id, RoomType roomType, BigDecimal perNightPrice, RoomDetails roomDetails, List<Room> rooms, List<RoomPicture> roomPictures) {
+        super(id);
+        this.roomType = roomType;
+        this.perNightPrice = perNightPrice;
+        this.roomDetails = roomDetails;
+        this.rooms = rooms;
+        this.roomPictures = roomPictures;
     }
 
-    public ResortNumber(long id, RoomType roomType,
-                        Integer availableCount,
-                        BigDecimal perNightPrice,
-                        Room room) {
-        this.id = id;
-        this.roomType = roomType;
-        this.availableCount = availableCount;
-        this.perNightPrice = perNightPrice;
-        this.room = room;
+    public ResortNumber() {
     }
 
     public RoomType getRoomType() {
@@ -42,14 +45,6 @@ public class ResortNumber extends BaseEntity {
         this.roomType = roomType;
     }
 
-    public Integer getAvailableCount() {
-        return availableCount;
-    }
-
-    public void setAvailableCount(Integer availableCount) {
-        this.availableCount = availableCount;
-    }
-
     public BigDecimal getPerNightPrice() {
         return perNightPrice;
     }
@@ -58,12 +53,28 @@ public class ResortNumber extends BaseEntity {
         this.perNightPrice = perNightPrice;
     }
 
-    public Room getRoom() {
-        return room;
+    public RoomDetails getRoomDetails() {
+        return roomDetails;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomDetails(RoomDetails roomDetails) {
+        this.roomDetails = roomDetails;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public List<RoomPicture> getRoomPictures() {
+        return roomPictures;
+    }
+
+    public void setRoomPictures(List<RoomPicture> roomPictures) {
+        this.roomPictures = roomPictures;
     }
 
     @Override
@@ -71,22 +82,22 @@ public class ResortNumber extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortNumber that = (ResortNumber) o;
-        return id == that.id && roomType == that.roomType && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(room, that.room);
+        return roomType == that.roomType &&  Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(rooms, that.rooms) && Objects.equals(roomPictures, that.roomPictures);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, roomType, availableCount, perNightPrice, room);
+        return Objects.hash(roomType, perNightPrice, roomDetails, rooms, roomPictures);
     }
 
     @Override
     public String toString() {
         return "ResortNumber{" +
-                "id=" + id +
-                ", roomType=" + roomType +
-                ", availableCount=" + availableCount +
+                "roomType=" + roomType +
                 ", perNightPrice=" + perNightPrice +
-                ", room=" + room +
+                ", roomDetails=" + roomDetails +
+                ", rooms=" + rooms +
+                ", roomPictures=" + roomPictures +
                 '}';
     }
 }

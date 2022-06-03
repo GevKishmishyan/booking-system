@@ -1,6 +1,8 @@
 package com.epam.bookingsystem.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -19,21 +21,11 @@ public class RoomDetails extends BaseEntity {
     private boolean fridge;
     private boolean dishes;
     private boolean electricKettle;
-    @OneToOne
-    @JoinColumn(name = "resort_number_id")
-    private ResortNumber resortNumber;
 
-    public RoomDetails() {
-    }
-
-    public RoomDetails(long id, boolean airConditioner,
-                       boolean television, boolean sofa,
-                       boolean teaTable, boolean shower,
-                       boolean bathtub, boolean bathAccessories,
-                       boolean hairdryer, boolean minibar,
-                       boolean fridge, boolean dishes,
-                       boolean electricKettle, ResortNumber resortNumber) {
-        this.id = id;
+    public RoomDetails(long id, boolean airConditioner, boolean television, boolean sofa, boolean teaTable,
+                       boolean shower, boolean bathtub, boolean bathAccessories,
+                       boolean hairdryer, boolean minibar, boolean fridge, boolean dishes, boolean electricKettle) {
+        super(id);
         this.airConditioner = airConditioner;
         this.television = television;
         this.sofa = sofa;
@@ -46,7 +38,9 @@ public class RoomDetails extends BaseEntity {
         this.fridge = fridge;
         this.dishes = dishes;
         this.electricKettle = electricKettle;
-        this.resortNumber = resortNumber;
+    }
+
+    public RoomDetails() {
     }
 
     public boolean isAirConditioner() {
@@ -145,32 +139,23 @@ public class RoomDetails extends BaseEntity {
         this.electricKettle = electricKettle;
     }
 
-    public ResortNumber getResortNumber() {
-        return resortNumber;
-    }
-
-    public void setResortNumber(ResortNumber resortNumber) {
-        this.resortNumber = resortNumber;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoomDetails that = (RoomDetails) o;
-        return id == that.id && airConditioner == that.airConditioner && television == that.television && sofa == that.sofa && teaTable == that.teaTable && shower == that.shower && bathtub == that.bathtub && bathAccessories == that.bathAccessories && hairdryer == that.hairdryer && minibar == that.minibar && fridge == that.fridge && dishes == that.dishes && electricKettle == that.electricKettle && Objects.equals(resortNumber, that.resortNumber);
+        return airConditioner == that.airConditioner && television == that.television && sofa == that.sofa && teaTable == that.teaTable && shower == that.shower && bathtub == that.bathtub && bathAccessories == that.bathAccessories && hairdryer == that.hairdryer && minibar == that.minibar && fridge == that.fridge && dishes == that.dishes && electricKettle == that.electricKettle;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, airConditioner, television, sofa, teaTable, shower, bathtub, bathAccessories, hairdryer, minibar, fridge, dishes, electricKettle, resortNumber);
+        return Objects.hash(airConditioner, television, sofa, teaTable, shower, bathtub, bathAccessories, hairdryer, minibar, fridge, dishes, electricKettle);
     }
 
     @Override
     public String toString() {
         return "RoomDetails{" +
-                "id=" + id +
-                ", airConditioner=" + airConditioner +
+                "airConditioner=" + airConditioner +
                 ", television=" + television +
                 ", sofa=" + sofa +
                 ", teaTable=" + teaTable +
@@ -182,7 +167,6 @@ public class RoomDetails extends BaseEntity {
                 ", fridge=" + fridge +
                 ", dishes=" + dishes +
                 ", electricKettle=" + electricKettle +
-                ", resortNumber=" + resortNumber +
                 '}';
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.util.Date;
 
 @Slf4j
@@ -56,6 +57,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
                 exception.getMessage(), request.getDescription(false), 401);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDetails);
+    }
+    @ExceptionHandler({IOException.class})
+    protected ResponseEntity<Object> handleIOException(IOException exception, WebRequest request) {
+        log.error("exception type is " + exception.getClass().getSimpleName() + " , message = " +
+                exception.getMessage() + " , description " + request.getDescription(false));
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
+                exception.getMessage(), request.getDescription(false), 401);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
     }
 
     @ExceptionHandler({RedisConnectionFailureException.class})

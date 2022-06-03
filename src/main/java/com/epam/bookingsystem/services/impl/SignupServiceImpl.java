@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -27,22 +28,23 @@ import java.util.UUID;
 @Service
 public class SignupServiceImpl implements SignupService {
 
+    private final AccessCodeRepository accessCodeRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final MailService mailService;
-    private final AccessCodeRepository accessCodeRepository;
     private final Mapper<User, SignupUserRequestDTO, UserResponseDTO> signupMapper;
 
     @Value("${spring.mail.confirmLinkIP}")
     private String confirmLinkIP;
 
 
-
-    public SignupServiceImpl(UserRepository userRepository, PasswordEncoder encoder, MailService mailService, AccessCodeRepository accessCodeRepository, SignupMapper signupMapper) {
+    public SignupServiceImpl(AccessCodeRepository accessCodeRepository, UserRepository userRepository, PasswordEncoder encoder,
+                             MailService mailService, SignupMapper signupMapper) {
+        this.accessCodeRepository = accessCodeRepository;
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.mailService = mailService;
-        this.accessCodeRepository = accessCodeRepository;
+
 
         this.signupMapper = signupMapper;
     }
@@ -55,20 +57,15 @@ public class SignupServiceImpl implements SignupService {
     @Override
     @Transactional
     public MessageResponse confirmEmail(String code) {
-        Optional<AccessCode> byCode = accessCodeRepository.findByCode(code);
-        if (byCode.isEmpty()) {
-            throw new RuntimeException("Code does not exist");
-        }
-        if (byCode.get().getCreatedDate().isBefore(LocalDateTime.now().minusMinutes(1))) {
+        AccessCode accesscode = accessCodeRepository.findByCode(code).orElseThrow(() -> new NotFoundException("Wrong code"));
+        User user = userRepository.findByAccessCodeId(accesscode.getId()).orElseThrow(() -> new NotFoundException("Code does not exist"));
+        if (user.getAccessCode().getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(15))) {
             throw new RuntimeException("The deadline for providing information by mail has expired");
         }
-        Optional<User> byId = userRepository.findById(byCode.get().getUser().getId());
-        if (byId.isEmpty()) {
-            throw new RuntimeException("User does not exist");
-        }
-        byId.get().setEnabled(true);
-        userRepository.save(byId.get());
-        accessCodeRepository.deleteById(byCode.get().getId());
+        user.setEnabled(true);
+        user.setAccessCode(null);
+        userRepository.save(user);
+        accessCodeRepository.deleteById(accesscode.getId());
         return new MessageResponse("Your email has been successfully confirmed, now you can login to your account");
     }
 
@@ -80,9 +77,9 @@ public class SignupServiceImpl implements SignupService {
         }
         User user = signupMapper.mapToEntity(signupUserRequestDTO);
         user.setPassword(encoder.encode(user.getPassword()));
-        User userResp = userRepository.save(user);
         String code = mailService.generatePassword();
-        saveAccessCode(user, code);
+        user.setAccessCode(generateAccessCode(user,code));
+        User userResp = userRepository.save(user);
         sendEmail(user.getEmail(), code);
 
         return userResp;
@@ -104,14 +101,15 @@ public class SignupServiceImpl implements SignupService {
     public void sendNewAccessCode(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Email does not exist "));
         String code = mailService.generatePassword();
-        saveAccessCode(user, code);
+        user.setAccessCode(generateAccessCode(user,code));
+        userRepository.save(user);
         sendEmail(email, code);
     }
 
 
     private void sendEmail(String email, String code) {
         String subject = "Here is your verification code";
-        String confirmLink = confirmLinkIP+"signup/confirm-email/" + code;
+        String confirmLink = confirmLinkIP + "signup/confirm-email/" + code;
         String mailText = "Please click on this link to confirm your email \n" + confirmLink;
         mailService.send(email, subject, mailText);
     }
@@ -122,19 +120,21 @@ public class SignupServiceImpl implements SignupService {
         mailService.send(email, subject, mailText);
     }
 
-    private void saveAccessCode(User user, String code) {
-        Optional<AccessCode> byCode = accessCodeRepository.findByUserId(user.getId());
-        AccessCode accessCode;
-        if (byCode.isPresent()) {
-            accessCode = byCode.get();
-            accessCode.setCode(code);
+    private AccessCode generateAccessCode(User user, String code) {
+
+        AccessCode accessCode = user.getAccessCode();
+        if (accessCode != null) {
+            AccessCode byId = accessCodeRepository.findById(accessCode.getId()).orElseThrow(()->new NotFoundException("Code does not exist"));
+            byId.setCode(code);
+            byId.setCreatedAt(LocalDateTime.now());
+            return accessCodeRepository.save(byId);
         } else {
             accessCode = new AccessCode();
             accessCode.setCode(code);
-            accessCode.setUser(user);
         }
-        accessCode.setCreatedDate(LocalDateTime.now());
+        accessCode.setCreatedAt(LocalDateTime.now());
         accessCodeRepository.save(accessCode);
+        return accessCode;
     }
 
     private User createModerator(String email) {

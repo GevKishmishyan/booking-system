@@ -1,7 +1,9 @@
 
 package com.epam.bookingsystem.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,27 +15,16 @@ public class Booking extends BaseEntity {
     private LocalDateTime bookedFrom;
     private LocalDateTime bookedTo;
     @NotNull
-    @Column(name = "all_pr")
-    private BigDecimal allPr;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "room_id")
-    private Room room;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_id")
-    private User users;
+    private BigDecimal total_amount;
 
-    public Booking() {
-    }
-
-    public Booking(long id, LocalDateTime bookedFrom,
-                   LocalDateTime bookedTo, BigDecimal allPr,
-                   Room room, User users) {
-        this.id = id;
+    public Booking(long id, LocalDateTime bookedFrom, LocalDateTime bookedTo, BigDecimal total_amount) {
+        super(id);
         this.bookedFrom = bookedFrom;
         this.bookedTo = bookedTo;
-        this.allPr = allPr;
-        this.room = room;
-        this.users = users;
+        this.total_amount = total_amount;
+    }
+
+    public Booking() {
     }
 
     public LocalDateTime getBookedFrom() {
@@ -52,28 +43,12 @@ public class Booking extends BaseEntity {
         this.bookedTo = bookedTo;
     }
 
-    public BigDecimal getAllPr() {
-        return allPr;
+    public BigDecimal getTotalAmount() {
+        return total_amount;
     }
 
-    public void setAllPr(BigDecimal allPr) {
-        this.allPr = allPr;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public User getUsers() {
-        return users;
-    }
-
-    public void setUsers(User users) {
-        this.users = users;
+    public void setTotalAmount(BigDecimal allPr) {
+        this.total_amount = allPr;
     }
 
     @Override
@@ -81,23 +56,20 @@ public class Booking extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return id == booking.id && Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(allPr, booking.allPr) && Objects.equals(room, booking.room) && Objects.equals(users, booking.users);
+        return Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(total_amount, booking.total_amount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookedFrom, bookedTo, allPr, room, users);
+        return Objects.hash(bookedFrom, bookedTo, total_amount);
     }
 
     @Override
     public String toString() {
         return "Booking{" +
-                "id=" + id +
-                ", bookedFrom=" + bookedFrom +
+                "bookedFrom=" + bookedFrom +
                 ", bookedTo=" + bookedTo +
-                ", allPr=" + allPr +
-                ", room=" + room +
-                ", users=" + users +
+                ", allPr=" + total_amount +
                 '}';
     }
 }
