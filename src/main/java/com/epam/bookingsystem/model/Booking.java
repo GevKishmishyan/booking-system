@@ -1,7 +1,6 @@
 
 package com.epam.bookingsystem.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -15,14 +14,13 @@ public class Booking extends BaseEntity {
     private LocalDateTime bookedFrom;
     private LocalDateTime bookedTo;
     @NotNull
-    @Column(name = "all_pr")
-    private BigDecimal allPr;
+    private BigDecimal totalAmount;
 
-    public Booking(long id, LocalDateTime bookedFrom, LocalDateTime bookedTo, @NotNull BigDecimal allPr) {
+    public Booking(long id, LocalDateTime bookedFrom, LocalDateTime bookedTo, BigDecimal totalAmount) {
         super(id);
         this.bookedFrom = bookedFrom;
         this.bookedTo = bookedTo;
-        this.allPr = allPr;
+        this.totalAmount = totalAmount;
     }
 
     public Booking() {
@@ -44,12 +42,12 @@ public class Booking extends BaseEntity {
         this.bookedTo = bookedTo;
     }
 
-    public BigDecimal getAllPr() {
-        return allPr;
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setAllPr(BigDecimal allPr) {
-        this.allPr = allPr;
+    public void setTotalAmount(BigDecimal allPr) {
+        this.totalAmount = allPr;
     }
 
     @Override
@@ -57,12 +55,12 @@ public class Booking extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(allPr, booking.allPr);
+        return Objects.equals(bookedFrom, booking.bookedFrom) && Objects.equals(bookedTo, booking.bookedTo) && Objects.equals(totalAmount, booking.totalAmount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bookedFrom, bookedTo, allPr);
+        return Objects.hash(bookedFrom, bookedTo, totalAmount);
     }
 
     @Override
@@ -70,7 +68,7 @@ public class Booking extends BaseEntity {
         return "Booking{" +
                 "bookedFrom=" + bookedFrom +
                 ", bookedTo=" + bookedTo +
-                ", allPr=" + allPr +
+                ", allPr=" + totalAmount +
                 '}';
     }
 }

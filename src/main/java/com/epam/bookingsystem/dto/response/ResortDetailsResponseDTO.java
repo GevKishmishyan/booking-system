@@ -1,9 +1,5 @@
 package com.epam.bookingsystem.dto.response;
 
-import com.epam.bookingsystem.model.ResortDetails;
-
-import java.util.Objects;
-
 public class ResortDetailsResponseDTO {
 
     private boolean airportShuttle;

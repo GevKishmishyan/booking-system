@@ -1,11 +1,11 @@
 package com.epam.bookingsystem.dto.response;
 
-public class MessageResponse {
+public class MessageResponse extends ResponseDTO {
 	private String message;
 
 	public MessageResponse(String message) {
-	    this.message = message;
-	  }
+		this.message = message;
+	}
 
 	public String getMessage() {
 		return message;

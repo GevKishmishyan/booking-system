@@ -2,7 +2,7 @@ package com.epam.bookingsystem.dto.response;
 
 import com.epam.bookingsystem.model.enums.RegisterStatus;
 
-public class ResortRegisterRequestResponseDTO {
+public class ResortRegisterRequestResponseDTO extends ResponseDTO {
 
     private ResortResponseDTO resortResponseDTO;
 
@@ -23,7 +23,6 @@ public class ResortRegisterRequestResponseDTO {
     }
 
     public void setRequestStatus(RegisterStatus requestStatus) {
-        System.out.println(" setRequestStatus(RegisterStatus requestStatus)");
         this.requestStatus = requestStatus;
     }
 }

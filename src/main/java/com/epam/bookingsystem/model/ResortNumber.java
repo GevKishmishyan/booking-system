@@ -11,28 +11,26 @@ import java.util.Objects;
 @Entity
 @Table(name = "resort_number")
 public class ResortNumber extends BaseEntity {
-
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
     @NotNull
-    private Integer availableCount;
-    @NotNull
     private BigDecimal perNightPrice;
-    @OneToOne
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_details_id", referencedColumnName = "id")
     private RoomDetails roomDetails;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "resort_number_id")
+    private List<Room> rooms;
+    @OneToMany
+    @JoinColumn(name = "resort_number_id")
     private List<RoomPicture> roomPictures;
 
-    public ResortNumber(long id, RoomType roomType, @NotNull Integer availableCount,
-                        @NotNull BigDecimal perNightPrice, RoomDetails roomDetails,
-                        List<RoomPicture> roomPictures) {
+    public ResortNumber(long id, RoomType roomType, BigDecimal perNightPrice, RoomDetails roomDetails, List<Room> rooms, List<RoomPicture> roomPictures) {
         super(id);
         this.roomType = roomType;
-        this.availableCount = availableCount;
         this.perNightPrice = perNightPrice;
         this.roomDetails = roomDetails;
+        this.rooms = rooms;
         this.roomPictures = roomPictures;
     }
 
@@ -45,14 +43,6 @@ public class ResortNumber extends BaseEntity {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
-    }
-
-    public Integer getAvailableCount() {
-        return availableCount;
-    }
-
-    public void setAvailableCount(Integer availableCount) {
-        this.availableCount = availableCount;
     }
 
     public BigDecimal getPerNightPrice() {
@@ -71,6 +61,14 @@ public class ResortNumber extends BaseEntity {
         this.roomDetails = roomDetails;
     }
 
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+
     public List<RoomPicture> getRoomPictures() {
         return roomPictures;
     }
@@ -84,21 +82,21 @@ public class ResortNumber extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortNumber that = (ResortNumber) o;
-        return roomType == that.roomType && Objects.equals(availableCount, that.availableCount) && Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(roomPictures, that.roomPictures);
+        return roomType == that.roomType &&  Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(rooms, that.rooms) && Objects.equals(roomPictures, that.roomPictures);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomType, availableCount, perNightPrice, roomDetails, roomPictures);
+        return Objects.hash(roomType, perNightPrice, roomDetails, rooms, roomPictures);
     }
 
     @Override
     public String toString() {
         return "ResortNumber{" +
                 "roomType=" + roomType +
-                ", availableCount=" + availableCount +
                 ", perNightPrice=" + perNightPrice +
                 ", roomDetails=" + roomDetails +
+                ", rooms=" + rooms +
                 ", roomPictures=" + roomPictures +
                 '}';
     }

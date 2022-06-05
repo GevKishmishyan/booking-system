@@ -1,7 +1,5 @@
 package com.epam.bookingsystem.dto.response;
 
-import com.epam.bookingsystem.model.ResortNumber;
-
 public class RoomResponseDTO {
 
     private Integer roomNumber;

@@ -3,13 +3,13 @@ package com.epam.bookingsystem.dto.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class LoginRequestDTO {
+public class LoginRequestDTO extends RequestDto {
 
 	@NotBlank
 	private String username;
 
 	@NotBlank
-	@Size(min = 6,max = 24)
+	@Size(min = 6, max = 24)
 	private String password;
 
 	public String getUsername() {

@@ -2,6 +2,7 @@ package com.epam.bookingsystem.controllers;
 
 import com.epam.bookingsystem.dto.response.ResortRegisterRequestResponseDTO;
 import com.epam.bookingsystem.model.Resort;
+import com.epam.bookingsystem.model.ResortRegisterRequest;
 import com.epam.bookingsystem.model.Room;
 import com.epam.bookingsystem.repository.ResortRepository;
 import com.epam.bookingsystem.repository.RoomRepository;
@@ -28,29 +29,13 @@ public class ResortRegisterRequestController {
         this.roomRepository = roomRepository;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<ResortRegisterRequestResponseDTO>> getAll() {
-        List<ResortRegisterRequestResponseDTO> responseDTOList = resortRegisterRequestService.getAll();
-        return ResponseEntity.ok().body(responseDTOList);
+    @GetMapping
+    public ResponseEntity<List<ResortRegisterRequest>> getAll() {
+      //  List<ResortRegisterRequestResponseDTO> responseDTOList = resortRegisterRequestService.getAll();
+
+       // return ResponseEntity.ok().body(responseDTOList);
+
+        return ResponseEntity.ok(  resortRegisterRequestService.getAll());
     }
-
-//    @GetMapping("/all")
-//    public ResponseEntity<List<ResortRegisterRequestResponseDTO>> getAll() {
-//        List<ResortRegisterRequestResponseDTO> responseDTOList = resortRegisterRequestService.getAll();
-//        return ResponseEntity.ok().body(responseDTOList);
-//    }
-@PostMapping("/add")
-    public Resort add(@RequestBody Resort resort){
-    for (Room room : resort.getRoom()) {
-        roomRepository.save(room);
-    }
-
-       return resortRepository.save(resort);
-}
-@GetMapping("/get")
-public Resort get(){
-       return resortRepository.findById(2L).get();
-
-}
 
 }

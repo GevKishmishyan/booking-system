@@ -12,8 +12,10 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = UserOrHotelManagerValidator.class)
 public @interface ValidRole {
 
-String message() default  "Not valid role";
-Class<?>[] groups() default { };
-Class<? extends Payload> [] payload() default { };
+    String message() default  "Not valid role";
+
+    Class<?>[] groups() default { };
+
+    Class<? extends Payload> [] payload() default { };
 
 }

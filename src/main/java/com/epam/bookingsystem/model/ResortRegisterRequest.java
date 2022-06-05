@@ -5,6 +5,7 @@ import com.epam.bookingsystem.model.enums.RegisterStatus;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "resort_register_request")
 public class ResortRegisterRequest extends BaseEntity {
 
     @OneToOne
@@ -12,9 +13,17 @@ public class ResortRegisterRequest extends BaseEntity {
     private Resort resort;
 
     @Enumerated(EnumType.STRING)
-    private RegisterStatus registerStatus;
+    private RegisterStatus registerStatus = RegisterStatus.NEW;
 
-    //List comments
+    // List comments
+
+
+    public ResortRegisterRequest() {
+    }
+
+    public ResortRegisterRequest(Resort resort) {
+        this.resort = resort;
+    }
 
     public Resort getResort() {
         return resort;

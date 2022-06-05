@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tin")
 public class Tin extends BaseEntity {
-    @Size(min = 8)
+    //@Size(min = 8)
     private String serialNumber;
     @NotBlank
     private String document;
@@ -19,22 +20,6 @@ public class Tin extends BaseEntity {
     public Tin(long id, @Size(min = 8) String serialNumber, @NotBlank String document) {
         super(id);
         this.serialNumber = serialNumber;
-        this.document = document;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public String getDocument() {
-        return document;
-    }
-
-    public void setDocument(String document) {
         this.document = document;
     }
 
@@ -57,5 +42,21 @@ public class Tin extends BaseEntity {
                 "serialNumber='" + serialNumber + '\'' +
                 ", document='" + document + '\'' +
                 '}';
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
     }
 }

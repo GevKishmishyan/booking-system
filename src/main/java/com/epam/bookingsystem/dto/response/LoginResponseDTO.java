@@ -2,7 +2,7 @@ package com.epam.bookingsystem.dto.response;
 
 import java.util.Objects;
 
-public class LoginResponseDTO {
+public class LoginResponseDTO extends ResponseDTO {
 
 	private String jwtAccess;
 	private String type = "Bearer";
