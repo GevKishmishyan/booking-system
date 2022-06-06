@@ -1,9 +1,9 @@
 /*create a table that represents the resort_register_request*/
 CREATE TABLE IF NOT EXISTS booking_system.resort_register_request
 (
-    id                 BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    register_status    VARCHAR(255),
-    resort_id          BIGINT UNIQUE
+    id                        BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    resort_register_status    VARCHAR(255),
+    resort_id                 BIGINT UNIQUE
 );
 
 ALTER TABLE booking_system.resort_register_request

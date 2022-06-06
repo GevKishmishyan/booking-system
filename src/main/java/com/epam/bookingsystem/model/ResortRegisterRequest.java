@@ -1,6 +1,6 @@
 package com.epam.bookingsystem.model;
 
-import com.epam.bookingsystem.model.enums.RegisterStatus;
+import com.epam.bookingsystem.model.enums.ResortRegisterStatus;
 
 import javax.persistence.*;
 
@@ -13,7 +13,7 @@ public class ResortRegisterRequest extends BaseEntity {
     private Resort resort;
 
     @Enumerated(EnumType.STRING)
-    private RegisterStatus registerStatus = RegisterStatus.NEW;
+    private ResortRegisterStatus resortRegisterStatus = ResortRegisterStatus.NEW;
 
     // List comments
 
@@ -33,19 +33,19 @@ public class ResortRegisterRequest extends BaseEntity {
         this.resort = resort;
     }
 
-    public RegisterStatus getRegisterStatus() {
-        return registerStatus;
+    public ResortRegisterStatus getRegisterStatus() {
+        return resortRegisterStatus;
     }
 
-    public void setRegisterStatus(RegisterStatus registerStatus) {
-        this.registerStatus = registerStatus;
+    public void setRegisterStatus(ResortRegisterStatus resortRegisterStatus) {
+        this.resortRegisterStatus = resortRegisterStatus;
     }
 
     @Override
     public String toString() {
         return "ResortRegisterRequest{" +
                 "resort=" + resort +
-                ", registerStatus=" + registerStatus +
+                ", resortRegisterStatus=" + resortRegisterStatus +
                 ", id=" + id +
                 '}';
     }

@@ -139,13 +139,11 @@ public class TestController {
         return ResponseEntity.ok(resortList);
     }
 
-
     //todo to be removed
     @GetMapping("/allRequests")
     public ResponseEntity<?> getAllRequests() {
         List<ResortRegisterRequest> requests = resortRegisterRequestRepository.findAll();
         return ResponseEntity.ok(requests);
     }
-
 
 }

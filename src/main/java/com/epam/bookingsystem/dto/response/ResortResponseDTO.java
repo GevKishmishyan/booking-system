@@ -5,7 +5,7 @@ import com.epam.bookingsystem.model.enums.ResortType;
 
 import java.util.List;
 
-public class ResortResponseDTO {
+public class ResortResponseDTO extends ResponseDTO {
 
     private String name;
 
@@ -16,6 +16,8 @@ public class ResortResponseDTO {
     private String email;
 
     private String telephone;
+
+    private String description;
 
     private AddressResponseDTO addressResponseDTO;
 
@@ -71,6 +73,14 @@ public class ResortResponseDTO {
 
     public void setAddressResponseDTO(AddressResponseDTO addressResponseDTO) {
         this.addressResponseDTO = addressResponseDTO;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public ResortDetailsResponseDTO getResortDetailsResponseDTO() {

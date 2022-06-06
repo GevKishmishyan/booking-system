@@ -1,6 +1,6 @@
 package com.epam.bookingsystem.dto.response;
 
-public class ResortDetailsResponseDTO {
+public class ResortDetailsResponseDTO extends ResponseDTO {
 
     private boolean airportShuttle;
     private boolean freeWiFi;

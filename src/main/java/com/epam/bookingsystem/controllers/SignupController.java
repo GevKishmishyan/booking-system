@@ -25,6 +25,9 @@
 //    private final SignupService signupService;
 //    private final Mapper<User, SignupUserRequestDTO, UserResponseDTO> signupMapper;
 //
+//
+//    private final Mapper<User, SignupUserRequestDTO, UserResponseDTO> signupMapper;
+//
 //    public SignupController(SignupService signupService, SignupMapper signupMapper) {
 //        this.signupService = signupService;
 //        this.signupMapper = signupMapper;

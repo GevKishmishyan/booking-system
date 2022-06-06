@@ -1,5 +1,5 @@
 package com.epam.bookingsystem.model.enums;
 
-public enum RegisterStatus {
+public enum ResortRegisterStatus {
     NEW, UNDER_REVIEW, ACCEPTED, DENIED
 }

@@ -1,9 +1,10 @@
 package com.epam.bookingsystem.dto.response;
 
-public class RoomResponseDTO {
-
+public class RoomResponseDTO extends ResponseDTO {
     private Integer roomNumber;
-    private ResortNumberResponseDTO resortNumberResponseDTO;
+
+    public RoomResponseDTO() {
+    }
 
     public Integer getRoomNumber() {
         return roomNumber;
@@ -11,13 +12,5 @@ public class RoomResponseDTO {
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
-    }
-
-    public ResortNumberResponseDTO getResortNumberResponseDTO() {
-        return resortNumberResponseDTO;
-    }
-
-    public void setResortNumberResponseDTO(ResortNumberResponseDTO resortNumberResponseDTO) {
-        this.resortNumberResponseDTO = resortNumberResponseDTO;
     }
 }

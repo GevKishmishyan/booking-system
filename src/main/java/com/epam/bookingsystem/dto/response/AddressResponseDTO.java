@@ -2,15 +2,15 @@ package com.epam.bookingsystem.dto.response;
 
 import javax.validation.constraints.NotBlank;
 
-public class AddressResponseDTO {
+public class AddressResponseDTO extends ResponseDTO {
 
     private String country;
-
     private String region;
-
     private String section;
-
     private String address;
+
+    public AddressResponseDTO() {
+    }
 
     public String getCountry() {
         return country;

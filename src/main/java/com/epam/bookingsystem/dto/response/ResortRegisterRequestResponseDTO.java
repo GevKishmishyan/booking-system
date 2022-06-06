@@ -1,12 +1,12 @@
 package com.epam.bookingsystem.dto.response;
 
-import com.epam.bookingsystem.model.enums.RegisterStatus;
+import com.epam.bookingsystem.model.enums.ResortRegisterStatus;
 
 public class ResortRegisterRequestResponseDTO extends ResponseDTO {
 
     private ResortResponseDTO resortResponseDTO;
 
-    private RegisterStatus requestStatus;
+    private ResortRegisterStatus resortRegisterStatus;
 
     // List  messages
 
@@ -18,11 +18,11 @@ public class ResortRegisterRequestResponseDTO extends ResponseDTO {
         this.resortResponseDTO = resortResponseDTO;
     }
 
-    public RegisterStatus getRequestStatus() {
-        return requestStatus;
+    public ResortRegisterStatus getResortRegisterStatus() {
+        return resortRegisterStatus;
     }
 
-    public void setRequestStatus(RegisterStatus requestStatus) {
-        this.requestStatus = requestStatus;
+    public void setResortRegisterStatus(ResortRegisterStatus resortRegisterStatus) {
+        this.resortRegisterStatus = resortRegisterStatus;
     }
 }

@@ -3,7 +3,7 @@ package com.epam.bookingsystem.services.impl;
 import com.epam.bookingsystem.dao.JWTBlacklistDAO;
 import com.epam.bookingsystem.dto.request.ForgotPasswordRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
-import com.epam.bookingsystem.dto.request.PasswordResetRequest;
+import com.epam.bookingsystem.dto.request.PasswordResetRequestDTO;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
@@ -150,9 +150,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public MessageResponse resetPassword(PasswordResetRequest passwordResetRequest) {
+    public MessageResponse resetPassword(PasswordResetRequestDTO passwordResetRequestDTO) {
 
-        if (!passwordResetRequest.getNewPassword().equals(passwordResetRequest.getConformNewPassword())) {
+        if (!passwordResetRequestDTO.getNewPassword().equals(passwordResetRequestDTO.getConformNewPassword())) {
             throw new RuntimeException("Password and confirm_password do not match");
         }
 
@@ -160,12 +160,12 @@ public class AuthServiceImpl implements AuthService {
         Optional<User> optionalUser = userRepository.findByEmail(userDetails.getUsername());
         User user = optionalUser.orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        if (passwordEncoder.matches(passwordResetRequest.getCurrentPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(passwordResetRequestDTO.getCurrentPassword(), user.getPassword())) {
 
-            user.setPassword(passwordEncoder.encode(passwordResetRequest.getNewPassword()));
+            user.setPassword(passwordEncoder.encode(passwordResetRequestDTO.getNewPassword()));
             userRepository.save(user);
             log.info("successful password reset by a user with a username " + getUserDetails().getUsername()
-                    + ", new password is " + passwordResetRequest.getCurrentPassword());
+                    + ", new password is " + passwordResetRequestDTO.getCurrentPassword());
         } else {
             log.error("user with the username " + getUserDetails().getUsername() + " provided an incorrect current password");
             throw new IncorrectCurrentPasswordException("Incorrect password");

@@ -2,7 +2,7 @@ package com.epam.bookingsystem.services;
 
 import com.epam.bookingsystem.dto.request.ForgotPasswordRequestDTO;
 import com.epam.bookingsystem.dto.request.LoginRequestDTO;
-import com.epam.bookingsystem.dto.request.PasswordResetRequest;
+import com.epam.bookingsystem.dto.request.PasswordResetRequestDTO;
 import com.epam.bookingsystem.dto.response.LoginResponseDTO;
 import com.epam.bookingsystem.dto.response.MessageResponse;
 import com.epam.bookingsystem.dto.response.TokenRefreshResponseDTO;
@@ -22,7 +22,7 @@ public interface AuthService {
 
     TokenRefreshResponseDTO refreshToken(HttpServletRequest httpServletRequest);
 
-    MessageResponse resetPassword(PasswordResetRequest passwordResetRequest);
+    MessageResponse resetPassword(PasswordResetRequestDTO passwordResetRequestDTO);
 
     void sendEmail(String email);
 

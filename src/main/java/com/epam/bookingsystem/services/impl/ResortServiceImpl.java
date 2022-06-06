@@ -1,7 +1,7 @@
 //package com.epam.bookingsystem.services.impl;
 //
 //import com.epam.bookingsystem.dto.request.*;
-//import com.epam.bookingsystem.mapper.impl.requestDTO.ResortRequestDTOMapper;
+//import com.epam.bookingsystem.dto.requestDTO.ResortRequestDTOMapper;
 //import com.epam.bookingsystem.model.Resort;
 //import com.epam.bookingsystem.model.ResortNumber;
 //import com.epam.bookingsystem.model.ResortRegisterRequest;

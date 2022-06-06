@@ -2,8 +2,8 @@
 //
 //import com.epam.bookingsystem.dto.request.ResortNumberRequestDTO;
 //import com.epam.bookingsystem.dto.request.ResortRequestDTO;
-//import com.epam.bookingsystem.mapper.impl.requestDTO.ResortNumberRequestDTOMapper;
-//import com.epam.bookingsystem.mapper.impl.requestDTO.RoomRequestDTOMapper;
+//import com.epam.bookingsystem.dto.requestDTO.ResortNumberRequestDTOMapper;
+//import com.epam.bookingsystem.dto.requestDTO.RoomRequestDTOMapper;
 //import com.epam.bookingsystem.model.ResortNumber;
 //import com.epam.bookingsystem.model.Room;
 //import com.epam.bookingsystem.repository.ResortNumberRepository;

@@ -4,7 +4,7 @@ import com.epam.bookingsystem.validation.annotation.ValidPassword;
 
 import javax.validation.constraints.NotBlank;
 
-public class PasswordResetRequest extends RequestDto {
+public class PasswordResetRequestDTO extends RequestDto {
 
     @NotBlank(message = "Please provide your password")
     String currentPassword;
@@ -13,7 +13,7 @@ public class PasswordResetRequest extends RequestDto {
     @ValidPassword
     String conformNewPassword;
 
-    public PasswordResetRequest(String currentPassword, String newPassword, String conformNewPassword) {
+    public PasswordResetRequestDTO(String currentPassword, String newPassword, String conformNewPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
         this.conformNewPassword = conformNewPassword;

@@ -5,7 +5,7 @@ import com.epam.bookingsystem.model.enums.RoomType;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ResortNumberResponseDTO {
+public class ResortNumberResponseDTO extends ResponseDTO {
 
     private RoomType roomType;
 
