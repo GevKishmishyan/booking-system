@@ -9,8 +9,7 @@ public class RoomPicture extends BaseEntity {
     @Column(name = "picture_url")
     private String picUrl;
 
-    public RoomPicture(long id, String picUrl) {
-        super(id);
+    public RoomPicture(String picUrl) {
         this.picUrl = picUrl;
     }
 

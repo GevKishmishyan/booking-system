@@ -6,6 +6,8 @@ import com.epam.bookingsystem.model.BaseEntity;
 
 public interface Mapper<T extends BaseEntity, V extends RequestDto, K extends ResponseDTO> {
 
+
+
     T mapToEntity(V v);
 
     K mapToResponseDto(T t);

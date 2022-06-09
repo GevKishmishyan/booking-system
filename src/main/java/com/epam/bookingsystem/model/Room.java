@@ -17,10 +17,8 @@ public class Room extends BaseEntity {
     private List<Booking> booking;
 
 
-    public Room(long id, Integer roomNumber, List<Booking> booking) {
-        super(id);
+    public Room(Integer roomNumber) {
         this.roomNumber = roomNumber;
-        this.booking = booking;
     }
 
     public Room() {

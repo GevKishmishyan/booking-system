@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS booking_system.resort(
      address_id           BIGINT UNIQUE,
      rate_id              BIGINT UNIQUE,
      resort_details_id    BIGINT UNIQUE,
-     resort_number_id     BIGINT UNIQUE,
      tin_id               BIGINT UNIQUE
 );
 

@@ -21,8 +21,13 @@ jwt:
   accessExpirationMs: 180000
   refreshExpirationMs: 300000
 
+path:
+  uploadPicturePath: C://Users//Armen//IdeaProjects//booking-system//uploadImage
+
 redis:
   # exchange these fields for yours
   host: localhost
   port: 6379
   password: root
+
+
