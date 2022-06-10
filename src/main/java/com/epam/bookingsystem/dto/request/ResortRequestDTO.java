@@ -1,17 +1,14 @@
 package com.epam.bookingsystem.dto.request;
 
-import com.epam.bookingsystem.model.Address;
-import com.epam.bookingsystem.model.ResortDetails;
-import com.epam.bookingsystem.model.Tin;
 import com.epam.bookingsystem.model.enums.ResortType;
 
-import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.*;
 import java.util.List;
 
 public class ResortRequestDTO extends RequestDto {
+
     @NotBlank
     private String name;
     @Enumerated(EnumType.STRING)
@@ -24,15 +21,15 @@ public class ResortRequestDTO extends RequestDto {
     private String email;
     //    @Pattern(regexp = "(^$|[0-9]{10})")
     private String telephone;
-    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-
-    private Address address;
-    private ResortDetails resortDetails;
-    private Tin tin;
-
-    List<RoomRequestDTO> roomListRequestDTO;
-    ResortNumberRequestDTO resortNumberRequestDTO;
+    @NotNull
+    private AddressRequestDTO addressRequestDTO;
+    @NotNull
+    private ResortDetailsRequestDTO resortDetailsRequestDTO;
+    @NotNull
+    private TinRequestDTO tinRequestDTO;
+    @NotNull
+    private List<ResortNumberRequestDTO> resortNumberRequestDTOList;
 
     public String getName() {
         return name;
@@ -82,43 +79,52 @@ public class ResortRequestDTO extends RequestDto {
         this.description = description;
     }
 
-    public Address getAddress() {
-        return address;
+    public AddressRequestDTO getAddressRequestDTO() {
+        return addressRequestDTO;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddressRequestDTO(AddressRequestDTO addressRequestDTO) {
+        this.addressRequestDTO = addressRequestDTO;
     }
 
-    public ResortDetails getResortDetails() {
-        return resortDetails;
+    public ResortDetailsRequestDTO getResortDetailsRequestDTO() {
+        return resortDetailsRequestDTO;
     }
 
-    public void setResortDetails(ResortDetails resortDetails) {
-        this.resortDetails = resortDetails;
+    public void setResortDetailsRequestDTO(ResortDetailsRequestDTO resortDetailsRequestDTO) {
+        this.resortDetailsRequestDTO = resortDetailsRequestDTO;
     }
 
-    public Tin getTin() {
-        return tin;
+    public TinRequestDTO getTinRequestDTO() {
+        return tinRequestDTO;
     }
 
-    public void setTin(Tin tin) {
-        this.tin = tin;
+    public void setTinRequestDTO(TinRequestDTO tinRequestDTO) {
+        this.tinRequestDTO = tinRequestDTO;
     }
 
-    public List<RoomRequestDTO> getRoomListRequestDTO() {
-        return roomListRequestDTO;
+    public List<ResortNumberRequestDTO> getResortNumberRequestDTOList() {
+        return resortNumberRequestDTOList;
     }
 
-    public void setRoomListRequestDTO(List<RoomRequestDTO> roomListRequestDTO) {
-        this.roomListRequestDTO = roomListRequestDTO;
+    public void setResortNumberRequestDTOList(List<ResortNumberRequestDTO> resortNumberRequestDTOList) {
+        this.resortNumberRequestDTOList = resortNumberRequestDTOList;
     }
 
-    public ResortNumberRequestDTO getResortNumberRequestDTO() {
-        return resortNumberRequestDTO;
-    }
 
-    public void setResortNumberRequestDTO(ResortNumberRequestDTO resortNumberRequestDTO) {
-        this.resortNumberRequestDTO = resortNumberRequestDTO;
+    @Override
+    public String toString() {
+        return "ResortRequestDTO{" +
+                "name='" + name + '\'' +
+                ", resortType=" + resortType +
+                ", star=" + star +
+                ", email='" + email + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", description='" + description + '\'' +
+                ", addressRequestDTO=" + addressRequestDTO +
+                ", resortDetailsRequestDTO=" + resortDetailsRequestDTO +
+                ", tinRequestDTO=" + tinRequestDTO +
+                ", resortNumberRequestDTOList=" + resortNumberRequestDTOList +
+                '}';
     }
 }

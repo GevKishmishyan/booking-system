@@ -56,6 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/signup/moderator").hasRole("ADMIN")
                 .antMatchers("/signup/**").permitAll()
+
+                .antMatchers("/resorts/**").permitAll()
                 //
                 .antMatchers("/test/user").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .antMatchers("/test/hotel_manager").hasAnyRole("HOTEL_MANAGER", "MODERATOR", "ADMIN")

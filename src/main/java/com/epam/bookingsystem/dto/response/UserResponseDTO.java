@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class UserResponseDTO extends ResponseDTO {
+
     private Long id;
     private String firstName;
     private String lastName;

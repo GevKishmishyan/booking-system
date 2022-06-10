@@ -11,7 +11,13 @@ public class AddressMapper implements Mapper<Address, AddressRequestDTO, Address
 
     @Override
     public Address mapToEntity(AddressRequestDTO addressRequestDTO) {
-        return null;
+
+        Address address = new Address();
+        address.setCountry(addressRequestDTO.getCountry());
+        address.setRegion(addressRequestDTO.getRegion());
+        address.setSection(addressRequestDTO.getSection());
+        address.setAddress(addressRequestDTO.getAddress());
+        return address;
     }
 
     @Override

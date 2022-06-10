@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "resort_number")
@@ -35,6 +34,7 @@ public class ResortNumber extends BaseEntity {
     }
 
     public ResortNumber() {
+
     }
 
     public RoomType getRoomType() {
@@ -75,29 +75,5 @@ public class ResortNumber extends BaseEntity {
 
     public void setRoomPictures(List<RoomPicture> roomPictures) {
         this.roomPictures = roomPictures;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ResortNumber that = (ResortNumber) o;
-        return roomType == that.roomType &&  Objects.equals(perNightPrice, that.perNightPrice) && Objects.equals(roomDetails, that.roomDetails) && Objects.equals(rooms, that.rooms) && Objects.equals(roomPictures, that.roomPictures);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(roomType, perNightPrice, roomDetails, rooms, roomPictures);
-    }
-
-    @Override
-    public String toString() {
-        return "ResortNumber{" +
-                "roomType=" + roomType +
-                ", perNightPrice=" + perNightPrice +
-                ", roomDetails=" + roomDetails +
-                ", rooms=" + rooms +
-                ", roomPictures=" + roomPictures +
-                '}';
     }
 }

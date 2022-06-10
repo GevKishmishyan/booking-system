@@ -1,8 +1,9 @@
 package com.epam.bookingsystem.services.impl;
 
 import com.epam.bookingsystem.dto.request.ResortRequestDTO;
-import com.epam.bookingsystem.mapper.impl.requestDTO.ResortRequestDTOMapper;
+import com.epam.bookingsystem.mapper.impl.ResortMapper;
 import com.epam.bookingsystem.model.Resort;
+import com.epam.bookingsystem.model.ResortNumber;
 import com.epam.bookingsystem.model.Room;
 import com.epam.bookingsystem.repository.ResortRepository;
 import com.epam.bookingsystem.services.ResortNumberService;
@@ -16,18 +17,20 @@ import java.util.List;
 public class ResortServiceImpl implements ResortService {
     private final ResortRepository resortRepository;
     private final ResortNumberService resortNumberService;
+    private final ResortMapper resortMapper;
 
-    public ResortServiceImpl(ResortRepository resortRepository, ResortNumberService resortNumberService) {
+    public ResortServiceImpl(ResortRepository resortRepository, ResortNumberService resortNumberService, ResortMapper resortMapper) {
         this.resortRepository = resortRepository;
         this.resortNumberService = resortNumberService;
+        this.resortMapper = resortMapper;
     }
 
 
     @Override
-    public Resort addResort(ResortRequestDTO resortRequestDTO, List<MultipartFile> files) {
-        List<Room> rooms = resortNumberService.addResortNumber(resortRequestDTO, files);
-        Resort resort = ResortRequestDTOMapper.resortRequestDTOtoResort(resortRequestDTO);
-        resort.setRoom(rooms);
+    public Resort addResort(ResortRequestDTO resortRequestDTO, List<MultipartFile> standard, List<MultipartFile> lux) {
+        List<ResortNumber> resortNumbers = resortNumberService.addResortNumber(resortRequestDTO.getResortNumberRequestDTOList(), standard, lux);
+        Resort resort = resortMapper.mapToEntity(resortRequestDTO);
+        resort.setResortNumbers(resortNumbers);
         resortRepository.save(resort);
         System.out.println("It is successfully");
         return resort;

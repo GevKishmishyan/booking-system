@@ -1,19 +1,23 @@
 package com.epam.bookingsystem.dto.request;
 
-import com.epam.bookingsystem.model.RoomDetails;
 import com.epam.bookingsystem.model.enums.RoomType;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
+
 
 public class ResortNumberRequestDTO extends RequestDto {
-
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
     @NotNull
     private BigDecimal perNightPrice;
-    private RoomDetails roomDetails;
+
+    private RoomDetailsRequestDTO roomDetailsRequestDTO;
+    private List<RoomRequestDTO> roomRequestDTOList;
+//    private List<RoomPictureRequestDTO> roomPictureRequestDTOList;
 
     public RoomType getRoomType() {
         return roomType;
@@ -31,11 +35,21 @@ public class ResortNumberRequestDTO extends RequestDto {
         this.perNightPrice = perNightPrice;
     }
 
-    public RoomDetails getRoomDetails() {
-        return roomDetails;
+    public RoomDetailsRequestDTO getRoomDetailsRequestDTO() {
+        return roomDetailsRequestDTO;
     }
 
-    public void setRoomDetails(RoomDetails roomDetails) {
-        this.roomDetails = roomDetails;
+    public void setRoomDetailsRequestDTO(RoomDetailsRequestDTO roomDetailsRequestDTO) {
+        this.roomDetailsRequestDTO = roomDetailsRequestDTO;
     }
+
+    public List<RoomRequestDTO> getRoomRequestDTOList() {
+        return roomRequestDTOList;
+    }
+
+    public void setRoomRequestDTOList(List<RoomRequestDTO> roomRequestDTOList) {
+        this.roomRequestDTOList = roomRequestDTOList;
+    }
+
+
 }

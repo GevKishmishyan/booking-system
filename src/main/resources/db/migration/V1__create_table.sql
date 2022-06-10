@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS booking_system.resort(
 CREATE TABLE IF NOT EXISTS booking_system.room(
      id                   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
      room_number          INTEGER NOT NULL,
-     resort_number_id     BIGINT,
-     resort_id            BIGINT
+     resort_number_id     BIGINT
+
 );
 
 /*created a table that represents the resort_number */
@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS booking_system.resort_number(
      id                   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
      room_type            VARCHAR(255),
      per_night_price      DECIMAL NOT NULL,
-     room_details_id      BIGINT UNIQUE
+     room_details_id      BIGINT UNIQUE,
+     resort_id            BIGINT
 );
 
 /*create table that store pictures url of room pictur*/
@@ -147,13 +148,13 @@ ALTER TABLE booking_system.resort
             ON DELETE CASCADE ON UPDATE RESTRICT;
 
 ALTER TABLE booking_system.room
-    ADD CONSTRAINT room_resort_fk
-        FOREIGN KEY (resort_id) REFERENCES booking_system.resort(id),
     ADD CONSTRAINT room_resort_number_fk
         FOREIGN KEY (resort_number_id) REFERENCES booking_system.resort_number(id)
             ON DELETE CASCADE ON UPDATE RESTRICT;
 
 ALTER TABLE booking_system.resort_number
+    ADD CONSTRAINT resort_number_resort_fk
+        FOREIGN KEY (resort_id) REFERENCES booking_system.resort(id),
     ADD CONSTRAINT resort_number_room_details_fk
         FOREIGN KEY (room_details_id) REFERENCES booking_system.room_details(id)
             ON DELETE CASCADE ON UPDATE RESTRICT;

@@ -1,7 +1,5 @@
 package com.epam.bookingsystem.services.impl;
 
-import com.epam.bookingsystem.dto.request.RoomRequestDTO;
-import com.epam.bookingsystem.mapper.impl.requestDTO.RoomListRequestDTOMapper;
 import com.epam.bookingsystem.model.Room;
 import com.epam.bookingsystem.repository.RoomRepository;
 import com.epam.bookingsystem.services.RoomService;
@@ -18,9 +16,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> addrooms(List<RoomRequestDTO> roomListRequestDTO) {
-        List<Room> rooms = RoomListRequestDTOMapper.roomRequestDTOtoRoom(roomListRequestDTO);
-        roomRepository.saveAll(rooms);
-        return rooms;
+    public List<Room> addrooms(List<Room> roomList) {
+       return  roomRepository.saveAll(roomList);
     }
 }

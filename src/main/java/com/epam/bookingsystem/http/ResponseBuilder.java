@@ -32,7 +32,8 @@ public class ResponseBuilder {
         return ResponseEntity.status(status).body((Page<K>) page.map(mapper::mapToResponseDto));
     }
 
-    public static <T extends BaseEntity, V extends RequestDto, K extends ResponseDTO> ResponseEntity<List<K>> build(HttpStatus status, List<T> list, Mapper<T, V, K> mapper) {
+    public static <T extends BaseEntity, V extends RequestDto, K extends ResponseDTO> ResponseEntity<List<K>> build(HttpStatus status,
+                                                                                                                    List<T> list, Mapper<T, V, K> mapper) {
         return ResponseEntity.status(status).body(
                 list.stream()
                         .map(mapper::mapToResponseDto)

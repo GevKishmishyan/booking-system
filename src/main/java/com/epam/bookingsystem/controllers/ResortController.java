@@ -8,10 +8,7 @@ import com.epam.bookingsystem.model.Resort;
 import com.epam.bookingsystem.services.ResortService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -30,12 +27,10 @@ public class ResortController {
 
     @PostMapping("/hotel-registration")
     public ResponseEntity<ResortResponseDTO> addResort(@RequestPart("resort") ResortRequestDTO resortRequestDTO,
-                                                       @RequestPart("files") List<MultipartFile> files)  {
-     Resort resort = resortService.addResort(resortRequestDTO, files);
+                                                       @RequestPart("standard") List<MultipartFile> standard,
+                                                       @RequestPart("deluxe") List<MultipartFile> lux){
+        Resort resort = resortService.addResort(resortRequestDTO, standard, lux );
         return ResponseBuilder.build(HttpStatus.OK, resort, resortMapper);
 
     }
-
-
-
 }

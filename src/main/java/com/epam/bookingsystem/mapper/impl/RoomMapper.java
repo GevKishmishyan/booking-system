@@ -11,7 +11,9 @@ public class RoomMapper implements Mapper<Room, RoomRequestDTO, RoomResponseDTO>
 
     @Override
     public Room mapToEntity(RoomRequestDTO roomRequestDTO) {
-        return null;
+        Room room = new Room();
+        room.setRoomNumber(roomRequestDTO.getRoomNumber());
+        return room;
     }
 
     @Override

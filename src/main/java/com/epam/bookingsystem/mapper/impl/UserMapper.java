@@ -2,31 +2,31 @@ package com.epam.bookingsystem.mapper.impl;
 
 import com.epam.bookingsystem.dto.request.SignupUserRequestDTO;
 import com.epam.bookingsystem.dto.response.UserResponseDTO;
-import com.epam.bookingsystem.mapper.Mapper;
 import com.epam.bookingsystem.model.User;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Component
-public class SignupMapper implements Mapper<User, SignupUserRequestDTO, UserResponseDTO> {
+public class UserMapper {
 
+    private UserMapper() {
+        throw new IllegalStateException("Can not create an object of utility class.");
+    }
 
-    @Override
-    public User mapToEntity(SignupUserRequestDTO requestDTO) {
+    public static User dtoToUser(SignupUserRequestDTO request) {
         User user = new User();
-        user.setEmail(requestDTO.getEmail());
-        user.setLastName(requestDTO.getLastName());
-        user.setFirstName(requestDTO.getFirstName());
-        user.setPassword(requestDTO.getPassword());
-        user.setRole(requestDTO.getRole());
+        user.setEmail(request.getEmail());
+        user.setLastName(request.getLastName());
+        user.setFirstName(request.getFirstName());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
         user.setCreatedAt(LocalDateTime.now());
-        user.setGender(requestDTO.getGender());
+        user.setGender(request.getGender());
+
         return user;
     }
 
-    @Override
-    public UserResponseDTO mapToResponseDto(User user) {
+
+    public static UserResponseDTO userToDto(User user) {
         UserResponseDTO response = new UserResponseDTO();
         response.setId(user.getId());
         response.setFirstName(user.getFirstName());
@@ -39,4 +39,5 @@ public class SignupMapper implements Mapper<User, SignupUserRequestDTO, UserResp
 
         return response;
     }
+
 }

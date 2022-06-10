@@ -1,8 +1,14 @@
 package com.epam.bookingsystem.dto.request;
 
-public class RoomRequestDTO extends RequestDto{
+import com.sun.istack.NotNull;
 
+public class RoomRequestDTO extends RequestDto {
+
+    @NotNull
     private Integer roomNumber;
+
+    public RoomRequestDTO() {
+    }
 
     public Integer getRoomNumber() {
         return roomNumber;
@@ -10,5 +16,12 @@ public class RoomRequestDTO extends RequestDto{
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomRequestDTO{" +
+                "roomNumber=" + roomNumber +
+                '}';
     }
 }

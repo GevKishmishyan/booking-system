@@ -37,19 +37,18 @@ public class Resort extends BaseEntity {
     private ResortDetails resortDetails;
     @OneToMany
     @JoinColumn(name = "resort_id")
-    private List<Room> room;
+    private List<ResortNumber> resortNumbers;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tin_id", referencedColumnName = "id")
     private Tin tin;
     @OneToMany
     @JoinColumn(name = "resort_id")
-    private List<Review> review;
+    private List<Review> reviews;
 
-    public Resort(long id, @NotBlank String name, ResortType resortType,
-                  @Min(1) @Max(5) Integer star, @NotNull @Email String email,
-                  @Pattern(regexp = "(^$|[0-9]{10})") String telephone,
-                  String description, Address address, Rate rate, ResortDetails resortDetails,
-                  List<Room> room, Tin tin, List<Review> review) {
+    public Resort() {
+    }
+
+    public Resort(long id, String name, ResortType resortType, Integer star, String email, String telephone, String description, Address address, Rate rate, ResortDetails resortDetails, List<ResortNumber> resortNumbers, Tin tin, List<Review> reviews) {
         super(id);
         this.name = name;
         this.resortType = resortType;
@@ -60,12 +59,9 @@ public class Resort extends BaseEntity {
         this.address = address;
         this.rate = rate;
         this.resortDetails = resortDetails;
-        this.room = room;
+        this.resortNumbers = resortNumbers;
         this.tin = tin;
-        this.review = review;
-    }
-
-    public Resort() {
+        this.reviews = reviews;
     }
 
     public String getName() {
@@ -140,12 +136,12 @@ public class Resort extends BaseEntity {
         this.resortDetails = resortDetails;
     }
 
-    public List<Room> getRoom() {
-        return room;
+    public List<ResortNumber> getResortNumbers() {
+        return resortNumbers;
     }
 
-    public void setRoom(List<Room> room) {
-        this.room = room;
+    public void setResortNumbers(List<ResortNumber> resortNumbers) {
+        this.resortNumbers = resortNumbers;
     }
 
     public Tin getTin() {
@@ -156,42 +152,11 @@ public class Resort extends BaseEntity {
         this.tin = tin;
     }
 
-    public List<Review> getReview() {
-        return review;
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setReview(List<Review> review) {
-        this.review = review;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Resort resort = (Resort) o;
-        return Objects.equals(name, resort.name) && resortType == resort.resortType && Objects.equals(star, resort.star) && Objects.equals(email, resort.email) && Objects.equals(telephone, resort.telephone) && Objects.equals(description, resort.description) && Objects.equals(address, resort.address) && Objects.equals(rate, resort.rate) && Objects.equals(resortDetails, resort.resortDetails) && Objects.equals(room, resort.room) && Objects.equals(tin, resort.tin) && Objects.equals(review, resort.review);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, resortType, star, email, telephone, description, address, rate, resortDetails, room, tin, review);
-    }
-
-    @Override
-    public String toString() {
-        return "Resort{" +
-                "name='" + name + '\'' +
-                ", resortType=" + resortType +
-                ", star=" + star +
-                ", email='" + email + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", description='" + description + '\'' +
-                ", address=" + address +
-                ", rate=" + rate +
-                ", resortDetails=" + resortDetails +
-                ", room=" + room +
-                ", tin=" + tin +
-                ", review=" + review +
-                '}';
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

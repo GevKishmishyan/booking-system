@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RoomService {
 
-    List<Room> addrooms(List<RoomRequestDTO> roomListRequestDTO);
+    List<Room> addrooms(List<Room> roomList);
 }
