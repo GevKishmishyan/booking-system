@@ -1,6 +1,7 @@
 package com.epam.bookingsystem.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -17,20 +18,12 @@ public class ResortDetails extends BaseEntity {
     private boolean facilitiesForDisabledGuests;
     private boolean restaurant;
     private boolean privateParking;
-    @OneToOne
-    @JoinColumn(name = "resort_id")
-    private Resort resort;
 
-    public ResortDetails() {
-    }
-
-    public ResortDetails(long id, boolean airportShuttle,
-                         boolean freeWiFi, boolean bar,
-                         boolean breakfast, boolean teaCoffeeMaker,
-                         boolean nonSmokingRooms, boolean spaAndWellness,
-                         boolean fitnessCenter, boolean facilitiesForDisabledGuests,
-                         boolean restaurant, boolean privateParking, Resort resort) {
-        this.id = id;
+    public ResortDetails(long id, boolean airportShuttle, boolean freeWiFi, boolean bar,
+                         boolean breakfast, boolean teaCoffeeMaker, boolean nonSmokingRooms, boolean spaAndWellness,
+                         boolean fitnessCenter, boolean facilitiesForDisabledGuests, boolean restaurant,
+                         boolean privateParking) {
+        super(id);
         this.airportShuttle = airportShuttle;
         this.freeWiFi = freeWiFi;
         this.bar = bar;
@@ -42,7 +35,9 @@ public class ResortDetails extends BaseEntity {
         this.facilitiesForDisabledGuests = facilitiesForDisabledGuests;
         this.restaurant = restaurant;
         this.privateParking = privateParking;
-        this.resort = resort;
+    }
+
+    public ResortDetails() {
     }
 
     public boolean isAirportShuttle() {
@@ -133,32 +128,23 @@ public class ResortDetails extends BaseEntity {
         this.privateParking = privateParking;
     }
 
-    public Resort getResort() {
-        return resort;
-    }
-
-    public void setResort(Resort resort) {
-        this.resort = resort;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResortDetails that = (ResortDetails) o;
-        return id == that.id && airportShuttle == that.airportShuttle && freeWiFi == that.freeWiFi && bar == that.bar && breakfast == that.breakfast && teaCoffeeMaker == that.teaCoffeeMaker && nonSmokingRooms == that.nonSmokingRooms && spaAndWellness == that.spaAndWellness && fitnessCenter == that.fitnessCenter && facilitiesForDisabledGuests == that.facilitiesForDisabledGuests && restaurant == that.restaurant && privateParking == that.privateParking && Objects.equals(resort, that.resort);
+        return airportShuttle == that.airportShuttle && freeWiFi == that.freeWiFi && bar == that.bar && breakfast == that.breakfast && teaCoffeeMaker == that.teaCoffeeMaker && nonSmokingRooms == that.nonSmokingRooms && spaAndWellness == that.spaAndWellness && fitnessCenter == that.fitnessCenter && facilitiesForDisabledGuests == that.facilitiesForDisabledGuests && restaurant == that.restaurant && privateParking == that.privateParking;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, airportShuttle, freeWiFi, bar, breakfast, teaCoffeeMaker, nonSmokingRooms, spaAndWellness, fitnessCenter, facilitiesForDisabledGuests, restaurant, privateParking, resort);
+        return Objects.hash(airportShuttle, freeWiFi, bar, breakfast, teaCoffeeMaker, nonSmokingRooms, spaAndWellness, fitnessCenter, facilitiesForDisabledGuests, restaurant, privateParking);
     }
 
     @Override
     public String toString() {
         return "ResortDetails{" +
-                "id=" + id +
-                ", airportShuttle=" + airportShuttle +
+                "airportShuttle=" + airportShuttle +
                 ", freeWiFi=" + freeWiFi +
                 ", bar=" + bar +
                 ", breakfast=" + breakfast +
@@ -169,7 +155,7 @@ public class ResortDetails extends BaseEntity {
                 ", facilitiesForDisabledGuests=" + facilitiesForDisabledGuests +
                 ", restaurant=" + restaurant +
                 ", privateParking=" + privateParking +
-                ", resort=" + resort +
                 '}';
     }
 }
+
