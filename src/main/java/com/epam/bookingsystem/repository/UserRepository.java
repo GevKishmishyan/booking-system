@@ -1,6 +1,5 @@
 package com.epam.bookingsystem.repository;
 
-import com.epam.bookingsystem.model.AccessCode;
 import com.epam.bookingsystem.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByEmail(String email);
 
     Optional<User> findByAccessCodeId(Long id);
+
+    User getByEmail(String username);
 }

@@ -11,7 +11,11 @@ public class TinMapper implements Mapper<Tin, TinRequestDTO, TinResponseDTO> {
 
     @Override
     public Tin mapToEntity(TinRequestDTO tinRequestDTO) {
-        return null;
+
+        Tin tin = new Tin();
+        tin.setSerialNumber(tinRequestDTO.getSerialNumber());
+        tin.setDocument(tinRequestDTO.getDocument());
+        return tin;
     }
 
     @Override

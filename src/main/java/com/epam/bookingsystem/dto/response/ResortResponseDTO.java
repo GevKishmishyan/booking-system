@@ -1,6 +1,5 @@
 package com.epam.bookingsystem.dto.response;
 
-import com.epam.bookingsystem.model.*;
 import com.epam.bookingsystem.model.enums.ResortType;
 
 import java.util.List;
@@ -21,9 +20,11 @@ public class ResortResponseDTO extends ResponseDTO {
 
     private AddressResponseDTO addressResponseDTO;
 
+    private RateResponseDTO rateResponseDTO;
+
     private ResortDetailsResponseDTO resortDetailsResponseDTO;
 
-    private List<RoomResponseDTO> rooms;
+    private List<ResortNumberResponseDTO> resortNumberResponseDTOList;
 
     private TinResponseDTO tinResponseDTO;
 
@@ -67,6 +68,14 @@ public class ResortResponseDTO extends ResponseDTO {
         this.telephone = telephone;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public AddressResponseDTO getAddressResponseDTO() {
         return addressResponseDTO;
     }
@@ -75,12 +84,12 @@ public class ResortResponseDTO extends ResponseDTO {
         this.addressResponseDTO = addressResponseDTO;
     }
 
-    public String getDescription() {
-        return description;
+    public RateResponseDTO getRateResponseDTO() {
+        return rateResponseDTO;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRateResponseDTO(RateResponseDTO rateResponseDTO) {
+        this.rateResponseDTO = rateResponseDTO;
     }
 
     public ResortDetailsResponseDTO getResortDetailsResponseDTO() {
@@ -91,12 +100,12 @@ public class ResortResponseDTO extends ResponseDTO {
         this.resortDetailsResponseDTO = resortDetailsResponseDTO;
     }
 
-    public List<RoomResponseDTO> getRooms() {
-        return rooms;
+    public List<ResortNumberResponseDTO> getResortNumberResponseDTOList() {
+        return resortNumberResponseDTOList;
     }
 
-    public void setRooms(List<RoomResponseDTO> rooms) {
-        this.rooms = rooms;
+    public void setResortNumberResponseDTOList(List<ResortNumberResponseDTO> resortNumberResponseDTOList) {
+        this.resortNumberResponseDTOList = resortNumberResponseDTOList;
     }
 
     public TinResponseDTO getTinResponseDTO() {

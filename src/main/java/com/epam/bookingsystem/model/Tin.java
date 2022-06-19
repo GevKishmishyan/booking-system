@@ -1,7 +1,6 @@
 package com.epam.bookingsystem.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -9,7 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tin")
 public class Tin extends BaseEntity {
-    //@Size(min = 8)
+    @Size(min = 8)
     private String serialNumber;
     @NotBlank
     private String document;

@@ -18,11 +18,14 @@ jwt:
   secret: bookingSystem
   # those are the expiration durations for jwt access and jwt refresh
   # introduced in milliseconds which are equal to 3 minutes and 5 minutes
-  accessExpirationMs: 180000
-  refreshExpirationMs: 300000
+  accessExpirationMs: 1800000
+  refreshExpirationMs: 3000000
 
 redis:
   # exchange these fields for yours
   host: localhost
   port: 6379
   password: 12345
+
+path:
+    uploadPicturePath: C:\Users\artur\Desktop\booking-system-uploaded-pictures

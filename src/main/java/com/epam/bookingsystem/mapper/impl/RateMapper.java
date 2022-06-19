@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class RateMapper implements Mapper<Rate, RateRequestDTO, RateResponseDTO> {
     @Override
     public Rate mapToEntity(RateRequestDTO rateRequestDTO) {
-        return null;
+        return new Rate();
     }
 
     @Override

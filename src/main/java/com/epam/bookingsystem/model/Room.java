@@ -2,10 +2,7 @@ package com.epam.bookingsystem.model;
 
 import com.sun.istack.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,10 +17,8 @@ public class Room extends BaseEntity {
     private List<Booking> booking;
 
 
-    public Room(long id, Integer roomNumber, List<Booking> booking) {
-        super(id);
+    public Room(Integer roomNumber) {
         this.roomNumber = roomNumber;
-        this.booking = booking;
     }
 
     public Room() {

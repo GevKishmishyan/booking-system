@@ -6,6 +6,7 @@ import com.epam.bookingsystem.model.enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,10 +47,21 @@ public class User extends BaseEntity {
     @JoinColumn(name = "access_code_id",referencedColumnName = "id")
     private AccessCode accessCode;
 
+    @NotBlank
+    private String country;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public User(long id, String firstName, String lastName, LocalDateTime birthday,
                 Gender gender, String email, Role role, boolean enabled,
                 boolean blocked, String profilePicture, List<Booking> booking, List<Review> review,
-                String password, LocalDateTime createdAt, AccessCode accessCode) {
+                String password, LocalDateTime createdAt, AccessCode accessCode, String country) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -65,6 +77,7 @@ public class User extends BaseEntity {
         this.password = password;
         this.createdAt = createdAt;
         this.accessCode = accessCode;
+        this.country = country;
     }
 
     public User() {
@@ -212,6 +225,7 @@ public class User extends BaseEntity {
                 ", password='" + password + '\'' +
                 ", createdAt=" + createdAt +
                 ", accessCode=" + accessCode +
+                ", country='" + country + '\'' +
                 '}';
     }
 }

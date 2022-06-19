@@ -1,10 +1,12 @@
-//package com.epam.bookingsystem.services;
-//
-//import com.epam.bookingsystem.dto.request.ResortRequestDTO;
-//import com.epam.bookingsystem.dto.request.RoomPictureRequestDTO;
-//import com.epam.bookingsystem.model.ResortNumber;
-//import com.epam.bookingsystem.model.RoomPicture;
-//
-//public interface RoomPictureService {
-//    RoomPicture addRoomPicture(RoomPictureRequestDTO roomPictureRequestDTO, ResortNumber resortNumber);
-//}
+package com.epam.bookingsystem.services;
+
+
+import com.epam.bookingsystem.model.RoomPicture;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+public interface RoomPictureService {
+
+    List<RoomPicture> addPictures(List<MultipartFile> files);
+}

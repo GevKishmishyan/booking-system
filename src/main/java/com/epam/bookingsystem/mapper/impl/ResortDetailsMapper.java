@@ -9,9 +9,21 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResortDetailsMapper implements Mapper<ResortDetails, ResortDetailsRequestDTO, ResortDetailsResponseDTO> {
+
     @Override
     public ResortDetails mapToEntity(ResortDetailsRequestDTO resortDetailsRequestDTO) {
-        return null;
+
+        ResortDetails resortDetails = new ResortDetails();
+        resortDetails.setAirportShuttle(resortDetailsRequestDTO.isAirportShuttle());
+        resortDetails.setFreeWiFi(resortDetailsRequestDTO.isFreeWiFi());
+        resortDetails.setBar(resortDetailsRequestDTO.isBar());
+        resortDetails.setBreakfast(resortDetailsRequestDTO.isBreakfast());
+        resortDetails.setTeaCoffeeMaker(resortDetailsRequestDTO.isTeaCoffeeMaker());
+        resortDetails.setSpaAndWellness(resortDetailsRequestDTO.isSpaAndWellness());
+        resortDetails.setFacilitiesForDisabledGuests(resortDetailsRequestDTO.isFacilitiesForDisabledGuests());
+        resortDetails.setRestaurant(resortDetailsRequestDTO.isRestaurant());
+        resortDetails.setPrivateParking(resortDetailsRequestDTO.isPrivateParking());
+        return resortDetails;
     }
 
     @Override

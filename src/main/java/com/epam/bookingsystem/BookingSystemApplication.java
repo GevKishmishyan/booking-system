@@ -30,6 +30,7 @@ public class BookingSystemApplication implements CommandLineRunner {
 
         if (!userRepository.existsByEmail("admin@gmail.com")) {
             User admin = new User();
+            admin.setCountry("Georgia");
             admin.setFirstName("admin");
             admin.setLastName("admin");
             admin.setEmail("admin@gmail.com");
@@ -43,6 +44,7 @@ public class BookingSystemApplication implements CommandLineRunner {
 
         if (!userRepository.existsByEmail("moderator@gmail.com")) {
             User moderator = new User();
+            moderator.setCountry("Georgia");
             moderator.setFirstName("moderator");
             moderator.setLastName("moderator");
             moderator.setEmail("moderator@gmail.com");

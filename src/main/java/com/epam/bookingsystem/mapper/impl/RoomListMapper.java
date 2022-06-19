@@ -18,7 +18,12 @@ public class RoomListMapper {
     }
 
     public List<Room> mapToEntityList(List<RoomRequestDTO> roomRequestDTOList) {
-        return null;
+        List<Room> roomList = new ArrayList<>();
+        for (RoomRequestDTO roomRequestDTO : roomRequestDTOList) {
+            Room room = roomMapper.mapToEntity(roomRequestDTO);
+            roomList.add(room);
+        }
+        return roomList;
     }
 
     public List<RoomResponseDTO> mapToResponseDtoList(List<Room> roomList) {

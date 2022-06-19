@@ -1,8 +1,6 @@
 package com.epam.bookingsystem.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -11,8 +9,7 @@ public class RoomPicture extends BaseEntity {
     @Column(name = "picture_url")
     private String picUrl;
 
-    public RoomPicture(long id, String picUrl) {
-        super(id);
+    public RoomPicture(String picUrl) {
         this.picUrl = picUrl;
     }
 

@@ -1,6 +1,6 @@
 package com.epam.bookingsystem.dto.response;
 
-public class RoomPictureResponseDTO {
+public class RoomPictureResponseDTO extends ResponseDTO {
 
     private String picUrl;
 

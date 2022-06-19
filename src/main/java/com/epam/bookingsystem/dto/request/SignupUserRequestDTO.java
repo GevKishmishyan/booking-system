@@ -6,10 +6,7 @@ import com.epam.bookingsystem.model.enums.Role;
 import com.epam.bookingsystem.validation.annotation.ValidPassword;
 import com.epam.bookingsystem.validation.annotation.ValidRole;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class SignupUserRequestDTO extends RequestDto {
 
@@ -35,16 +32,28 @@ public class SignupUserRequestDTO extends RequestDto {
     @NotNull
     private Gender gender;
 
+    @NotBlank
+    private String country;
+
     public SignupUserRequestDTO() {
     }
 
-    public SignupUserRequestDTO(String firstName, String lastName, Role role, String email, String password, Gender gender) {
+    public SignupUserRequestDTO(String firstName, String lastName, Role role, String email, String password, Gender gender, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.email = email;
         this.password = password;
         this.gender = gender;
+        this.country = country;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getConfirmPassword() {
@@ -105,7 +114,7 @@ public class SignupUserRequestDTO extends RequestDto {
 
     @Override
     public String toString() {
-        return "SignupRequestDTO{" +
+        return "SignupUserRequestDTO{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", role=" + role +
@@ -113,6 +122,7 @@ public class SignupUserRequestDTO extends RequestDto {
                 ", password='" + password + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
                 ", gender=" + gender +
+                ", country='" + country + '\'' +
                 '}';
     }
 }

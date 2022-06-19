@@ -9,14 +9,19 @@ public class ResortNumberResponseDTO extends ResponseDTO {
 
     private RoomType roomType;
 
-    private Integer availableCount;
-
     private BigDecimal perNightPrice;
 
     private RoomDetailsResponseDTO roomDetailsResponseDTO;
 
+    private List<RoomResponseDTO> roomResponseDTOList;
+
     private List<RoomPictureResponseDTO> roomPictureResponseDTOS;
 
+
+
+    public List<RoomResponseDTO> getRoomResponseDTOList() {
+        return roomResponseDTOList;
+    }
 
     public RoomType getRoomType() {
         return roomType;
@@ -24,14 +29,6 @@ public class ResortNumberResponseDTO extends ResponseDTO {
 
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
-    }
-
-    public Integer getAvailableCount() {
-        return availableCount;
-    }
-
-    public void setAvailableCount(Integer availableCount) {
-        this.availableCount = availableCount;
     }
 
     public BigDecimal getPerNightPrice() {
@@ -50,7 +47,11 @@ public class ResortNumberResponseDTO extends ResponseDTO {
         this.roomDetailsResponseDTO = roomDetailsResponseDTO;
     }
 
-    public List<RoomPictureResponseDTO> getRoomPicturesResponseDTOS() {
+    public void setRoomResponseDTOList(List<RoomResponseDTO> roomResponseDTOList) {
+        this.roomResponseDTOList = roomResponseDTOList;
+    }
+
+    public List<RoomPictureResponseDTO> getRoomPictureResponseDTOS() {
         return roomPictureResponseDTOS;
     }
 

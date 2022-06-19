@@ -57,12 +57,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signup/moderator").hasRole("ADMIN")
                 .antMatchers("/signup/**").permitAll()
                 //
+                .antMatchers("/resort-registrations/**").permitAll()
+                //
                 .antMatchers("/test/user").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .antMatchers("/test/hotel_manager").hasAnyRole("HOTEL_MANAGER", "MODERATOR", "ADMIN")
                 .antMatchers("/test/moderator").hasAnyRole("MODERATOR", "ADMIN")
                 .antMatchers("/test/admin").hasRole("ADMIN")
                 .antMatchers("/test/**").permitAll()
-                .antMatchers("/resort-register-requests").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers("/resorts/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

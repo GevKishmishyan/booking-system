@@ -1,8 +1,6 @@
 package com.epam.bookingsystem.dto.response;
 
-import javax.persistence.Column;
-
-public class RoomDetailsResponseDTO {
+public class RoomDetailsResponseDTO extends ResponseDTO {
 
     private boolean airConditioner;
     private boolean television;
