@@ -26,6 +26,11 @@ public class Resort extends BaseEntity {
     private String telephone;
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+
+    private boolean active = false;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
@@ -48,7 +53,7 @@ public class Resort extends BaseEntity {
     public Resort() {
     }
 
-    public Resort(long id, String name, ResortType resortType, Integer star, String email, String telephone, String description, Address address, Rate rate, ResortDetails resortDetails, List<ResortNumber> resortNumbers, Tin tin, List<Review> reviews) {
+    public Resort(long id, String name, ResortType resortType, Integer star, String email, String telephone, String description, boolean active, Address address, Rate rate, ResortDetails resortDetails, List<ResortNumber> resortNumbers, Tin tin, List<Review> reviews) {
         super(id);
         this.name = name;
         this.resortType = resortType;
@@ -56,6 +61,7 @@ public class Resort extends BaseEntity {
         this.email = email;
         this.telephone = telephone;
         this.description = description;
+        this.active = active;
         this.address = address;
         this.rate = rate;
         this.resortDetails = resortDetails;
@@ -110,6 +116,14 @@ public class Resort extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Address getAddress() {

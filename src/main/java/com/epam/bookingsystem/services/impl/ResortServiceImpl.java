@@ -39,4 +39,14 @@ public class ResortServiceImpl implements ResortService {
         System.out.println("It is successfully");
         return resort;
     }
+
+
+    @Override
+    public boolean acceptRegistration(long id) {
+        System.out.println();
+        Resort resort = resortRepository.getById(id);
+        resort.setActive(true);
+        resortRepository.save(resort);
+        return true;
+    }
 }

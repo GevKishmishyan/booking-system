@@ -57,6 +57,7 @@ public class ResortMapper implements Mapper<Resort, ResortRequestDTO, ResortResp
         resortResponseDTO.setEmail(resort.getEmail());
         resortResponseDTO.setTelephone(resort.getTelephone());
         resortResponseDTO.setDescription(resort.getDescription());
+        resortResponseDTO.setActive(resort.isActive());
 
         resortResponseDTO.setAddressResponseDTO(addressMapper.mapToResponseDto(resort.getAddress()));
         resortResponseDTO.setRateResponseDTO(rateMapper.mapToResponseDto(resort.getRate()));

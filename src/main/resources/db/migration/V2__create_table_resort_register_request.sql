@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS booking_system.resort_register_comment
 (
     id                 BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     comment            VARCHAR(255)       NOT NULL,
-    resort_register_id BIGINT UNIQUE,
+    resort_register_id BIGINT ,
     created_at         TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -24,7 +24,8 @@ ALTER TABLE booking_system.resort_register_comment
     ADD CONSTRAINT resort_register_comment_resort_register_fk
         FOREIGN KEY (resort_register_id) REFERENCES booking_system.resort_register (id);
 
-
+ALTER TABLE booking_system.resort
+    ADD active BOOLEAN;
 
 ALTER TABLE booking_system.users
     ADD country VARCHAR(255) NOT NULL;

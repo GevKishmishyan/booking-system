@@ -18,6 +18,8 @@ public class ResortResponseDTO extends ResponseDTO {
 
     private String description;
 
+    private boolean active;
+
     private AddressResponseDTO addressResponseDTO;
 
     private RateResponseDTO rateResponseDTO;
@@ -74,6 +76,14 @@ public class ResortResponseDTO extends ResponseDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public AddressResponseDTO getAddressResponseDTO() {

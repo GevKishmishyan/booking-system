@@ -8,4 +8,6 @@ import java.util.List;
 public interface ResortRegisterRepository extends JpaRepository<ResortRegister, Long> {
 
     List<ResortRegister> findAllByResort_Address_Country(String country);
+
+
 }
