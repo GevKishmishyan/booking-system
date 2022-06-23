@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS booking_system.resort_register_comment
 (
     id                 BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     comment            VARCHAR(255)       NOT NULL,
-    resort_register_id BIGINT ,
+    resort_register_id BIGINT,
     created_at         TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

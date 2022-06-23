@@ -27,7 +27,6 @@ public class BookingSystemApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         if (!userRepository.existsByEmail("admin@gmail.com")) {
             User admin = new User();
             admin.setCountry("Georgia");
@@ -44,7 +43,7 @@ public class BookingSystemApplication implements CommandLineRunner {
 
         if (!userRepository.existsByEmail("moderator@gmail.com")) {
             User moderator = new User();
-            moderator.setCountry("Georgia");
+            moderator.setCountry("Armenia");
             moderator.setFirstName("moderator");
             moderator.setLastName("moderator");
             moderator.setEmail("moderator@gmail.com");

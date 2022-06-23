@@ -27,26 +27,21 @@ public class ResortServiceImpl implements ResortService {
 
     @Override
     public Resort addResort(ResortRequestDTO resortRequestDTO, List<MultipartFile> standard, List<MultipartFile> lux) {
-
         List<ResortNumber> resortNumbers = resortNumberService.addResortNumber(resortRequestDTO.getResortNumberRequestDTOList(), standard, lux);
-
         Resort resort = resortMapper.mapToEntity(resortRequestDTO);
-
         resort.setResortNumbers(resortNumbers);
-
         resortRepository.save(resort);
-
         System.out.println("It is successfully");
         return resort;
     }
 
-
     @Override
-    public boolean acceptRegistration(long id) {
-        System.out.println();
-        Resort resort = resortRepository.getById(id);
+    public boolean conformRegistration(Resort resort) {
+        System.out.println("resort servise");
         resort.setActive(true);
         resortRepository.save(resort);
         return true;
     }
+
+
 }

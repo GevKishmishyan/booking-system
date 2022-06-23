@@ -10,5 +10,5 @@ import java.util.List;
 public interface ResortService {
     Resort addResort(ResortRequestDTO resortRequestDTO, List<MultipartFile> standard, List<MultipartFile> lux);
 
-    boolean acceptRegistration(long id);
+    boolean conformRegistration(Resort resort);
 }

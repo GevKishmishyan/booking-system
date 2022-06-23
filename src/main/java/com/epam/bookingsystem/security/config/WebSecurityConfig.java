@@ -5,6 +5,7 @@ import com.epam.bookingsystem.services.impl.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -57,13 +58,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signup/moderator").hasRole("ADMIN")
                 .antMatchers("/signup/**").permitAll()
                 //
-                .antMatchers("/resort-registrations/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/resort-registrations/comments").hasAnyRole("MODERATOR", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/resort-registrations/**").hasAnyRole("HOTEL_MANAGER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/resort-registrations/**").hasAnyRole("MODERATOR", "ADMIN")
                 //
                 .antMatchers("/test/user").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .antMatchers("/test/hotel_manager").hasAnyRole("HOTEL_MANAGER", "MODERATOR", "ADMIN")
                 .antMatchers("/test/moderator").hasAnyRole("MODERATOR", "ADMIN")
                 .antMatchers("/test/admin").hasRole("ADMIN")
                 .antMatchers("/test/**").permitAll()
+                 // todo this method and this permission have to be removed
                 .antMatchers("/resorts/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

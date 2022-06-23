@@ -2,6 +2,7 @@ package com.epam.bookingsystem.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,10 +14,6 @@ public class ResortRegisterComment extends BaseEntity {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public ResortRegisterComment(String comment) {
-        this.comment = comment;
-    }
-
     public ResortRegisterComment() {
     }
 
@@ -26,6 +23,15 @@ public class ResortRegisterComment extends BaseEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

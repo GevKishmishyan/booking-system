@@ -2,20 +2,30 @@ package com.epam.bookingsystem.exception;
 
 import com.epam.bookingsystem.exception.dto.ErrorDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
+import java.util.Locale;
 
 @Slf4j
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+
+
+
 
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleNotFound(EntityNotFoundException ex, WebRequest request) {
@@ -43,6 +53,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler()
     protected ResponseEntity<Object> handleAllExceptions(Exception exception, WebRequest request) {
         log.error("all exception handler , " + "message = "
+                + exception.getMessage() + " , exception type is " + exception.getClass().getName());
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
+                exception.getMessage(), request.getDescription(false), 400);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
+    }
+
+    @ExceptionHandler()
+    protected ResponseEntity<Object> handleAllRuntimeExceptions(RuntimeException exception, WebRequest request) {
+        log.error("all RuntimeException handler , " + "message = "
                 + exception.getMessage() + " , exception type is " + exception.getClass().getName());
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getClass().getSimpleName(),
                 exception.getMessage(), request.getDescription(false), 400);

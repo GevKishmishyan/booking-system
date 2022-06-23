@@ -76,11 +76,4 @@ public class TestController {
     }
 
 
-    // todo to be removed
-    @GetMapping("/kuku")
-    public String kuku(){
-        resortRegisterService.getAll();
-        return null;
-    }
-
 }
